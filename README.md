@@ -32,21 +32,17 @@ ElevationService | | Yes
 
 * [ArcGIS Earth Documentation](http://docs.arcgis.com/en/arcgis-earth/automation-api/get-started.htm)
 * [ArcGIS for Developers](https://developers.arcgis.com/documentation/#extend)
-* [Forum](https://geonet.esri.com/groups/arcgis-earth)
+* Share your ideas or post questions via [Forum](https://geonet.esri.com/groups/arcgis-earth)
 * [Twitter@ArcGIS Earth](https://twitter.com/arcgisearth?lang=en)
-* [Support](support.esri.com)
-
-## Instructions
-1. Fork and then clone the repo. 
-2. Run and try the samples.
-3. Recommend: Use [Visual Studio 2015](https://msdn.microsoft.com/en-us/library/dd831853.aspx) as your development environment.
+* For assistance, please refer to [Support](support.esri.com)
+* Recommend: Use [Visual Studio 2015](https://msdn.microsoft.com/en-us/library/dd831853.aspx) as your development environment.
 
 
 ## Examples
 
 1. [How to use the Automation API to connect with ArcGIS Earth](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/Connect-with-ArcGIS-Earth)
-2. How to use the capabilities and methods of the Automation API.
-3. View synchrinzation: build a sample add-in for ArcGIS Pro 2.0.
+2. [Usage example of the capabilities and methods of the Automation API](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/Usage-example-of-Automation-API-methods)
+3. [View synchrinzation: build a sample add-in for ArcGIS Pro 2.0](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/View-synchronization-sample)
 
 ## Issues
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
