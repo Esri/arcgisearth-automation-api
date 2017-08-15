@@ -44,9 +44,9 @@ ElevationService | | Yes
 
 ## Examples
 
-1. How to set up the Automation API to connect with ArcGIS Earth.
+1. [How to use the Automation API to connect with ArcGIS Earth](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/Connect-with-ArcGIS-Earth)
 2. How to use the capabilities and methods of the Automation API.
-3. View synchrinzation: Build a sample add-in for ArcGIS Pro 2.0.
+3. View synchrinzation: build a sample add-in for ArcGIS Pro 2.0.
 
 ## Issues
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
