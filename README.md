@@ -8,7 +8,7 @@ ArcGIS Earth Automation API provides a standard interface for 3rd party applicat
 ArcGIS Earth Automation API requires [.NET 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642).
 
 ## Features
-* Get or set camera positions. 
+* Get or set camera positions and flying animations. 
 * Add layers to ArcGIS Earth workspace from online or local folders. See table below.
 * Delete layers from ArcGIS Earth workspace.
 * Take snapshot of the scene view and share.
@@ -36,7 +36,6 @@ ElevationService | | Yes
 * [Twitter@ArcGIS Earth](https://twitter.com/arcgisearth?lang=en)
 * For assistance, please refer to [Support](support.esri.com)
 * Recommend: Use [Visual Studio 2015](https://msdn.microsoft.com/en-us/library/dd831853.aspx) as your development environment.
-
 
 ## Examples
 
