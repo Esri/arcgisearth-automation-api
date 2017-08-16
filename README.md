@@ -5,7 +5,7 @@ ArcGIS Earth Automation API provides a standard interface for 3rd party applicat
 
 
 ## Requirements
-ArcGIS Earth Automation API requires [.NET 4.5.2](https://www.microsoft.com/en-us/download/details.aspx?id=42642).
+ArcGIS Earth Automation API requires .NET 3.0 or later.
 
 ## Features
 * Get or set camera positions and flying animations. 
