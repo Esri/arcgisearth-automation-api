@@ -1,0 +1,109 @@
+﻿using ArcGISEarth.WCFNamedPipeIPC;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.Text;
+
+namespace EarthAPITest
+{
+    public class EarthNamedpipeAPIUtils : IEarthNamedpipeCallbackService
+    {
+        public void Notify(string message)
+        {
+        }
+
+        public const string cBasePipeAddress = "net.pipe://localhost/arcgisearth";
+		public const int cMaxBuffer = 2147483647;
+
+		private IEarthNamedpipeService _channel = null;
+		private ChannelFactory<IEarthNamedpipeService> _factory = null;
+
+		public void CloseConnect()
+		{
+			if(_factory != null)
+			{
+				_factory.Close();
+				_factory = null;
+			}
+			_channel = null;
+		}
+
+		public IEarthNamedpipeService CreateChannel(string address)
+		{
+			try
+			{
+				NetNamedPipeBinding binding = new NetNamedPipeBinding(NetNamedPipeSecurityMode.None);
+				binding.MaxBufferPoolSize = cMaxBuffer;
+				binding.MaxBufferSize = cMaxBuffer;
+				binding.MaxReceivedMessageSize = cMaxBuffer;
+				binding.ReceiveTimeout = TimeSpan.MaxValue;
+
+				ServiceEndpoint se = new ServiceEndpoint(
+					ContractDescription.GetContract(typeof(IEarthNamedpipeService)),
+					binding,
+					new EndpointAddress(address));
+
+				_factory = new DuplexChannelFactory<IEarthNamedpipeService>(new InstanceContext(this), se);
+				IEarthNamedpipeService channel = _factory.CreateChannel();
+				return channel;
+			}
+			catch(Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return null;
+			}
+		}
+
+		public bool Connect()
+		{
+			try
+			{
+				_channel = CreateChannel(cBasePipeAddress);
+                  // call a function to test consistency of contract file.
+				string test = _channel.GetCameraJson();
+
+				if (_channel != null)
+				{
+					return true;
+				}
+				else
+				{
+					_channel = null;
+					return false;
+				}
+
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		public bool SetCamera(string json)
+		{
+			if (_channel == null)
+			{
+				return false;
+			}
+
+			try
+			{
+				if (_channel.SetCamera(json))
+				{
+					return true;
+				}
+                else
+                {
+                    return false;
+                }
+
+            }
+			catch
+			{
+                return false;
+			}
+		}
+	}
+}
