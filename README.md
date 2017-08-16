@@ -34,7 +34,7 @@ ElevationService | | Yes
 * [ArcGIS for Developers](https://developers.arcgis.com/documentation/#extend)
 * Share your ideas or post questions via [Forum](https://geonet.esri.com/groups/arcgis-earth)
 * [Twitter@ArcGIS Earth](https://twitter.com/arcgisearth?lang=en)
-* For assistance, please refer to [Support](support.esri.com)
+* For assistance, please refer to [Support](http://support.esri.com/en/)
 * Recommend: use [Visual Studio 2015](https://msdn.microsoft.com/en-us/library/dd831853.aspx) as your development environment.
 
 ## Examples
