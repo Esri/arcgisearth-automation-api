@@ -1,5 +1,5 @@
 # ArcGIS Pro To ArcGIS Earth
-synchronize camera view of ArcGIS Pro with ArcGIS Earth.
+synchronize camera view of ArcGIS Pro 2.0 with ArcGIS Earth.
 
 ### Build
 Build and compile the add-in using source codes provided. Modify codes where necessary in your own program.
