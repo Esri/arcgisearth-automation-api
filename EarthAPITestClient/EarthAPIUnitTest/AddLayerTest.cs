@@ -14,12 +14,10 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Threading; //SemaphoreSlim
-using EarthAPIUtils; 
+using EarthAPIUtils;
 
 namespace EarthAPIUnitTest
 {
