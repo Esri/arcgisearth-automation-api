@@ -46,7 +46,7 @@ ElevationService | | Yes
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
 
 ## Contributing
-Anyone is welcome to contribute, and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing).
+Anyone is welcome to contribute, and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing) and [repository wiki](https://github.com/ArcGIS/arcgisearth-automation-api/wiki).
 
 ## Licensing
 Copyright 2017 Esri
