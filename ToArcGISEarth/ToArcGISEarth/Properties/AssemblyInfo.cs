@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ToArcGISEarth")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Acme")]
+[assembly: AssemblyCompany("Esri Inc.")]
 [assembly: AssemblyProduct("ToArcGISEarth")]
-[assembly: AssemblyCopyright("Copyright © Acme 2017")]
+[assembly: AssemblyCopyright("Copyright © Esri Inc. 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
