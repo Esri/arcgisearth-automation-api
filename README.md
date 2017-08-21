@@ -12,7 +12,7 @@ ArcGIS Earth Automation API requires .NET Framework 3.0 or later.
 * Add layers to ArcGIS Earth workspace from online or local folders. See table below.
 * Delete layers from ArcGIS Earth workspace.
 * Take snapshot of the scene view and share.
-See [release notes](http://docstg.arcgis.com/en/arcgis-earth/automation-api/release-notes.htm) for details.
+See [release notes](http://doc.arcgis.com/en/arcgis-earth/automation-api/release-notes.htm) for details.
 
 Value | OperationalLayers | BasemapLayers |ElevationLayers
 ----| ---- | ---- | ----
@@ -30,17 +30,17 @@ ElevationService | | Yes
 
 ## Resources
 
-* [ArcGIS Earth Documentation](http://docs.arcgis.com/en/arcgis-earth/automation-api/get-started.htm)
+* [ArcGIS Earth Documentation](http://doc.arcgis.com/en/arcgis-earth/)
 * [ArcGIS for Developers](https://developers.arcgis.com/documentation/#extend)
-* Share your ideas or post questions via [Forum](https://geonet.esri.com/groups/arcgis-earth)
+* Share your ideas or post questions via [GeoNet](https://geonet.esri.com/groups/arcgis-earth)
 * [Twitter@ArcGIS Earth](https://twitter.com/arcgisearth?lang=en)
 * For assistance, please refer to [Support](http://support.esri.com/en/)
 
 ## Examples
 
-1. [How to use the Automation API to connect with ArcGIS Earth](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/Connect-to-ArcGIS-Earth)
-2. [Usage example of the capabilities and methods of the Automation API](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/Usage-example-of-Automation-API-methods)
-3. [View synchrinzation: build a sample add-in for ArcGIS Pro 2.0](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/View-synchronization-sample)
+1. [Connect to ArcGIS Earth with the Automation API](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/Connect-to-ArcGIS-Earth)
+2. [Usage example of the Automation API](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/Usage-example-of-the-Automation-API)
+3. [View synchrinzation: build a simple add-in for ArcGIS Pro 2.0](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/View-synchronization)
 
 ## Issues
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
@@ -62,5 +62,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
-A copy of the license is available in the repository's [license.txt](https://github.com/ArcGIS/arcgisearth-automation-api/blob/master/LICENSE) file.
