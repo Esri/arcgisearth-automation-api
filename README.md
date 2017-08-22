@@ -38,15 +38,15 @@ ElevationService | | Yes
 
 ## Examples
 
-1. [Connect to ArcGIS Earth with the Automation API](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/Connect-to-ArcGIS-Earth)
-2. [Usage example of the Automation API](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/Usage-example-of-the-Automation-API)
-3. [View synchrinzation: build a simple add-in for ArcGIS Pro 2.0](https://github.com/ArcGIS/arcgisearth-automation-api/wiki/View-synchronization)
+1. [Connect to ArcGIS Earth with the Automation API](../../wiki/Connect-to-ArcGIS-Earth)
+2. [Usage example of the Automation API](../../wiki/Usage-example-of-the-Automation-API)
+3. [View synchrinzation: build a simple add-in for ArcGIS Pro 2.0](../../wiki/View-synchronization)
 
 ## Issues
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
 
 ## Contributing
-Anyone is welcome to contribute, and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing) and [repository wiki](https://github.com/ArcGIS/arcgisearth-automation-api/wiki).
+Anyone is welcome to contribute, and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing) and [repository wiki](../../wiki).
 
 ## Licensing
 Copyright 2017 Esri
