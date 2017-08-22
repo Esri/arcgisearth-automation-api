@@ -1,16 +1,16 @@
 # ArcGIS Earth Automation API
-ArcGIS Earth Automation API provides a standard interface for 3rd party applications that support .NET to automate and communicate with ArcGIS Earth. The Automation API is based on [.NET WCF NamedPipe](https://msdn.microsoft.com/en-us/library/system.servicemodel.netnamedpipebinding(v=vs.110).aspx). It provides a fast and reliable way for on-machine communications. 
+The ArcGIS Earth Automation API provides a standard interface for 3rd party applications that support .NET to automate and communicate with ArcGIS Earth. The Automation API is based on [.NET WCF NamedPipe](https://msdn.microsoft.com/en-us/library/system.servicemodel.netnamedpipebinding(v=vs.110).aspx). It provides a fast and reliable way for on-machine communications. 
 
 #### [API reference online](http://doc.arcgis.com/en/arcgis-earth/automation-api/wcfnamedpipeipc.htm)
 
 
 ## Requirements
-ArcGIS Earth Automation API requires .NET Framework 3.0 or later.
+The ArcGIS Earth Automation API requires .NET Framework 3.0 or later.
 
 ## Features
 * Get or set camera positions and flying animations. 
-* Add layers to ArcGIS Earth workspace from online or local folders. See table below.
-* Delete layers from ArcGIS Earth workspace.
+* Add layers to the ArcGIS Earth workspace from online or local folders. See table below.
+* Delete layers from the ArcGIS Earth workspace.
 * Take snapshot of the scene view and share.
 See [release notes](http://doc.arcgis.com/en/arcgis-earth/automation-api/release-notes.htm) for details.
 
@@ -46,7 +46,7 @@ ElevationService | | Yes
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
 
 ## Contributing
-Anyone is welcome to contribute, and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing) and [repository wiki](../../wiki).
+Anyone is welcome to contribute and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing) and [repository wiki](../../wiki).
 
 ## Licensing
 Copyright 2017 Esri
