@@ -26,7 +26,7 @@ SceneLayerPackage | Yes | Yes |
 SceneService | Yes | Yes |
 Raster | Yes | Yes | Yes
 TileLayerPackage | Yes | Yes |
-ElevationService | | Yes
+ElevationService | | | Yes
 
 ## Resources
 
