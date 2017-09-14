@@ -12,7 +12,6 @@ The ArcGIS Earth Automation API requires .NET Framework 3.0 or later.
 * Add layers to the ArcGIS Earth workspace from online or local folders. See table below.
 * Delete layers from the ArcGIS Earth workspace.
 * Take snapshot of the scene view and share.
-See [release notes](http://doc.arcgis.com/en/arcgis-earth/automation-api/release-notes.htm) for details.
 
 Value | OperationalLayers | BasemapLayers |ElevationLayers
 ----| ---- | ---- | ----
