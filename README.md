@@ -4,7 +4,7 @@ The ArcGIS Earth Automation API provides a standard interface for 3rd party appl
 [![Introduction](images/API_Introduction.png "Introduction")](http://doc.arcgis.com/en/arcgis-earth/automation-api/get-started.htm) 
 [![How To Use](images/How_To_Use.png "How To Use")](http://doc.arcgis.com/en/arcgis-earth/automation-api/use-api.htm)
 [![API Reference](images/API_Reference.png "API Reference")](http://doc.arcgis.com/en/arcgis-earth/automation-api/wcfnamedpipeipc-namespace.htm)
-[![Samples](images/API_Samples.png "API Samples")](./../wiki)
+[![Samples](images/API_Samples.png "API Samples")](../../wiki)
 
 ## Requirements
 The ArcGIS Earth Automation API requires .NET Framework 3.0 or later.
@@ -34,7 +34,7 @@ ElevationService | | | Yes
 * [ArcGIS Earth Documentation](http://doc.arcgis.com/en/arcgis-earth/)
 * [ArcGIS for Developers](https://developers.arcgis.com/documentation/#extend)
 * Share your ideas or post questions via [GeoNet](https://geonet.esri.com/groups/arcgis-earth)
-* [Twitter@ArcGIS Earth](https://twitter.com/arcgisearth?lang=en)
+* [Twitter@ArcGISEarth](https://twitter.com/arcgisearth?lang=en)
 * For assistance, please refer to [Support](http://support.esri.com/en/)
 
 ## Examples
