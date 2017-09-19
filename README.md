@@ -7,7 +7,6 @@ The ArcGIS Earth Automation API provides a standard interface for 3rd party appl
 [![How To Use](images/2_Use.png "How To Use")](http://doc.arcgis.com/en/arcgis-earth/automation-api/use-api.htm)
 
 </div> 
-
 <div  align="center">
    
 [![API Reference](images/3_Reference.png "API Reference")](http://doc.arcgis.com/en/arcgis-earth/automation-api/wcfnamedpipeipc-namespace.htm)
