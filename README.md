@@ -1,10 +1,19 @@
 # ArcGIS Earth Automation API
 The ArcGIS Earth Automation API provides a standard interface for 3rd party applications that support .NET to automate and communicate with ArcGIS Earth. The Automation API is based on [.NET WCF NamedPipe](https://msdn.microsoft.com/en-us/library/system.servicemodel.netnamedpipebinding(v=vs.110).aspx). It provides a fast and reliable way for on-machine communications. 
 
+<div  align="center">
+   
 [![Introduction](images/1_Intro.png "Introduction")](http://doc.arcgis.com/en/arcgis-earth/automation-api/get-started.htm) 
 [![How To Use](images/2_Use.png "How To Use")](http://doc.arcgis.com/en/arcgis-earth/automation-api/use-api.htm)
+
+</div> 
+
+<div  align="center">
+   
 [![API Reference](images/3_Reference.png "API Reference")](http://doc.arcgis.com/en/arcgis-earth/automation-api/wcfnamedpipeipc-namespace.htm)
 [![Samples](images/4_Samples.png "API Samples")](../../wiki)
+
+</div>
 
 ## Requirements
 The ArcGIS Earth Automation API requires .NET Framework 3.0 or later.
