@@ -54,7 +54,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
     /// The public interface for communicating with ArcGIS Earth Automation API.
     /// </summary>
     [ServiceContract(
-        Namespace = "ArcGISEarth/2017/07",
+        Namespace = "ArcGISEarth/2018/02",
         CallbackContract = typeof(IEarthNamedpipeCallbackService))]
     public interface IEarthNamedpipeService
     {
@@ -169,6 +169,6 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         /// <returns>A System.Drawing.Bitmap of screen snapshot</returns>
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
-        System.Drawing.Bitmap GetSnapshot();
+        Task<System.Drawing.Bitmap> GetSnapshotAsync();
     }
 }

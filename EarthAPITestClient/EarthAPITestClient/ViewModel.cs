@@ -111,7 +111,7 @@ namespace EarthAPITestClient
                     }
                 case FunctionType.GetSnapshot:
                     {
-                        outputString = _utils.GetSnapshot(inputString);
+                        outputString = await _utils.GetSnapshot(inputString);
                         break;
                     }
                 case FunctionType.SetCamera:
