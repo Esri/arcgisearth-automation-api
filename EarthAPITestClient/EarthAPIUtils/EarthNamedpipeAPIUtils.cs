@@ -401,7 +401,7 @@ namespace EarthAPIUtils
             }
         }
 
-        public string GetSnapshot(string path)
+        public async Task<string> GetSnapshot(string path)
         {
             if (_channel == null)
             {
@@ -410,7 +410,7 @@ namespace EarthAPIUtils
 
             try
             {
-                System.Drawing.Bitmap bitmap =  _channel.GetSnapshot();
+                System.Drawing.Bitmap bitmap = await _channel.GetSnapshotAsync();
                 bitmap.Save(path);
                 return cSuccess;
             }
