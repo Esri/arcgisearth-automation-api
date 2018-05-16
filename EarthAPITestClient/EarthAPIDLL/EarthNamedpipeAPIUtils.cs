@@ -79,13 +79,13 @@ namespace EarthAPIUtils
             try
             {
                 JObject lyrInfoObj = new JObject();
-                if(uris == null || uris.Length == 0)
+                if (uris == null || uris.Length == 0)
                 {
                     return null;
                 }
 
                 JArray uriArray = new JArray();
-                foreach(string uri in uris)
+                foreach (string uri in uris)
                 {
                     uriArray.Add(uri);
                 }
@@ -134,8 +134,8 @@ namespace EarthAPIUtils
 
         static public bool PaserCameraJson(
             string cameraJson,
-            out double lng, out double lat, out double alt, 
-            out double heading, out double pitch, 
+            out double lng, out double lat, out double alt,
+            out double heading, out double pitch,
             out int wkid)
         {
             lng = lat = alt = heading = pitch = wkid = 0;
@@ -153,7 +153,7 @@ namespace EarthAPIUtils
                 JObject mapPointObj = JObject.Parse(mapPointJson);
                 if (mapPointObj["spatialReference"] != null)
                 {
-                    if(mapPointObj["spatialReference"]["wkid"] != null)
+                    if (mapPointObj["spatialReference"]["wkid"] != null)
                     {
                         wkid = (int)mapPointObj["spatialReference"]["wkid"];
                     }
@@ -173,10 +173,9 @@ namespace EarthAPIUtils
             }
         }
 
-
         public void CloseConnect()
         {
-            if(_factory != null)
+            if (_factory != null)
             {
                 _factory.Close();
                 _factory = null;
@@ -196,7 +195,7 @@ namespace EarthAPIUtils
 
         public void Notify(string message)
         {
-            if(OnNotify != null)
+            if (OnNotify != null)
             {
                 OnNotify(this, new MessageStringEventArgs() { Message = message });
             }
@@ -232,38 +231,40 @@ namespace EarthAPIUtils
         {
             try
             {
-              string address = null;
-              ProcessUtils proc = new ProcessUtils(c_processName, exePath);
-              if (!proc.IsRunning())
-              {
-                  await proc.Start((msg) => ProcessStdOutCallBack(msg, ref address));
-                  if(String.IsNullOrEmpty(address))
-                  {
-                      return cFailed;
-                  }
-              }
-              else
-              {
-                  address = cBasePipeAddress;
-              }
+                string address = null;
+                ProcessUtils proc = new ProcessUtils(c_processName, exePath);
+                if (!proc.IsRunning())
+                {
+                    await proc.Start((msg) => ProcessStdOutCallBack(msg, ref address));
+                    if (String.IsNullOrEmpty(address))
+                    {
+                        return "Failed to start the exe and get address";
+                        //return cFailed;
+                    }
+                }
+                else
+                {
+                    address = cBasePipeAddress;
+                }
 
-              if (!String.IsNullOrEmpty(address))
-              {
-                  _channel = CreateChannel(address);
+                if (!String.IsNullOrEmpty(address))
+                {
+                    _channel = CreateChannel(address);
 
-                  // call a function to test consistency of contract file.
-                  string test = _channel.GetCameraJson();
+                    // call a function to test consistency of contract file.
+                    string test = _channel.GetCameraJson();
 
-                  if (_channel != null)
-                  {
-                      return cSuccess;
-                  }
-                  else
-                  {
-                      return cFailed;
-                  }
-              }
-              return cFailed;
+                    if (_channel != null)
+                    {
+                        return cSuccess;
+                    }
+                    else
+                    {
+                        return "Failed to create a Channel";
+                        return cFailed;
+                    }
+                }
+                return cFailed;
             }
             catch
             {
@@ -272,9 +273,9 @@ namespace EarthAPIUtils
             }
         }
 
-        public string AddLayer(string json)
+        private string AddLayerAsync(string json)
         {
-            if(_channel == null)
+            if (_channel == null)
             {
                 return cNeedConnect;
             }
@@ -287,7 +288,46 @@ namespace EarthAPIUtils
             {
                 return ex.Message;
             }
-            return cWaitAddingLayer; 
+            return cWaitAddingLayer;
+        }
+
+        private string AddLayerSync(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                string msg = _channel.AddLayerSync(json);
+                return msg;
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+            return cWaitAddingLayer;
+        }
+
+        public string AddLayer(string json)
+        {
+            return AddLayerSync(json);
+
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                _channel.AddLayer(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+            return cWaitAddingLayer;
         }
 
         public string ClearLayers(string json)
@@ -306,7 +346,7 @@ namespace EarthAPIUtils
             }
             catch (Exception ex)
             {
-                if(ex is FaultException<EarthNamedpipeFault>)
+                if (ex is FaultException<EarthNamedpipeFault>)
                 {
                     return (ex as FaultException<EarthNamedpipeFault>).Message;
                 }

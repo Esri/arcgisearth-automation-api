@@ -196,10 +196,7 @@ namespace EarthAPIUtils
 
         public void Notify(string message)
         {
-            if(OnNotify != null)
-            {
-                OnNotify(this, new MessageStringEventArgs() { Message = message });
-            }
+            OnNotify?.Invoke(this, new MessageStringEventArgs() { Message = message });
         }
 
         public IEarthNamedpipeService CreateChannel(string address)
@@ -281,7 +278,7 @@ namespace EarthAPIUtils
 
             try
             {
-                _channel.AddLayer(json);
+                return _channel.AddLayerSync(json);
             }
             catch (FaultException<EarthNamedpipeFault> ex)
             {

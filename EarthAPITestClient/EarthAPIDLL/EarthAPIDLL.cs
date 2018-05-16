@@ -28,6 +28,11 @@ namespace EarthAPIDLL
         public string Init()
         {
             _utils = new EarthNamedpipeAPIUtils();
+            if(_utils == null)
+            {
+                return "Failed to create utils";
+
+            }
             return _utils.Connect().Result;
         }
 

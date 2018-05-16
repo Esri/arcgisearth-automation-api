@@ -1,15 +1,18 @@
-﻿// Copyright 2017 Esri
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+﻿// COPYRIGHT ?2018 ESRI
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// TRADE SECRETS: ESRI PROPRIETARY AND CONFIDENTIAL
+// Unpublished material - all rights reserved under the
+// Copyright Laws of the United States and applicable international
+// laws, treaties, and conventions.
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// For additional information, contact:
+// Environmental Systems Research Institute, Inc.
+// Attn: Contracts and Legal Services Department
+// 380 New York Street
+// Redlands, California, 92373
+// USA
+//
+// email: contracts@esri.com
 
 using System;
 using System.Collections.Generic;
@@ -54,7 +57,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
     /// The public interface for communicating with ArcGIS Earth Automation API.
     /// </summary>
     [ServiceContract(
-        Namespace = "ArcGISEarth/2018/02",
+        Namespace = "ArcGISEarth/2018/02", 
         CallbackContract = typeof(IEarthNamedpipeCallbackService))]
     public interface IEarthNamedpipeService
     {
@@ -149,6 +152,13 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         [OperationContract]
         void AddLayer(string json);
 
+
+        [FaultContract(typeof(EarthNamedpipeFault))]
+        [OperationContract]
+        string AddLayerSync(string json);
+
+
+
         /// <summary>
         /// Remove layers from ArcGIS Earth workspace.
         /// </summary>
@@ -172,3 +182,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         Task<System.Drawing.Bitmap> GetSnapshotAsync();
     }
 }
+
+
+
+
