@@ -11,7 +11,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
 
         RestServiceImpl()
         {
-            if(_utils != null)
+            if(_utils == null)
             {
                 _utils = new EarthNamedpipeAPIUtils();
                 _utils.Connect();
@@ -60,7 +60,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
 
         public string FlyTo(string json)
         {
-            return _utils.SetCamera(json);
+            return _utils.FlyTo(json);
         }
 
         public string UpdateCamera(string json)
@@ -70,20 +70,20 @@ namespace ArcGISEarth.WCFNamedPipeIPC
 
         public string AddLayerSync(EarthLayerDescription lyr)
         {
-            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
+            EarthLayerDescriptionImpl earthLayerDescriptionImpl = new EarthLayerDescriptionImpl(lyr);
             return _utils.AddLayerSync(earthLayerDescriptionImpl.ToJson());
         }
 
-        public string GetLayerInformation(EarthLayerDescription lyr)
+        public string GetLayerInformation(string layerId)
         {
-            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
-            return _utils.GetLayerInformation(earthLayerDescriptionImpl.ToJson());
+            string json = "{ \"id\":\"" + layerId + "\"}";
+            return _utils.GetLayerInformation(json);
         }
 
-        public string GetLayersInformation(EarthLayerDescription lyr)
+        public string GetLayersInformation(/*EarthLayerDescription lyr*/)
         {
-            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
-            return _utils.GetLayersInformation(earthLayerDescriptionImpl.ToJson());
+            //EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
+            return _utils.GetLayersInformation(/*earthLayerDescriptionImpl.ToJson()*/"null");
         }
 
         public string ImportLayers(EarthLayerDescription lyr)
@@ -98,10 +98,10 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             return _utils.ClearLayers(earthLayerDescriptionImpl.ToJson());
         }
 
-        public string RemoveLayer(EarthLayerDescription lyr)
+        public string RemoveLayer(string layerId)
         {
-            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
-            return _utils.RemoveLayer(earthLayerDescriptionImpl.ToJson());
+            string json = "{ \"id\":\"" + layerId + "\"}";
+            return _utils.RemoveLayer(json);
         }
     }
 }

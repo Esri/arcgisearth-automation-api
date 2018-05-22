@@ -15,13 +15,13 @@ namespace ArcGISEarth.WCFNamedPipeIPC
     public class EarthLayerDescription
     {
         [System.Runtime.Serialization.DataMemberAttribute()]
-        protected string[] urls;
+        public string URI;
 
         [System.Runtime.Serialization.DataMemberAttribute()]
-        protected string type;
+        public string type;
 
         [System.Runtime.Serialization.DataMemberAttribute()]
-        protected string addTo;
+        public string target;
     }
 
     [ServiceContract]
@@ -54,18 +54,17 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             ResponseFormat = WebMessageFormat.Json, Method = "POST")]
         string AddLayerSync(EarthLayerDescription lyr);
 
-
         [OperationContract]
-        [WebInvoke(UriTemplate = "/layer",
+        [WebInvoke(UriTemplate = "/layer/{layerId}",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json, Method = "GET")]
-        string GetLayerInformation(EarthLayerDescription lyr);
+        string GetLayerInformation(string layerId);
 
         [OperationContract]
         [WebInvoke(UriTemplate = "/layers",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json, Method = "GET")]
-        string GetLayersInformation(EarthLayerDescription lyr);
+        string GetLayersInformation();
 
         [OperationContract]
         [WebInvoke(UriTemplate = "/layers",
@@ -80,11 +79,10 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         string ClearLayers(EarthLayerDescription lyr);
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "/layers",
+        [WebInvoke(UriTemplate = "/layer/{layerId}",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json, Method = "DELETE")]
-        string RemoveLayer(EarthLayerDescription lyr);
-
+        string RemoveLayer(string layerId);
 
         [OperationContract]
         [WebGet(UriTemplate = "snapshot")]

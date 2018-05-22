@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>84f57f4e-a584-448e-8fb1-3efb3b77608c</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>add_layer_api_test.py</StartupFile>
+    <StartupFile>age_rest_api_test.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
