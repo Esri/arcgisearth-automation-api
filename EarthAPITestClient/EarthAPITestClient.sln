@@ -9,10 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthAPIUtils", "EarthAPIUt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthAPITestClient", "EarthAPITestClient\EarthAPITestClient.csproj", "{E6B66EF3-7476-4B46-8B15-468E77065F46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EartRESTRouter", "EartRESTRouter\EartRESTRouter.csproj", "{06AF61F9-C07A-4B7F-BC5F-A3E5151FC7C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthRESTRouter", "EartRESTRouter\EarthRESTRouter.csproj", "{06AF61F9-C07A-4B7F-BC5F-A3E5151FC7C5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C5D42C1E-7456-416F-81B3-D1462C423C18} = {C5D42C1E-7456-416F-81B3-D1462C423C18}
 	EndProjectSection
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "EarthRESTRouterTestClient", "EarthRESTRouterTestClient\EarthRESTRouterTestClient.pyproj", "{84F57F4E-A584-448E-8FB1-3EFB3B77608C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,12 @@ Global
 		{06AF61F9-C07A-4B7F-BC5F-A3E5151FC7C5}.Release|x64.Build.0 = Release|Any CPU
 		{06AF61F9-C07A-4B7F-BC5F-A3E5151FC7C5}.Release|x86.ActiveCfg = Release|Any CPU
 		{06AF61F9-C07A-4B7F-BC5F-A3E5151FC7C5}.Release|x86.Build.0 = Release|Any CPU
+		{84F57F4E-A584-448E-8FB1-3EFB3B77608C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84F57F4E-A584-448E-8FB1-3EFB3B77608C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{84F57F4E-A584-448E-8FB1-3EFB3B77608C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{84F57F4E-A584-448E-8FB1-3EFB3B77608C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84F57F4E-A584-448E-8FB1-3EFB3B77608C}.Release|x64.ActiveCfg = Release|Any CPU
+		{84F57F4E-A584-448E-8FB1-3EFB3B77608C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

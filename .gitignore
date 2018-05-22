@@ -208,3 +208,4 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 EarthAPITestClient/.vs
+/EarthAPITestClient/EarthRESTRouterTestClient/__pycache__/*.pyc
