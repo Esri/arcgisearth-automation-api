@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EarthAPITestClient", "EarthAPITestClient\EarthAPITestClient.csproj", "{E6B66EF3-7476-4B46-8B15-468E77065F46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EartRESTRouter", "EartRESTRouter\EartRESTRouter.csproj", "{06AF61F9-C07A-4B7F-BC5F-A3E5151FC7C5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C5D42C1E-7456-416F-81B3-D1462C423C18} = {C5D42C1E-7456-416F-81B3-D1462C423C18}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -48,7 +48,6 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             UriTemplate = "flyto/{json}")]
         string FlyTo(string json);
 
-
         [OperationContract]
         [WebInvoke(UriTemplate = "/layer",
             RequestFormat = WebMessageFormat.Json,

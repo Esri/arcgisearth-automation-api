@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-
 using System.ServiceModel.Web;
+using EarthAPIUtils;
 
 namespace ArcGISEarth.WCFNamedPipeIPC
 {
     public class RestServiceImpl : IRestServiceImpl
     {
+        private static EarthNamedpipeAPIUtils _utils = null;
+
         RestServiceImpl()
         {
-            // init utils
+            if(_utils != null)
+            {
+                _utils = new EarthNamedpipeAPIUtils();
+                _utils.Connect();
+            }
         }
 
 
@@ -27,6 +28,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         {
             string TmpFolderPath = System.IO.Path.GetTempPath();
             TmpFolderPath += "tmp.jpg";
+            _utils.GetSnapshot(TmpFolderPath);
             WebOperationContext.Current.OutgoingResponse.ContentType = "image/jpg";
             try
             {
@@ -51,101 +53,55 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             return null;
         }
 
-
         public string GetCamera()
         {
-            //            Camera ca = this._viewServices.Camera;
-            //            return JsonHelper.CameraToJson(ca);
-            return null;
+            return _utils.GetCamera();
         }
-
-        public string GetOperationalLayers()
-        {
-            return null;
-        }
-
-        public string RemoveOperationalLayers()
-        {
-            return null;
-        }
-
-//        public string AddLayers(EarthLayerDescription lyr)
-//        {
-//            if (lyr != null)
-//            {
-//                EarthLayerDescriptionImpl lyrImpl = lyr as EarthLayerDescriptionImpl;
-//                return lyrImpl.Add2APP(sv);
-//            }
-//            return null;
-//        }
-
-
-        public string AddOpertionalLayer(LayerShellContract lyr)
-        {
-            //            if (lyr != null)
-            //            {
-            //                List<string> sources = new List<string>();
-            //                sources.Add(lyr.url);
-            //                System.Threading.Tasks.Task<bool> sucess = sv.AddFiles(sources.ToArray());
-            //                if (sucess.Result == true)
-            //                    return lyr.url;
-            //            }
-            //            return "lyr=null";
-            return null;
-        }
-
 
         public string FlyTo(string json)
         {
-            return null;
+            return _utils.SetCamera(json);
         }
 
         public string UpdateCamera(string json)
         {
-            //            Camera camera = JsonHelper.CameraFromJson(json);
-            //            if (camera != null)
-            //            {
-            //                try
-            //                {
-            //                    this._viewServices.SetViewAsync(camera, new TimeSpan(0, 0, 5));
-            //                }
-            //                catch (Exception)
-            //                {
-            //                    return "error";
-            //                }
-            //            }
-            //            return json;
-            return null;
+            return _utils.SetCamera(json);
         }
 
         public string AddLayerSync(EarthLayerDescription lyr)
         {
-            throw new NotImplementedException();
+            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
+            return _utils.AddLayerSync(earthLayerDescriptionImpl.ToJson());
         }
 
         public string GetLayerInformation(EarthLayerDescription lyr)
         {
-            throw new NotImplementedException();
+            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
+            return _utils.GetLayerInformation(earthLayerDescriptionImpl.ToJson());
         }
 
         public string GetLayersInformation(EarthLayerDescription lyr)
         {
-            throw new NotImplementedException();
+            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
+            return _utils.GetLayersInformation(earthLayerDescriptionImpl.ToJson());
         }
 
         public string ImportLayers(EarthLayerDescription lyr)
         {
-            throw new NotImplementedException();
+            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
+            return _utils.ImportLayers(earthLayerDescriptionImpl.ToJson());
         }
 
         public string ClearLayers(EarthLayerDescription lyr)
         {
-            throw new NotImplementedException();
+            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
+            return _utils.ClearLayers(earthLayerDescriptionImpl.ToJson());
         }
 
         public string RemoveLayer(EarthLayerDescription lyr)
         {
-            throw new NotImplementedException();
+            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
+            return _utils.RemoveLayer(earthLayerDescriptionImpl.ToJson());
         }
     }
 }

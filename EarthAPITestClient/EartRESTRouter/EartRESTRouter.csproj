@@ -105,5 +105,11 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EarthAPIUtils\EarthAPIUtils.csproj">
+      <Project>{c5d42c1e-7456-416f-81b3-d1462c423c18}</Project>
+      <Name>EarthAPIUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
