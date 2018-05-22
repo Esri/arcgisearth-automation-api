@@ -83,19 +83,19 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         public string GetLayersInformation(/*EarthLayerDescription lyr*/)
         {
             //EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
-            return _utils.GetLayersInformation(/*earthLayerDescriptionImpl.ToJson()*/"null");
+            string json = "{\"target\": \"AllLayers\"}";
+            return _utils.GetLayersInformation(json);
         }
 
-        public string ImportLayers(EarthLayerDescription lyr)
+        public string ImportLayers(string json)
         {
-            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
-            return _utils.ImportLayers(earthLayerDescriptionImpl.ToJson());
+            return _utils.ImportLayers(json);
         }
 
-        public string ClearLayers(EarthLayerDescription lyr)
+        public string ClearLayers(string target)
         {
-            EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
-            return _utils.ClearLayers(earthLayerDescriptionImpl.ToJson());
+            string json = "{ \"target\":\"" + target + "\"}";
+            return _utils.ClearLayers(json);
         }
 
         public string RemoveLayer(string layerId)

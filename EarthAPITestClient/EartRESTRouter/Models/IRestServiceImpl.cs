@@ -67,16 +67,16 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         string GetLayersInformation();
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "/layers",
+        [WebInvoke(UriTemplate = "/layers/{json}",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json, Method = "POST")]
-        string ImportLayers(EarthLayerDescription lyr);
+        string ImportLayers(string json);
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "/layers",
+        [WebInvoke(UriTemplate = "/layers/{json}",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json, Method = "DELETE")]
-        string ClearLayers(EarthLayerDescription lyr);
+        string ClearLayers(string json);
 
         [OperationContract]
         [WebInvoke(UriTemplate = "/layer/{layerId}",

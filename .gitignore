@@ -209,3 +209,4 @@ UpgradeLog*.htm
 FakesAssemblies/
 EarthAPITestClient/.vs
 /EarthAPITestClient/EarthRESTRouterTestClient/__pycache__/*.pyc
+/EarthAPITestClient/EarthRESTRouterTestClient/.idea

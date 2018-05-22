@@ -68,8 +68,7 @@ class AgeRestApiTest(unittest.TestCase):
 #            result = json_camera['FlyToResult']
 #            self.assertEqual('Success', result)
 
-    def test_layer(self):
-
+    def test_layer_operation(self):
         # add layer test
         url = base_address + '/layer'
         data = add_layer_info
@@ -103,10 +102,34 @@ class AgeRestApiTest(unittest.TestCase):
             r = requests.delete(url)
             self.assertEqual(r.status_code, 200)
 
+    def test_layers_operation(self):
+        # get layers
+        url = base_address + "/layers"
+        r = requests.get(url)
+        layers_json = None
+        content = None
+        self.assertEqual(r.status_code, 200)
+        if r.status_code == 200:
+            content = r.content.decode('utf-8')
+            print(content)
+            layers_json = eval(content)
+            print(layers_json)
+            results = json.loads(layers_json)
+            print(results)
 
+        # remove layers
 
+        url = base_address + "/layers" + "/AllLayers"
+        r = requests.delete(url)
+        self.assertEqual(r.status_code, 200)
 
-
+        # import layers
+        url = base_address + "/layers/" + content
+        #data = layers_json
+        #headers = {"content-Type": "application/json"}
+        #r = requests.post(url, data=data, headers=headers)
+        r = requests.post(url)
+        self.assertEqual(r.status_code, 200)
 
 
 #    def test_screensnap(self):
