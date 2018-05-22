@@ -117,5 +117,35 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             //            return json;
             return null;
         }
+
+        public string AddLayerSync(EarthLayerDescription lyr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetLayerInformation(EarthLayerDescription lyr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetLayersInformation(EarthLayerDescription lyr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ImportLayers(EarthLayerDescription lyr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ClearLayers(EarthLayerDescription lyr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string RemoveLayer(EarthLayerDescription lyr)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -152,11 +152,31 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         [OperationContract]
         void AddLayer(string json);
 
-
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
         string AddLayerSync(string json);
 
+
+        // json only contains id
+        [FaultContract(typeof(EarthNamedpipeFault))]
+        [OperationContract]
+        string GetLayerInformation(string json);
+
+
+        [FaultContract(typeof(EarthNamedpipeFault))]
+        [OperationContract]
+        void RemoveLayer(string json);
+
+
+        // json contains params as clearlayers
+        [FaultContract(typeof(EarthNamedpipeFault))]
+        [OperationContract]
+        string GetLayersInformation(string json);
+
+        // { "operational_layers":{}, "basemaps":{}, "surface":{}}
+        [FaultContract(typeof(EarthNamedpipeFault))]
+        [OperationContract]
+        void ImportLayers(string json);
 
 
         /// <summary>

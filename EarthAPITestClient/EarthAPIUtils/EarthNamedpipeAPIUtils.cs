@@ -278,13 +278,100 @@ namespace EarthAPIUtils
 
             try
             {
-                return _channel.AddLayerSync(json);
+                _channel.AddLayer(json);
             }
             catch (FaultException<EarthNamedpipeFault> ex)
             {
                 return ex.Message;
             }
             return cWaitAddingLayer; 
+        }
+
+        public string AddLayerSync(string json)
+        {
+            if(_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                return _channel.AddLayerSync(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string GetLayerInformation(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                return _channel.GetLayerInformation(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string RemoveLayer(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                _channel.RemoveLayer(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+            return null;
+        }
+
+        public string GetLayersInformation(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                return _channel.GetLayersInformation(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string ImportLayers(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                _channel.ImportLayers(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+            return null;
         }
 
         public string ClearLayers(string json)
