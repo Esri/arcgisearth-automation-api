@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Serialization.Json;
+using System.ServiceModel;
 using System.ServiceModel.Web;
 using EarthAPIUtils;
 
@@ -87,8 +89,16 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             return _utils.GetLayersInformation(json);
         }
 
-        public string ImportLayers(string json)
+        public string ImportLayers(Stream stream)
         {
+            //            string incomingType = WebOperationContext.Current.IncomingRequest.ContentType;
+            //            string incomingAcceptType = WebOperationContext.Current.IncomingRequest.Accept;
+            //            WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
+
+            StreamReader reader = new StreamReader(stream);
+            string json = reader.ReadToEnd();
+            string JSONstring = OperationContext.Current.RequestContext.RequestMessage.ToString();
+
             return _utils.ImportLayers(json);
         }
 

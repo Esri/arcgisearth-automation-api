@@ -67,10 +67,9 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         string GetLayersInformation();
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "/layers/{json}",
-            RequestFormat = WebMessageFormat.Json,
+        [WebInvoke(UriTemplate = "/layers",
             ResponseFormat = WebMessageFormat.Json, Method = "POST")]
-        string ImportLayers(string json);
+        string ImportLayers(Stream stream);
 
         [OperationContract]
         [WebInvoke(UriTemplate = "/layers/{json}",
@@ -88,12 +87,4 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         [WebGet(UriTemplate = "snapshot")]
         Stream GetSnapshot();
    }
-
-    [System.Runtime.Serialization.DataContractAttribute()]
-    public class LayerShellContract
-    {
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string url { get; set; }
-    }
-
 }
