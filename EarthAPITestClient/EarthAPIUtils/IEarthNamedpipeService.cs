@@ -171,12 +171,12 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         // json contains params as clearlayers
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
-        string GetLayersInformation(string json);
+        string GetWorkspace(string json);
 
         // { "operational_layers":{}, "basemaps":{}, "surface":{}}
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
-        void ImportLayers(string json);
+        void ImportWorkspace(string json);
 
 
         /// <summary>

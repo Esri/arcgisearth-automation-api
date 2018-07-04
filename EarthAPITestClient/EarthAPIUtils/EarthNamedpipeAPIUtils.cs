@@ -348,7 +348,7 @@ namespace EarthAPIUtils
 
             try
             {
-                return _channel.GetLayersInformation(json);
+                return _channel.GetWorkspace(json);
             }
             catch (FaultException<EarthNamedpipeFault> ex)
             {
@@ -365,7 +365,7 @@ namespace EarthAPIUtils
 
             try
             {
-                _channel.ImportLayers(json);
+                _channel.ImportWorkspace(json);
             }
             catch (FaultException<EarthNamedpipeFault> ex)
             {
