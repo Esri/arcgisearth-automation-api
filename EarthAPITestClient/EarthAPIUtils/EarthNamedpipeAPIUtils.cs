@@ -321,24 +321,6 @@ namespace EarthAPIUtils
             }
         }
 
-        public string RemoveLayer(string json)
-        {
-            if (_channel == null)
-            {
-                return cNeedConnect;
-            }
-
-            try
-            {
-                _channel.RemoveLayer(json);
-            }
-            catch (FaultException<EarthNamedpipeFault> ex)
-            {
-                return ex.Message;
-            }
-            return null;
-        }
-
         public string GetLayersInformation(string json)
         {
             if (_channel == null)
@@ -356,7 +338,7 @@ namespace EarthAPIUtils
             }
         }
 
-        public string ImportLayers(string json)
+        public string ImportWorkspace(string json)
         {
             if (_channel == null)
             {
@@ -374,6 +356,24 @@ namespace EarthAPIUtils
             return null;
         }
 
+        public string RemoveLayer(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                _channel.RemoveLayer(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+            return null;
+        }
+        
         public string ClearLayers(string json)
         {
             if (_channel == null)

@@ -157,7 +157,7 @@ namespace EarthAPITestClient
                     }
                 case FunctionType.ImportWorkspace:
                     {
-                        outputString = _utils.ImportLayers(inputString);
+                        outputString = _utils.ImportWorkspace(inputString);
                         break;
                     }
                 case FunctionType.Removelayer:
