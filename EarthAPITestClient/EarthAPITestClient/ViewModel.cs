@@ -34,7 +34,12 @@ namespace EarthAPITestClient
         Connect,
         ClearTextBox,
         CloseConnect,
-        Help
+        Help,
+        AddLayerSync,
+        GetLayerInfo,
+        GetLayersInfo,
+        ImportWorkspace,
+        Removelayer
     }
     class ViewModel : INotifyPropertyChanged 
     {
@@ -133,6 +138,31 @@ namespace EarthAPITestClient
                 case FunctionType.CloseConnect:
                     {
                         _utils.CloseConnect();
+                        break;
+                    }
+                case FunctionType.AddLayerSync:
+                    {
+                        outputString = _utils.AddLayerSync(inputString);
+                        break;
+                    }
+                case FunctionType.GetLayerInfo:
+                    {
+                        outputString = _utils.GetLayerInformation(inputString);
+                        break;
+                    }
+                case FunctionType.GetLayersInfo:
+                    {
+                        outputString = _utils.GetLayersInformation(inputString);
+                        break;
+                    }
+                case FunctionType.ImportWorkspace:
+                    {
+                        outputString = _utils.ImportWorkspace(inputString);
+                        break;
+                    }
+                case FunctionType.Removelayer:
+                    {
+                        outputString = _utils.RemoveLayer(inputString);
                         break;
                     }
             }

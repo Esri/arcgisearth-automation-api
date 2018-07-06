@@ -196,10 +196,7 @@ namespace EarthAPIUtils
 
         public void Notify(string message)
         {
-            if(OnNotify != null)
-            {
-                OnNotify(this, new MessageStringEventArgs() { Message = message });
-            }
+            OnNotify?.Invoke(this, new MessageStringEventArgs() { Message = message });
         }
 
         public IEarthNamedpipeService CreateChannel(string address)
@@ -290,6 +287,93 @@ namespace EarthAPIUtils
             return cWaitAddingLayer; 
         }
 
+        public string AddLayerSync(string json)
+        {
+            if(_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                return _channel.AddLayerSync(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string GetLayerInformation(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                return _channel.GetLayerInformation(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string GetLayersInformation(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                return _channel.GetWorkspace(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string ImportWorkspace(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                _channel.ImportWorkspace(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+            return null;
+        }
+
+        public string RemoveLayer(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                _channel.RemoveLayer(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+            return null;
+        }
+        
         public string ClearLayers(string json)
         {
             if (_channel == null)

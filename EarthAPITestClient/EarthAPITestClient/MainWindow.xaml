@@ -1,7 +1,7 @@
 ﻿<Window x:Class="EarthAPITestClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="EarthAPITestClient" Height="500" Width="800" Closed="Window_Closed">
+        Title="EarthAPITestClient" Height="595.333" Width="800" Closed="Window_Closed">
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
@@ -15,8 +15,13 @@
             <Button Margin="0,10,0,0" Click="AddLayerButton_Click">AddLayer</Button>
             <Button Margin="0,10,0,0" Click="ClearLayersButton_Click">ClearLayers</Button>
             <Button Margin="0,10,0,0" Click="GetSnapshotButton_Click">GetSnapshot</Button>
+            <Button Margin="0,10,0,0" Click="AddLayerSync_Click">AddLayerSync </Button>
+            <Button Margin="0,10,0,0" Click="GetLayerInfo_Click">GetLayerInfo</Button>
+            <Button Margin="0,10,0,0" Click="GetLayersInfo_Click">GetLayersInfo</Button>
+            <Button Margin="0,10,0,0" Click="ImportWorkspace_Click">ImportWorkspace</Button>
+            <Button Margin="0,10,0,0" Click="Removelayer_Click">Removelayer</Button>
             <Button Margin="0,100,0,0" Click="ClearTextButton_Click">Clear Text</Button>
-            <Button Margin="0,10,0,0" Click="HelpButton_Click">Help</Button>
+            <Button Margin="0,10,0,0" Click="HelpButton_Click" Content="Help"/>
 
         </StackPanel>
         <StackPanel Margin="10,0,0,0" Grid.Column="1">

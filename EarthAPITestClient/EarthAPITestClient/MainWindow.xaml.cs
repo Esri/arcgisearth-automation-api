@@ -99,5 +99,35 @@ namespace EarthAPITestClient
             ViewModel v = this.DataContext as ViewModel;
             v.ExecuteFuction(FunctionType.CloseConnect);
         }
+
+        private void AddLayerSync_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.AddLayerSync);
+        }
+
+        private void GetLayerInfo_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.GetLayerInfo);
+        }
+
+        private void GetLayersInfo_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.GetLayersInfo);
+        }
+
+        private void ImportWorkspace_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.ImportWorkspace);
+        }
+
+        private void Removelayer_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.Removelayer);
+        }
     }
 }
