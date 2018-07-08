@@ -321,6 +321,41 @@ namespace EarthAPIUtils
             }
         }
 
+        public string GetLayersInformation(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                return _channel.GetWorkspace(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string ImportWorkspace(string json)
+        {
+            if (_channel == null)
+            {
+                return cNeedConnect;
+            }
+
+            try
+            {
+                _channel.ImportWorkspace(json);
+            }
+            catch (FaultException<EarthNamedpipeFault> ex)
+            {
+                return ex.Message;
+            }
+            return null;
+        }
+
         public string RemoveLayer(string json)
         {
             if (_channel == null)
@@ -338,42 +373,7 @@ namespace EarthAPIUtils
             }
             return null;
         }
-
-        public string GetLayersInformation(string json)
-        {
-            if (_channel == null)
-            {
-                return cNeedConnect;
-            }
-
-            try
-            {
-                return _channel.GetLayersInformation(json);
-            }
-            catch (FaultException<EarthNamedpipeFault> ex)
-            {
-                return ex.Message;
-            }
-        }
-
-        public string ImportLayers(string json)
-        {
-            if (_channel == null)
-            {
-                return cNeedConnect;
-            }
-
-            try
-            {
-                _channel.ImportLayers(json);
-            }
-            catch (FaultException<EarthNamedpipeFault> ex)
-            {
-                return ex.Message;
-            }
-            return null;
-        }
-
+        
         public string ClearLayers(string json)
         {
             if (_channel == null)

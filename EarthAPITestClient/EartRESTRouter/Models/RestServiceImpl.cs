@@ -98,8 +98,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             StreamReader reader = new StreamReader(stream);
             string json = reader.ReadToEnd();
             string JSONstring = OperationContext.Current.RequestContext.RequestMessage.ToString();
-
-            return _utils.ImportLayers(json);
+            return _utils.ImportWorkspace(json);
         }
 
         public string ClearLayers(string target)
