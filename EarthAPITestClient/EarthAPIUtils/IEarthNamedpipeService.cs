@@ -148,36 +148,72 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         /// <para>"ElevationLayers" – layers added into Terrain pane of ArcGIS Earth as elevation.</para>
         /// </para>
         /// </param>
+        //[FaultContract(typeof(EarthNamedpipeFault))]
+        //[OperationContract]
+        //void AddLayerAsync(string json);
+
+        /// <summary>
+        /// Add layer to the table of contents, basemap or terrain of ArcGIS Earth.
+        /// <remarks>
+        /// <para>
+        /// Duplex communication is used when adding layer. IEarthNamedpipeCallbackService interface need to be implemented.
+        /// Then client side can receive result of adding layer from Notify callback function. 
+        /// </para>
+        /// </remarks>
+        /// </summary>
+        /// <param name="json">is a string in JSON format contains layer type, URI and target of layer
+        /// <para>
+        /// The JSON string parameter can have fields: "type"(optional), "target"(optional) and URI(or URIs).
+        /// </para>
+        /// <para>
+        /// The type value specifies type supported in ArcGIS Earth. The API will automatically set an appropriate type according to URI if the string doesn't contain it.
+        /// </para>
+        /// <para>And the value can be one of these: </para>
+        /// <para>"FeatureService" – ArcGIS feature service.</para>
+        /// <para>"MapService" – ArcGIS map service.</para>
+        /// <para>"ImageService" – ArcGIS image service.</para>
+        /// <para>"Shapefile" – Local shapefile.</para>
+        /// <para>"OGCWMS" – OGC Web Map Service</para>
+        /// <para>"KML" – Local KML and KMZ.</para>
+        /// <para>"SceneLayerPackage" – ArcGIS scene layer package.</para>
+        /// <para>"SceneService" – ArcGIS scene service.</para>
+        /// <para>"Raster" – Local elevation raster formats.</para>
+        /// <para>"TileLayerPackage" – ArcGIS tile layer package.</para>
+        /// <para>"ElevationService" – ArcGIS elevation service.</para>
+        /// <para>
+        /// The URI(URIs) value specifies the URL or path of a layer. Use URIs if the source files are multiple elevation source and used as elevation.
+        /// </para>
+        /// <para>
+        /// The target value specifies the target place where the layers added to. If not specified, the default value is "OperationalLayers".
+        /// <para>The value can one of these:</para>
+        /// <para>"OperationalLayers" - layers added into the table of contents of ArcGIS Earth.</para>
+        /// <para>"BasemapLayers" - layers added into Basemap pane of ArcGIS Earth as basemap.</para>
+        /// <para>"ElevationLayers" – layers added into Terrain pane of ArcGIS Earth as elevation.</para>
+        /// </para>
+        /// </param>
+        /// <returns>String indicating the id of layer.
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
-        void AddLayer(string json);
+        string AddLayer(string json);
 
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
-        string AddLayerSync(string json);
-
-
-        // json only contains id
-        [FaultContract(typeof(EarthNamedpipeFault))]
-        [OperationContract]
-        string GetLayerInformation(string json);
-
+        string GetLayerLoadStatus(string json);
 
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
         void RemoveLayer(string json);
 
-
-        // json contains params as clearlayers
+        /// <returns>String indicating the json description of all contents in the workspace.
+        /// might need a get content to get the bookmark
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
-        string GetWorkspace(string json);
+        string GetWorkspace();
 
-        // { "operational_layers":{}, "basemaps":{}, "surface":{}}
+        // { "operational_layers":{}, "basemaps":{}, "surface":{}, "bookmarks":{}}
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
         void ImportWorkspace(string json);
-
 
         /// <summary>
         /// Remove layers from ArcGIS Earth workspace.

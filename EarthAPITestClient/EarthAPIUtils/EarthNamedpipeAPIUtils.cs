@@ -286,25 +286,8 @@ namespace EarthAPIUtils
             }
             return cWaitAddingLayer; 
         }
-
-        public string AddLayerSync(string json)
-        {
-            if(_channel == null)
-            {
-                return cNeedConnect;
-            }
-
-            try
-            {
-                return _channel.AddLayerSync(json);
-            }
-            catch (FaultException<EarthNamedpipeFault> ex)
-            {
-                return ex.Message;
-            }
-        }
-
-        public string GetLayerInformation(string json)
+     
+        public string GetLayerLoadStatus(string json)
         {
             if (_channel == null)
             {
@@ -313,7 +296,7 @@ namespace EarthAPIUtils
 
             try
             {
-                return _channel.GetLayerInformation(json);
+                return _channel.GetLayerLoadStatus(json);
             }
             catch (FaultException<EarthNamedpipeFault> ex)
             {
@@ -321,7 +304,7 @@ namespace EarthAPIUtils
             }
         }
 
-        public string GetLayersInformation(string json)
+        public string GetWorkspace()
         {
             if (_channel == null)
             {
@@ -330,7 +313,7 @@ namespace EarthAPIUtils
 
             try
             {
-                return _channel.GetWorkspace(json);
+                return _channel.GetWorkspace();
             }
             catch (FaultException<EarthNamedpipeFault> ex)
             {
