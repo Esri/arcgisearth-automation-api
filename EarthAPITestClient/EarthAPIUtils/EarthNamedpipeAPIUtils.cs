@@ -278,13 +278,12 @@ namespace EarthAPIUtils
 
             try
             {
-                _channel.AddLayer(json);
+                return _channel.AddLayer(json);
             }
             catch (FaultException<EarthNamedpipeFault> ex)
             {
                 return ex.Message;
             }
-            return cWaitAddingLayer; 
         }
      
         public string GetLayerLoadStatus(string json)
