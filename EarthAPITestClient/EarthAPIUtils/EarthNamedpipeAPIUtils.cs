@@ -134,8 +134,8 @@ namespace EarthAPIUtils
 
         static public bool PaserCameraJson(
             string cameraJson,
-            out double lng, out double lat, out double alt, 
-            out double heading, out double pitch, 
+            out double lng, out double lat, out double alt,
+            out double heading, out double pitch,
             out int wkid)
         {
             lng = lat = alt = heading = pitch = wkid = 0;
@@ -229,38 +229,38 @@ namespace EarthAPIUtils
         {
             try
             {
-              string address = null;
-              ProcessUtils proc = new ProcessUtils(c_processName, exePath);
-              if (!proc.IsRunning())
-              {
-                  await proc.Start((msg) => ProcessStdOutCallBack(msg, ref address));
-                  if(String.IsNullOrEmpty(address))
-                  {
-                      return cFailed;
-                  }
-              }
-              else
-              {
-                  address = cBasePipeAddress;
-              }
+                string address = null;
+                ProcessUtils proc = new ProcessUtils(c_processName, exePath);
+                if (!proc.IsRunning())
+                {
+                    await proc.Start((msg) => ProcessStdOutCallBack(msg, ref address));
+                    if(String.IsNullOrEmpty(address))
+                    {
+                        return cFailed;
+                    }
+                }
+                else
+                {
+                    address = cBasePipeAddress;
+                }
 
-              if (!String.IsNullOrEmpty(address))
-              {
-                  _channel = CreateChannel(address);
+                if (!String.IsNullOrEmpty(address))
+                {
+                    _channel = CreateChannel(address);
 
-                  // call a function to test consistency of contract file.
-                  string test = _channel.GetCameraJson();
+                    // call a function to test consistency of contract file.
+                    string test = _channel.GetCameraJson();
 
-                  if (_channel != null)
-                  {
-                      return cSuccess;
-                  }
-                  else
-                  {
-                      return cFailed;
-                  }
-              }
-              return cFailed;
+                    if (_channel != null)
+                    {
+                        return cSuccess;
+                    }
+                    else
+                    {
+                        return cFailed;
+                    }
+                }
+                return cFailed;
             }
             catch
             {
@@ -285,7 +285,7 @@ namespace EarthAPIUtils
                 return ex.Message;
             }
         }
-     
+
         public string GetLayerLoadStatus(string json)
         {
             if (_channel == null)
@@ -355,7 +355,7 @@ namespace EarthAPIUtils
             }
             return null;
         }
-        
+
         public string ClearLayers(string json)
         {
             if (_channel == null)
