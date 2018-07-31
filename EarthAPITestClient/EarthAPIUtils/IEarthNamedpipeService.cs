@@ -25,22 +25,6 @@ using System.Runtime.Serialization;
 namespace ArcGISEarth.WCFNamedPipeIPC
 {
     /// <summary>
-    /// The callback contract when adding layer 
-    /// </summary>
-    /// <remarks>
-    /// As "AddLayer" doesn't support duplex communication in this version, content in Notify function can be empty.
-    /// </remarks>
-    public interface IEarthNamedpipeCallbackService
-    {
-        /// <summary>
-        /// Notify client when adding layer finished.
-        /// </summary>
-        /// <param name="message">representing result of adding layer from ArcGIS Earth.</param>
-        [OperationContract(IsOneWay = true)]
-        void Notify(string message);
-    }
-
-    /// <summary>
     /// Fault contract of ArcGIS Earth Automation API.
     /// </summary>
     /// <remarks>
@@ -59,9 +43,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
     /// <summary>
     /// The public interface for communicating with ArcGIS Earth Automation API.
     /// </summary>
-    [ServiceContract(
-        Namespace = "ArcGISEarth/2018/07",
-        CallbackContract = typeof(IEarthNamedpipeCallbackService))]
+    [ServiceContract(Namespace = "ArcGISEarth/2018/07")]
     public interface IEarthNamedpipeService
     {
         /// <summary>
@@ -218,7 +200,3 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         Task<System.Drawing.Bitmap> GetSnapshotAsync();
     }
 }
-
-
-
-
