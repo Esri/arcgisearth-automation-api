@@ -88,10 +88,16 @@ namespace EarthAPITestClient
             v.ExecuteFuction(FunctionType.Help);
         }
 
-        private void ClearTextButton_Click(object sender, RoutedEventArgs e)
+        private void ClearInputBox_Click(object sender, RoutedEventArgs e)
         {
             ViewModel v = this.DataContext as ViewModel;
-            v.ExecuteFuction(FunctionType.ClearTextBox);
+            v.ExecuteFuction(FunctionType.ClearInputputBox);
+        }
+
+        private void ClearOutputBox_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.ClearOutputBox);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -99,5 +105,30 @@ namespace EarthAPITestClient
             ViewModel v = this.DataContext as ViewModel;
             v.ExecuteFuction(FunctionType.CloseConnect);
         }
+
+        private void GetLayerLoadStatus_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.GetLayerLoadStatus);
+        }
+
+        private void ImportWorkspace_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.ImportWorkspace);
+        }
+
+        private void GetWorkspace_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.GetWorkspace);
+        }
+
+        private void Removelayer_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel v = this.DataContext as ViewModel;
+            v.ExecuteFuction(FunctionType.Removelayer);
+        }
+     
     }
 }

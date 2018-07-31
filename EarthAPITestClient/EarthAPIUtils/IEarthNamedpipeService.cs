@@ -1,15 +1,18 @@
-﻿// Copyright 2017 Esri
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+﻿// COPYRIGHT ?2018 ESRI
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+// TRADE SECRETS: ESRI PROPRIETARY AND CONFIDENTIAL
+// Unpublished material - all rights reserved under the
+// Copyright Laws of the United States and applicable international
+// laws, treaties, and conventions.
 //
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// For additional information, contact:
+// Environmental Systems Research Institute, Inc.
+// Attn: Contracts and Legal Services Department
+// 380 New York Street
+// Redlands, California, 92373
+// USA
+//
+// email: contracts@esri.com
 
 using System;
 using System.Collections.Generic;
@@ -21,19 +24,6 @@ using System.Runtime.Serialization;
 
 namespace ArcGISEarth.WCFNamedPipeIPC
 {
-    /// <summary>
-    /// The callback contract when adding layer 
-    /// </summary>
-    public interface IEarthNamedpipeCallbackService
-    {
-        /// <summary>
-        /// Notify client when adding layer finished.
-        /// </summary>
-        /// <param name="message">representing result of adding layer from ArcGIS Earth</param>
-        [OperationContract(IsOneWay = true)]
-        void Notify(string message);
-    }
-
     /// <summary>
     /// Fault contract of ArcGIS Earth Automation API.
     /// </summary>
@@ -53,9 +43,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
     /// <summary>
     /// The public interface for communicating with ArcGIS Earth Automation API.
     /// </summary>
-    [ServiceContract(
-        Namespace = "ArcGISEarth/2018/02",
-        CallbackContract = typeof(IEarthNamedpipeCallbackService))]
+    [ServiceContract(Namespace = "ArcGISEarth/2018/07")]
     public interface IEarthNamedpipeService
     {
         /// <summary>
@@ -108,32 +96,25 @@ namespace ArcGISEarth.WCFNamedPipeIPC
 
         /// <summary>
         /// Add layer to the table of contents, basemap or terrain of ArcGIS Earth.
-        /// <remarks>
-        /// <para>
-        /// Duplex communication is used when adding layer. IEarthNamedpipeCallbackService interface need to be implemented.
-        /// Then client side can receive result of adding layer from Notify callback function. 
-        /// </para>
-        /// </remarks>
         /// </summary>
         /// <param name="json">is a string in JSON format contains layer type, URI and target of layer
         /// <para>
         /// The JSON string parameter can have fields: "type"(optional), "target"(optional) and URI(or URIs).
         /// </para>
         /// <para>
-        /// The type value specifies type supported in ArcGIS Earth. The API will automatically set an appropriate type according to URI if the string doesn't contain it.
+        /// The type value specifies type supported in ArcGIS Earth. The API will automatically set an appropriate type according to URI if the JSON string doesn't contain this key.
         /// </para>
         /// <para>And the value can be one of these: </para>
         /// <para>"FeatureService" – ArcGIS feature service.</para>
         /// <para>"MapService" – ArcGIS map service.</para>
         /// <para>"ImageService" – ArcGIS image service.</para>
         /// <para>"Shapefile" – Local shapefile.</para>
-        /// <para>"OGCWMS" – OGC Web Map Service</para>
+        /// <para>"OGCWMS" – OGC Web Map Service.</para>
         /// <para>"KML" – Local KML and KMZ.</para>
         /// <para>"SceneLayerPackage" – ArcGIS scene layer package.</para>
         /// <para>"SceneService" – ArcGIS scene service.</para>
         /// <para>"Raster" – Local elevation raster formats.</para>
         /// <para>"TileLayerPackage" – ArcGIS tile layer package.</para>
-        /// <para>"ElevationService" – ArcGIS elevation service.</para>
         /// <para>
         /// The URI(URIs) value specifies the URL or path of a layer. Use URIs if the source files are multiple elevation source and used as elevation.
         /// </para>
@@ -145,9 +126,56 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         /// <para>"ElevationLayers" – layers added into Terrain pane of ArcGIS Earth as elevation.</para>
         /// </para>
         /// </param>
+        /// <returns>String indicating the id of layer.</returns>
         [FaultContract(typeof(EarthNamedpipeFault))]
         [OperationContract]
-        void AddLayer(string json);
+        string AddLayer(string json);
+
+        /// <summary>
+        /// Get load status of layer.
+        /// </summary>
+        /// <param name="json">is a string in JSON format contains id of layer 
+        /// <remarks>
+        /// The JSON string requires fields of "id" which value is the string type id of layer. 
+        /// </remarks>
+        /// </param>
+        /// <returns>String indicating the load status of layer.</returns>
+        [FaultContract(typeof(EarthNamedpipeFault))]
+        [OperationContract]
+        string GetLayerLoadStatus(string json);
+
+        /// <summary>
+        /// Remove a layer.
+        /// </summary>
+        /// <param name="json">is a string in JSON format contains id of layer 
+        /// <remarks>
+        /// The JSON string requires fields of "id" which value is the string type id of layer. 
+        /// </remarks>
+        /// </param>
+        [FaultContract(typeof(EarthNamedpipeFault))]
+        [OperationContract]
+        void RemoveLayer(string json);
+
+        /// <summary>
+        /// Get the JSON description of current workspace.
+        /// </summary>
+        /// <returns>String indicating the JSON description of current workspace.</returns>
+        [FaultContract(typeof(EarthNamedpipeFault))]
+        [OperationContract]
+        string GetWorkspace();
+
+        /// <summary>
+        /// Import workspace to ArcGIS Earth.
+        /// </summary>
+        /// <param name="json">is a string in JSON format of ArcGIS Earth workspace 
+        /// <remarks>
+        /// <para>The JSON string parameters can have fields as "operationalLayers", "elevationLayers", "basemapLayers" and "bookmarks"</para>
+        /// <para>Each value indicating the JSON desciption of each component of workspace"</para>
+        /// </remarks>
+        /// </param>
+        [FaultContract(typeof(EarthNamedpipeFault))]
+        [OperationContract]
+        void ImportWorkspace(string json);
 
         /// <summary>
         /// Remove layers from ArcGIS Earth workspace.

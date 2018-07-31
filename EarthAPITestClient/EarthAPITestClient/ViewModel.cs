@@ -32,112 +32,143 @@ namespace EarthAPITestClient
         ClearLayers,
         GetSnapshot,
         Connect,
-        ClearTextBox,
+        ClearInputputBox,
+        ClearOutputBox,
         CloseConnect,
-        Help
+        Help,
+        GetLayerLoadStatus,
+        GetWorkspace,
+        ImportWorkspace,
+        Removelayer
     }
-    class ViewModel : INotifyPropertyChanged 
+    class ViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private string _textInfo = "Input the parameters here according to different function.";
+        public event PropertyChangedEventHandler PropertyChanged;      
         private EarthNamedpipeAPIUtils _utils = null;
-
-        public string TextInfo
-        {
-            get { return _textInfo; }
-            set
-            {
-                _textInfo = value;
-                if (this.PropertyChanged != null)
-                {
-                    this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("TextInfo"));
-                }
-            }
-        } 
 
         public ViewModel()
         {
-            
+            this.InputString = "";
+            this.OutputString = "";
+        }
+        
+        private string _inputString ;
+        public string InputString
+        {
+            get { return _inputString; }
+            set
+            {
+                _inputString = value;
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("InputString"));
+                }
+            }
         }
 
-        private void GetMessageFromArcGISEarth(Object sender, EventArgs e)
+        private string _outputString;
+        public string OutputString
         {
-            if (e is MessageStringEventArgs)
+            get { return _outputString; }
+            set
             {
-                TextInfo = (e as MessageStringEventArgs).Message;
+                _outputString = value;
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("OutputString"));
+                }
             }
         }
 
         public async void ExecuteFuction(FunctionType functionType)
         {
-            string inputString = TextInfo;
-            string outputString = "";
-
-            if(_utils == null)
+            if (_utils == null)
             {
                 _utils = new EarthNamedpipeAPIUtils();
-                _utils.OnNotify += GetMessageFromArcGISEarth;
             }
 
-            switch(functionType)
+            switch (functionType)
             {
                 case FunctionType.AddLayer:
                     {
-                        // inputString is Json description of layer
-                        outputString = _utils.AddLayer(inputString);
+                        // InputString is Json description of layer
+                        OutputString = _utils.AddLayer(InputString);
                         break;
                     }
                 case FunctionType.ClearLayers:
                     {
-                        // inputString is Json description of target
-                        outputString = _utils.ClearLayers(inputString);
+                        // InputString is Json description of target
+                        OutputString = _utils.ClearLayers(InputString);
                         break;
                     }
                 case FunctionType.Connect:
                     {
-                        // inputString is path of arcgis earth
-                        outputString = await _utils.Connect(inputString);
+                        // InputString is path of arcgis earth
+                        OutputString = await _utils.Connect(InputString);
                         break;
                     }
                 case FunctionType.FlyTo:
                     {
-                        outputString = _utils.FlyTo(inputString);
+                        OutputString = _utils.FlyTo(InputString);
                         break;
                     }
                 case FunctionType.GetCamera:
                     {
-                        outputString = _utils.GetCamera();
+                        OutputString = _utils.GetCamera();
                         break;
                     }
                 case FunctionType.GetSnapshot:
                     {
-                        outputString = await _utils.GetSnapshot(inputString);
+                        OutputString = await _utils.GetSnapshot(InputString);
                         break;
                     }
                 case FunctionType.SetCamera:
                     {
-                        outputString = _utils.SetCamera(inputString);
+                        OutputString = _utils.SetCamera(InputString);
                         break;
                     }
                 case FunctionType.Help:
                     {
-                        //outputString = File.ReadAllText("C:\\Projects\\arcgisearth-namedpipe-client\\EarthAPITest\\EarthAPITest\\examples.txt");
-                        outputString = "Example of parameters:\r\n\r\nConnect (Note, it is not belong to API)\r\nC:\\Projects\\earth\\output\\earth_windesktop_release\\bin\\ArcGISEarth.exe\r\n\r\nSetCamera\r\n{  \r\n   \"mapPoint\":{  \r\n      \"x\":-97.283978521275117,\r\n      \"y\":48.422233665100165,\r\n      \"z\":11000000,\r\n      \"spatialReference\":{  \r\n         \"wkid\":4326\r\n      }\r\n   },\r\n   \"heading\":0.0,\r\n   \"pitch\":0.10000000000019954\r\n}\r\n\r\nFlyTo\r\n{  \r\n   \"camera\":{  \r\n      \"mapPoint\":{  \r\n         \"x\":-92,\r\n         \"y\":41,\r\n         \"z\":11000000,\r\n         \"spatialReference\":{  \r\n            \"wkid\":4326\r\n         }\r\n      },\r\n      \"heading\":0.0,\r\n      \"pitch\":0.099999999996554886\r\n   },\r\n   \"duration\":2\r\n}\r\n\r\nAddLayer\r\n{  \r\n   \"type\":\"MapService\",\r\n   \"URI\":\"https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer\",\r\n   \"target\":\"OperationalLayers\"\r\n}\r\n\r\nClearLayers\r\n{  \r\n   \"target\":\"ElevationLayers\"\r\n}\r\n\r\nGetSnapshot (Note, the input parameters is Bitmap instead of string in API)\r\nD:/earth.jpg";
+                        //OutputString = File.ReadAllText("C:\\Projects\\arcgisearth-namedpipe-client\\EarthAPITest\\EarthAPITest\\examples.txt");
+                        OutputString = "Example of parameters:\r\n\r\nConnect (Note, it is not belong to API)\r\nC:\\Projects\\earth\\output\\earth_windesktop_release\\bin\\ArcGISEarth.exe\r\n\r\nSetCamera\r\n{  \r\n   \"mapPoint\":{  \r\n      \"x\":-97.283978521275117,\r\n      \"y\":48.422233665100165,\r\n      \"z\":11000000,\r\n      \"spatialReference\":{  \r\n         \"wkid\":4326\r\n      }\r\n   },\r\n   \"heading\":0.0,\r\n   \"pitch\":0.10000000000019954\r\n}\r\n\r\nFlyTo\r\n{  \r\n   \"camera\":{  \r\n      \"mapPoint\":{  \r\n         \"x\":-92,\r\n         \"y\":41,\r\n         \"z\":11000000,\r\n         \"spatialReference\":{  \r\n            \"wkid\":4326\r\n         }\r\n      },\r\n      \"heading\":0.0,\r\n      \"pitch\":0.099999999996554886\r\n   },\r\n   \"duration\":2\r\n}\r\n\r\nAddLayer\r\n{  \r\n   \"type\":\"MapService\",\r\n   \"URI\":\"https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer\",\r\n   \"target\":\"OperationalLayers\"\r\n}\r\n\r\nClearLayers\r\n{  \r\n   \"target\":\"ElevationLayers\"\r\n}\r\n\r\nGetSnapshot (Note, the input parameters is Bitmap instead of string in API)\r\nD:/earth.jpg";
                         break;
                     }
-                case FunctionType.ClearTextBox:
+                case FunctionType.ClearInputputBox:
                     {
-                        outputString = "";
+                        InputString = "";
+                        break;
+                    }
+                case FunctionType.ClearOutputBox:
+                    {
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.CloseConnect:
                     {
                         _utils.CloseConnect();
                         break;
+                    }             
+                case FunctionType.GetLayerLoadStatus:
+                    {
+                        OutputString = _utils.GetLayerLoadStatus(InputString);
+                        break;
+                    }
+                case FunctionType.GetWorkspace:
+                    {
+                        OutputString = _utils.GetWorkspace();
+                        break;
+                    }
+                case FunctionType.ImportWorkspace:
+                    {
+                        OutputString = _utils.ImportWorkspace(InputString);
+                        break;
+                    }
+                case FunctionType.Removelayer:
+                    {
+                        OutputString = _utils.RemoveLayer(InputString);
+                        break;
                     }
             }
-
-            TextInfo = outputString;
         }
 
     }
