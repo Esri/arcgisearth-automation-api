@@ -32,14 +32,14 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Wrapped,
             UriTemplate = "camera")]
-        string GetCamera();
+        string GetCameraJson();
 
         [OperationContract]
         [WebInvoke(Method = "PUT",
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Wrapped,
             UriTemplate = "camera/{json}")]
-        string UpdateCamera(string json);
+        string SetCamera(string json);
 
         [OperationContract]
         [WebInvoke(Method = "PUT",
@@ -52,36 +52,35 @@ namespace ArcGISEarth.WCFNamedPipeIPC
         [WebInvoke(UriTemplate = "/layer",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json, Method = "POST")]
-        string AddLayerSync(EarthLayerDescription lyr);
+        string AddLayer(EarthLayerDescription lyr);
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "/layer/{layerId}",
+        [WebInvoke(UriTemplate = "/layer/{layerId}/load_status",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json, Method = "GET")]
-        string GetLayerInformation(string layerId);
-
-        [OperationContract]
-        [WebInvoke(UriTemplate = "/layers",
-            RequestFormat = WebMessageFormat.Json,
-            ResponseFormat = WebMessageFormat.Json, Method = "GET")]
-        string GetLayersInformation();
-
-        [OperationContract]
-        [WebInvoke(UriTemplate = "/layers",
-            ResponseFormat = WebMessageFormat.Json, Method = "POST")]
-        string ImportLayers(Stream stream);
-
-        [OperationContract]
-        [WebInvoke(UriTemplate = "/layers/{json}",
-            RequestFormat = WebMessageFormat.Json,
-            ResponseFormat = WebMessageFormat.Json, Method = "DELETE")]
-        string ClearLayers(string json);
+        string GetLayerLoadStatus(string layerId);
 
         [OperationContract]
         [WebInvoke(UriTemplate = "/layer/{layerId}",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json, Method = "DELETE")]
         string RemoveLayer(string layerId);
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "/workspace",
+            ResponseFormat = WebMessageFormat.Json, Method = "PUT")]
+        string ImportWorkspace(Stream stream);
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "/workspace",
+            ResponseFormat = WebMessageFormat.Json, Method = "GET")]
+        string GetWorkspace();
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "/layers/{json}",
+            RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json, Method = "DELETE")]
+        string ClearLayers(string json);
 
         [OperationContract]
         [WebGet(UriTemplate = "snapshot")]

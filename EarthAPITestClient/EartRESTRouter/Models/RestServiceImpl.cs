@@ -20,12 +20,6 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             }
         }
 
-
-        public Stream GetSnapshotFile()
-        {
-            return null;
-        }
-
         public Stream GetSnapshot()
         {
             string TmpFolderPath = System.IO.Path.GetTempPath();
@@ -55,7 +49,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             return null;
         }
 
-        public string GetCamera()
+        public string GetCameraJson()
         {
             return _utils.GetCamera();
         }
@@ -65,40 +59,34 @@ namespace ArcGISEarth.WCFNamedPipeIPC
             return _utils.FlyTo(json);
         }
 
-        public string UpdateCamera(string json)
+        public string SetCamera(string json)
         {
             return _utils.SetCamera(json);
         }
 
-        public string AddLayerSync(EarthLayerDescription lyr)
+        public string AddLayer(EarthLayerDescription lyr)
         {
             EarthLayerDescriptionImpl earthLayerDescriptionImpl = new EarthLayerDescriptionImpl(lyr);
-            return _utils.AddLayerSync(earthLayerDescriptionImpl.ToJson());
+            return _utils.AddLayer(earthLayerDescriptionImpl.ToJson());
         }
 
-        public string GetLayerInformation(string layerId)
+        public string GetLayerLoadStatus(string layerId)
         {
             string json = "{ \"id\":\"" + layerId + "\"}";
-            return _utils.GetLayerInformation(json);
+            return _utils.GetLayerLoadStatus(json);
         }
 
-        public string GetLayersInformation(/*EarthLayerDescription lyr*/)
+        public string ImportWorkspace(Stream stream)
         {
-            //EarthLayerDescriptionImpl earthLayerDescriptionImpl = lyr as EarthLayerDescriptionImpl;
-            string json = "{\"target\": \"AllLayers\"}";
-            return _utils.GetLayersInformation(json);
-        }
-
-        public string ImportLayers(Stream stream)
-        {
-            //            string incomingType = WebOperationContext.Current.IncomingRequest.ContentType;
-            //            string incomingAcceptType = WebOperationContext.Current.IncomingRequest.Accept;
-            //            WebOperationContext.Current.OutgoingResponse.ContentType = "application/json";
-
             StreamReader reader = new StreamReader(stream);
             string json = reader.ReadToEnd();
             string JSONstring = OperationContext.Current.RequestContext.RequestMessage.ToString();
             return _utils.ImportWorkspace(json);
+        }
+
+        public string GetWorkspace()
+        {
+            return _utils.GetWorkspace();
         }
 
         public string ClearLayers(string target)

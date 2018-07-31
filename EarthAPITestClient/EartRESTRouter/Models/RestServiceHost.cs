@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Windows;
 
 namespace ArcGISEarth.WCFNamedPipeIPC.Models.rest
 {
     public class RestServiceHost
     {
         static ServiceHost host;
-        static Uri baseAddress = new Uri("http://localhost:50066/arcgisearth");
+        static Uri baseAddress = new Uri("http://localhost:80/Temporary_Listen_Addresses/arcgisearth/api/v1");
 
         public static bool Start()
         {
@@ -47,6 +48,8 @@ namespace ArcGISEarth.WCFNamedPipeIPC.Models.rest
 
                     host.Open();
                     //RestServiceButton.ServiceStarted = true;
+                    MessageBox.Show("Start service now!");
+                    
                     return true;
                 }
             }
@@ -66,7 +69,7 @@ namespace ArcGISEarth.WCFNamedPipeIPC.Models.rest
                 //RestServiceButton.ServiceStarted = false;
                 return true;
             }
-            return false;
+            //return false;
         }
     }
 }

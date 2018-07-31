@@ -27,12 +27,15 @@ namespace ArcGISEarth.WCFNamedPipeIPC
     /// <summary>
     /// The callback contract when adding layer 
     /// </summary>
+    /// <remarks>
+    /// As "AddLayer" doesn't support duplex communication in this version, content in Notify function can be empty.
+    /// </remarks>
     public interface IEarthNamedpipeCallbackService
     {
         /// <summary>
         /// Notify client when adding layer finished.
         /// </summary>
-        /// <param name="message">representing result of adding layer from ArcGIS Earth</param>
+        /// <param name="message">representing result of adding layer from ArcGIS Earth.</param>
         [OperationContract(IsOneWay = true)]
         void Notify(string message);
     }
@@ -111,26 +114,20 @@ namespace ArcGISEarth.WCFNamedPipeIPC
 
         /// <summary>
         /// Add layer to the table of contents, basemap or terrain of ArcGIS Earth.
-        /// <remarks>
-        /// <para>
-        /// Duplex communication is used when adding layer. IEarthNamedpipeCallbackService interface need to be implemented.
-        /// Then client side can receive result of adding layer from Notify callback function. 
-        /// </para>
-        /// </remarks>
         /// </summary>
         /// <param name="json">is a string in JSON format contains layer type, URI and target of layer
         /// <para>
         /// The JSON string parameter can have fields: "type"(optional), "target"(optional) and URI(or URIs).
         /// </para>
         /// <para>
-        /// The type value specifies type supported in ArcGIS Earth. The API will automatically set an appropriate type according to URI if the string doesn't contain it.
+        /// The type value specifies type supported in ArcGIS Earth. The API will automatically set an appropriate type according to URI if the JSON string doesn't contain this key.
         /// </para>
         /// <para>And the value can be one of these: </para>
         /// <para>"FeatureService" – ArcGIS feature service.</para>
         /// <para>"MapService" – ArcGIS map service.</para>
         /// <para>"ImageService" – ArcGIS image service.</para>
         /// <para>"Shapefile" – Local shapefile.</para>
-        /// <para>"OGCWMS" – OGC Web Map Service</para>
+        /// <para>"OGCWMS" – OGC Web Map Service.</para>
         /// <para>"KML" – Local KML and KMZ.</para>
         /// <para>"SceneLayerPackage" – ArcGIS scene layer package.</para>
         /// <para>"SceneService" – ArcGIS scene service.</para>

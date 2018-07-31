@@ -196,6 +196,7 @@ namespace EarthAPIUtils
 
         public void Notify(string message)
         {
+            // note, in earth 1.8 version, add layer won't call Notify
             OnNotify?.Invoke(this, new MessageStringEventArgs() { Message = message });
         }
 

@@ -2,8 +2,9 @@ import requests
 import unittest
 import json
 import time
+import os
 
-base_address = "http://localhost:50066/arcgisearth"
+base_address = "http://localhost:80/Temporary_Listen_Addresses/arcgisearth/api/v1"
 camera_info = "{ \"mapPoint\": { \"x\": 113.59647525051167, \"y\": 32.464715999412107, \"z\": 2213290.0751730204, \"spatialReference\": { \"wkid\": 4326 } }, \"heading\": 354.04823651174161, \"pitch\": 19.96239543740441}"
 fly_to_info = "{\"camera\":{\"mapPoint\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":0.0,\"pitch\":0.099999999996554886},\"duration\":2}"
 add_layer_info = "{\"type\":\"MapService\",\"URI\":\"https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer\",\"target\":\"OperationalLayers\"}"
@@ -23,7 +24,7 @@ class AgeRestApiTest(unittest.TestCase):
             content = r.content
             str_camera = content.decode('utf-8')
             json_camera = json.loads(str_camera)
-            result = json_camera['UpdateCameraResult']
+            result = json_camera['SetCameraResult']
             self.assertEqual('Success', result)
 
     def test_fly_to(self):
@@ -57,7 +58,7 @@ class AgeRestApiTest(unittest.TestCase):
 
         # get layer information test
         if layer_id is not None:
-            url = base_address + "/layer/" + layer_id
+            url = base_address + "/layer/" + layer_id + "/load_status"
             r = requests.get(url)
             self.assertEqual(r.status_code, 200)
             if r.status_code == 200:
@@ -73,9 +74,9 @@ class AgeRestApiTest(unittest.TestCase):
             r = requests.delete(url)
             self.assertEqual(r.status_code, 200)
 
-    def test_layers_operation(self):
+    def test_workspace_operation(self):
         # get layers
-        url = base_address + "/layers"
+        url = base_address + "/workspace"
         r = requests.get(url)
         layers_json = None
         content = None
@@ -96,25 +97,23 @@ class AgeRestApiTest(unittest.TestCase):
         # import layers
         from requests import Session
         s = Session()
-        url = base_address + "/layers"
+        url = base_address + "/workspace"
         data = json.dumps(layers_json)
-        r = requests.post(url, data=data, stream=True)
+        r = requests.put(url, data=data, stream=True)
         self.assertEqual(r.status_code, 200)
 
-
-#    def test_screensnap(self):
-#        url = base_address + "/snapshot"
-#        r = requests.get(url, stream=True)
-#        self.assertEqual(r.status_code, 200)
-#        if r.status_code == 200:
-#            path = "./snaps.jpg"
-#            if os.path.exists(path):
-#                os.remove(path)
-#            with open(path, 'wb') as f:
-#                for chunk in r:
-#                    f.write(chunk)
-#            #self.assertTrue(os.path.exists(path))
-#
+    def test_screensnap(self):
+        url = base_address + "/snapshot"
+        r = requests.get(url, stream=True)
+        self.assertEqual(r.status_code, 200)
+        if r.status_code == 200:
+            path = "./snaps.jpg"
+            if os.path.exists(path):
+                os.remove(path)
+            with open(path, 'wb') as f:
+                for chunk in r:
+                    f.write(chunk)
+            self.assertTrue(os.path.exists(path))
 
 
 if __name__ == '__main__':
