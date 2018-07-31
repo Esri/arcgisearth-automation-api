@@ -80,20 +80,11 @@ namespace EarthAPITestClient
             }
         }
 
-        private void GetMessageFromArcGISEarth(Object sender, EventArgs e)
-        {
-            if (e is MessageStringEventArgs)
-            {
-                this.OutputString = (e as MessageStringEventArgs).Message;
-            }
-        }
-
         public async void ExecuteFuction(FunctionType functionType)
         {
             if (_utils == null)
             {
                 _utils = new EarthNamedpipeAPIUtils();
-                _utils.OnNotify += GetMessageFromArcGISEarth;
             }
 
             switch (functionType)

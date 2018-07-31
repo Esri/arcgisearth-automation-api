@@ -29,7 +29,7 @@ namespace EarthAPIUtils
         public string Message { get; set; }
     }
 
-    public class EarthNamedpipeAPIUtils : IEarthNamedpipeCallbackService
+    public class EarthNamedpipeAPIUtils
     {
         public const string c_processName = "ArcGISEarth";
         public const string cBasePipeAddress = "net.pipe://localhost/arcgisearth";
@@ -42,7 +42,6 @@ namespace EarthAPIUtils
 
         private IEarthNamedpipeService _channel = null;
         private ChannelFactory<IEarthNamedpipeService> _factory = null;
-        public EventHandler OnNotify;
 
         static public string ConstructLayerInformationJson(string uri, string lyrType = null, string target = null)
         {
@@ -194,12 +193,6 @@ namespace EarthAPIUtils
             return false;
         }
 
-        public void Notify(string message)
-        {
-            // note, in earth 1.8 version, add layer won't call Notify
-            OnNotify?.Invoke(this, new MessageStringEventArgs() { Message = message });
-        }
-
         public IEarthNamedpipeService CreateChannel(string address)
         {
             try
@@ -215,7 +208,7 @@ namespace EarthAPIUtils
                     binding,
                     new EndpointAddress(address));
 
-                _factory = new DuplexChannelFactory<IEarthNamedpipeService>(new InstanceContext(this), se);
+                _factory = new ChannelFactory<IEarthNamedpipeService>(se);
                 IEarthNamedpipeService channel = _factory.CreateChannel();
                 return channel;
             }
