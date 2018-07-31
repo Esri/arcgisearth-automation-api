@@ -16,46 +16,37 @@ namespace ArcGISEarth.WCFNamedPipeIPC.Models.rest
 
         public static bool Start()
         {
-            //SettingController setting = new SettingController();
-            //setting.Apply(true);
-            //baseAddress = new Uri(setting.BaseAddress);
-
-            // TODO
             try
             {
-                //if (false == RestServiceButton.ServiceStarted)
+                host = new ServiceHost(typeof(ArcGISEarth.WCFNamedPipeIPC.RestServiceImpl), baseAddress);
+                // Enable metadata publishing.
+                ServiceMetadataBehavior smb = new ServiceMetadataBehavior
                 {
-                    host = new ServiceHost(typeof(ArcGISEarth.WCFNamedPipeIPC.RestServiceImpl), baseAddress);
+                    HttpGetEnabled = true
+                };
+                smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
+                host.Description.Behaviors.Add(smb);
+                WebHttpBinding binding = new WebHttpBinding();
+                ServiceEndpoint ep = new ServiceEndpoint(
+                    ContractDescription.GetContract(
+                    typeof(IRestServiceImpl)),
+                    binding,
+                    new EndpointAddress(baseAddress));
+                ep.EndpointBehaviors.Add(new WebHttpBehavior());
+                host.AddServiceEndpoint(ep);
 
-                    // Enable metadata publishing.
-                    ServiceMetadataBehavior smb = new ServiceMetadataBehavior
-                    {
-                        HttpGetEnabled = true
-                    };
-                    smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
-                    host.Description.Behaviors.Add(smb);
-                    WebHttpBinding binding = new WebHttpBinding();
-                    ServiceEndpoint ep = new ServiceEndpoint(
-                        ContractDescription.GetContract(
-                        typeof(IRestServiceImpl)),
-                        binding,
-                        new EndpointAddress(baseAddress));
-                    ep.EndpointBehaviors.Add(new WebHttpBehavior());
-                    host.AddServiceEndpoint(ep);
+                ServiceDebugBehavior sdb = host.Description.Behaviors.Find<ServiceDebugBehavior>();
+                sdb.IncludeExceptionDetailInFaults = true;
 
-                    ServiceDebugBehavior sdb = host.Description.Behaviors.Find<ServiceDebugBehavior>();
-                    sdb.IncludeExceptionDetailInFaults = true;
+                host.Open();
+                MessageBox.Show("Start service now!");
 
-                    host.Open();
-                    //RestServiceButton.ServiceStarted = true;
-                    MessageBox.Show("Start service now!");
-                    
-                    return true;
-                }
+                return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                MessageBox.Show(ex.Message);
             }
 
             return false;
@@ -63,13 +54,9 @@ namespace ArcGISEarth.WCFNamedPipeIPC.Models.rest
 
         public static bool Stop()
         {
-            //if (true == RestServiceButton.ServiceStarted)
-            {
-                host.Close();
-                //RestServiceButton.ServiceStarted = false;
-                return true;
-            }
-            //return false;
+            host.Close();
+            MessageBox.Show("Stop service now!");
+            return true;
         }
     }
 }
