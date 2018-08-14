@@ -20,9 +20,9 @@ using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGIS.Desktop.Mapping;
-using EarthAPITest;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using EarthAPIUtils;
 
 namespace ToArcGISEarth
 {
@@ -34,7 +34,7 @@ namespace ToArcGISEarth
             _utils = new EarthNamedpipeAPIUtils();
         }
 
-        protected override void OnClick()
+        protected override async void OnClick()
         {
             if (this.IsChecked)
             {
@@ -44,11 +44,12 @@ namespace ToArcGISEarth
             }
             else
             {
-                if(!_utils.Connect())
-                {
-                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please start ArcGIS Earth with automation API opened then connect to it");
-                    return;
-                }
+                string result = await _utils.Connect();
+                //if(!_utils.Connect())
+                //{
+                //    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please start ArcGIS Earth with automation API opened then connect to it");
+                //    return;
+                //}
                 MapViewCameraChangedEvent.Subscribe(MapViewCameraCanged, false);
                 this.IsChecked = true;
                 this.Caption = "Disconnect";

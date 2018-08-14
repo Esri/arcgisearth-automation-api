@@ -95,7 +95,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <AddInContent Include="Config.daml" />
+    <AddInContent Include="Config.daml">
+      <SubType>Designer</SubType>
+    </AddInContent>
     <AddInContent Include="Images\AddInDesktop16.png" />
     <AddInContent Include="Images\AddInDesktop32.png" />
     <AddInContent Include="DarkImages\AddInDesktop16.png" />
@@ -105,6 +107,7 @@
     <Compile Include="EarthNamedpipeAPIUtils.cs" />
     <Compile Include="IEarthNamedpipeService.cs" />
     <Compile Include="Module1.cs" />
+    <Compile Include="ProcessUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SyncToArcGISEarthButton.cs" />
   </ItemGroup>
