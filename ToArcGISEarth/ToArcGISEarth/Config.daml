@@ -21,17 +21,22 @@
       <groups>
         <!-- comment this out if you have no controls on the Addin tab to avoid
               an empty group-->
-        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true">
+        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="ToArcGISEarth_Group1_KeyTip">
           <!-- host controls within groups -->
-          <button refID="ToArcGISEarth_SyncToArcGISEarthButton" size="large" />
+          <button refID="ToArcGISEarth_ViewLinkEarthButton" size="large" />              
         </group>
       </groups>
       <controls>
         <!-- add your controls here -->
-        <button id="ToArcGISEarth_SyncToArcGISEarthButton" caption="Connect" className="SyncToArcGISEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png">
-          <tooltip heading="Sync">Sync To ArcGIS Earth<disabledText /></tooltip>
-        </button>
-      </controls>
+        <button id="ToArcGISEarth_ViewLinkEarthButton" caption="Connect" className="ViewLinkEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_ViewLinkEarthButton_KeyTip">
+          <tooltip>
+            View link ArcGIS Earth<disabledText /></tooltip>
+        </button>          
+      </controls>    
     </insertModule>
   </modules>
+  <dropHandlers>
+    <!--specific file extensions can be set like so: dataTypes=".XLS|.xls"-->
+    <insertHandler id="ToArcGISEarth_DropHandler1" className="DropHandler1" dataTypes="*" />
+  </dropHandlers>
 </ArcGIS>

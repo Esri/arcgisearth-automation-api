@@ -19,6 +19,10 @@ using System.Windows.Input;
 using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
 using System.Threading.Tasks;
+using EarthAPIUtils;
+using ArcGIS.Desktop.Mapping.Events;
+using ArcGIS.Desktop.Mapping;
+using Newtonsoft.Json.Linq;
 
 namespace ToArcGISEarth
 {
@@ -49,7 +53,6 @@ namespace ToArcGISEarth
             return true;
         }
 
-        #endregion Overrides
-
+        #endregion Overrides             
     }
 }
