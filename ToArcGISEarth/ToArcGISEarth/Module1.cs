@@ -52,7 +52,7 @@ namespace ToArcGISEarth
             //return false to ~cancel~ Application close
             return true;
         }
-
+  
         #endregion Overrides             
     }
 }

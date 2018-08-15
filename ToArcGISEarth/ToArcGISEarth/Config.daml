@@ -23,16 +23,31 @@
               an empty group-->
         <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="ToArcGISEarth_Group1_KeyTip">
           <!-- host controls within groups -->
-          <button refID="ToArcGISEarth_ViewLinkEarthButton" size="large" />              
+          <button refID="ToArcGISEarth_ConnectToArcGISEarthButton" size="large"/>
+          <checkBox refID="ToArcGISEarth_ViewLinkCheckBox" size="large" />
+          <checkBox refID="ToArcGISEarth_AddLayerCheckBox" size="large" />
+          <checkBox refID="ToArcGISEarth_RemoveLayerCheckBox" size="large" />
         </group>
       </groups>
       <controls>
         <!-- add your controls here -->
-        <button id="ToArcGISEarth_ViewLinkEarthButton" caption="Connect" className="ViewLinkEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_ViewLinkEarthButton_KeyTip">
-          <tooltip>
-            View link ArcGIS Earth<disabledText /></tooltip>
-        </button>          
-      </controls>    
+        <button id="ToArcGISEarth_ConnectToArcGISEarthButton" caption="Connect" className="ConnectToArcGISEarthButton" loadOnClick="true"
+                smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_ConnectToArcGISEarthButton_KeyTip">
+          <tooltip>Connect to ArcGIS Earth </tooltip>
+        </button>
+        <checkBox id ="ToArcGISEarth_ViewLinkCheckBox" caption="View link" className="ViewLinkCheckBox" isChecked="false" loadOnClick="true"
+              keytip="ToArcGISEarth_ViewLinkCheckBox_KeyTip">
+          <tooltip>View link Earth</tooltip>
+        </checkBox>
+        <checkBox id ="ToArcGISEarth_AddLayerCheckBox" caption="Add layer" className="AddLayerCheckBox" isChecked="false" loadOnClick="true"
+            keytip="ToArcGISEarth_AddLayerCheckBox_KeyTip">
+          <tooltip>Add layer into Pro and Earth</tooltip>
+        </checkBox>
+        <checkBox id ="ToArcGISEarth_RemoveLayerCheckBox" caption="Remobe layer" className="RemoveLayerCheckBox" isChecked="false" loadOnClick="true"
+          keytip="ToArcGISEarth_RemoveLayerCheckBox_KeyTip">
+          <tooltip>Remove layer from Pro and Earth</tooltip>
+        </checkBox>
+      </controls>
     </insertModule>
   </modules>
   <dropHandlers>
