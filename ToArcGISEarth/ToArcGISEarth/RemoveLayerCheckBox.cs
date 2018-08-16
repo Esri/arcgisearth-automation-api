@@ -3,9 +3,7 @@ using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace ToArcGISEarth
 {
@@ -34,22 +32,28 @@ namespace ToArcGISEarth
 
         private void RemoveLayer(LayerEventsArgs args)
         {
-            List<Layer> layerList = args.Layers as List<Layer>;
-            if (layerList != null && layerList.Count != 0)
+            try
             {
-                Layer layer = layerList[0];
-                string id = "";
-                // If there have some layers that they have same name, just remove one of them 
-                foreach (var item in ConnectToArcGISEarthButton.IdNameDic)
+                List<Layer> layerList = args.Layers as List<Layer>;
+                if (layerList != null && layerList.Count != 0)
                 {
-                    if (item.Value?.Length == 2 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString())
+                    Layer layer = layerList[0];
+                    string id = "";                
+                    foreach (var item in ConnectToArcGISEarthButton.IdNameDic)
                     {
-                        id = item.Key;
-                        break;
+                        if (item.Value?.Length == 2 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString())
+                        {
+                            id = item.Key;
+                            break;
+                        }
                     }
-                }
-                ConnectToArcGISEarthButton.Utils.RemoveLayer(id);
-                ConnectToArcGISEarthButton.IdNameDic.Remove(id);
+                    ConnectToArcGISEarthButton.Utils.RemoveLayer(id);
+                    ConnectToArcGISEarthButton.IdNameDic.Remove(id);
+                }              
+            }
+            catch (Exception ex)
+            {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(ex.Message, "Error message", MessageBoxButton.OK);
             }
         }
     }

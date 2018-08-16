@@ -27,7 +27,8 @@
           <checkBox refID="ToArcGISEarth_SyncToArcGISEarthCheckBox" size="large" />
           <checkBox refID="ToArcGISEarth_AddLayerCheckBox" size="large" />
           <checkBox refID="ToArcGISEarth_RemoveLayerCheckBox" size="large" />
-          <checkBox refID="ToArcGISEarth_ClearEarthWorkspaceButton" size="large" />
+          <checkBox refID="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" size="large" />
+          <button refID="ToArcGISEarth_SaveImageFromArcGISEarthButton" size="large" />
         </group>
       </groups>
       <controls>
@@ -41,15 +42,17 @@
         <checkBox id="ToArcGISEarth_AddLayerCheckBox" caption="Add layer" className="AddLayerCheckBox" isChecked="false" loadOnClick="true" keytip="ToArcGISEarth_AddLayerCheckBox_KeyTip">
           <tooltip>Add layer into ArcGIS Pro and ArcGIS Earth</tooltip>
         </checkBox>
-        <checkBox id="ToArcGISEarth_RemoveLayerCheckBox" caption="Remobe layer" className="RemoveLayerCheckBox" isChecked="false" loadOnClick="true" keytip="ToArcGISEarth_RemoveLayerCheckBox_KeyTip">
+        <checkBox id="ToArcGISEarth_RemoveLayerCheckBox" caption="Remove layer" className="RemoveLayerCheckBox" isChecked="false" loadOnClick="true" keytip="ToArcGISEarth_RemoveLayerCheckBox_KeyTip">
           <tooltip>Remove layer from ArcGIS Pro and ArcGIS Earth</tooltip>
         </checkBox>
-        <button id="ToArcGISEarth_ClearEarthWorkspaceButton" caption="Clear workspace" className="ClearEarthWorkspaceButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_ClearEarthWorkspaceCheckBox_KeyTip">
+        <button id="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" caption="Clear workspace" className="ClearArcGISEarthWorkspaceButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_ClearArcGISEarthWorkspaceButton_KeyTip">
           <tooltip>Clear ArcGIS Earth workspace</tooltip>
         </button>
+        <button id="ToArcGISEarth_SaveImageFromArcGISEarthButton" caption="Save image" className="SaveImageFromArcGISEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_SaveImageFromArcGISEarthButton_KeyTip">
+          <tooltip>Save screenshot from ArcGIS Earth</tooltip>
+        </button>
       </controls>
-      <panes>
-      </panes>
+      <panes></panes>
     </insertModule>
   </modules>
   <dropHandlers>

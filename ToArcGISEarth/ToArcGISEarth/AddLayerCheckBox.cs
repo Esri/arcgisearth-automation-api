@@ -5,8 +5,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace ToArcGISEarth
 {
@@ -35,52 +34,59 @@ namespace ToArcGISEarth
 
         private void AddLayer(LayerEventsArgs args)
         {
-            List<Layer> layerList = args.Layers as List<Layer>;
-            if (layerList != null && layerList.Count != 0)
+            try
             {
-                Layer layer = layerList[0] as Layer;
-                JObject addLayerJson = new JObject();
-                addLayerJson["URI"] = GetLayerUrl(layer);
-                if (layer.MapLayerType == ArcGIS.Core.CIM.MapLayerType.Operational)
+                List<Layer> layerList = args.Layers as List<Layer>;
+                if (layerList != null && layerList.Count != 0)
                 {
-                    addLayerJson["target"] = "OperationalLayers";
+                    Layer layer = layerList[0] as Layer;
+                    string url = GetLayerUrl(layer);
+                    if (url != null)
+                    {
+                        JObject addLayerJson = new JObject
+                        {
+                            ["URI"] = url
+                        };
+                        if (layer.MapLayerType == ArcGIS.Core.CIM.MapLayerType.Operational)
+                        {
+                            addLayerJson["target"] = "OperationalLayers";
+                        }
+                        if (layer.MapLayerType == ArcGIS.Core.CIM.MapLayerType.BasemapBackground)
+                        {
+                            addLayerJson["target"] = "BasemapLayers";
+                        }
+                        string currentJson = addLayerJson.ToString();
+                        if (currentJson != null)
+                        {
+                            currentJson = currentJson.Replace("\n", "");
+                            currentJson = currentJson.Replace("\r", "");
+                        }
+                        string[] nameAndType = new string[2] 
+                        {
+                            layer.Name,
+                            layer.MapLayerType.ToString()
+                        };                  
+                        string id = ConnectToArcGISEarthButton.Utils.AddLayer(currentJson);
+                        if (!ConnectToArcGISEarthButton.IdNameDic.Keys.Contains(id))
+                        {
+                            ConnectToArcGISEarthButton.IdNameDic.Add(id, nameAndType);
+                        }
+                    }
+                    else
+                    {
+                        ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Add layer into ArcGIS Earth unsuccessfully, because ArcGIS Earth can not get layer url");
+                    }
                 }
-                if (layer.MapLayerType == ArcGIS.Core.CIM.MapLayerType.BasemapBackground)
-                {
-                    addLayerJson["target"] = "BasemapLayers";
-                }
-                string currentJson = addLayerJson.ToString();
-                if (currentJson != null)
-                {
-                    currentJson = currentJson.Replace("\n", "");
-                    currentJson = currentJson.Replace("\r", "");
-                }
-                string[] nameAndType = new string[2];
-                nameAndType[0] = (layer.Name);
-                nameAndType[1] = (layer.MapLayerType.ToString());
-                string id = ConnectToArcGISEarthButton.Utils.AddLayer(currentJson);
-                if (!ConnectToArcGISEarthButton.IdNameDic.Keys.Contains(id))
-                {
-                    ConnectToArcGISEarthButton.IdNameDic.Add(id, nameAndType);
-                }
+            }
+            catch (Exception ex)
+            {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(ex.Message, "Error message", MessageBoxButton.OK);
             }
         }
 
         private string GetLayerUrl(Layer layer)
         {
-            if (layer is ServiceLayer)
-            {
-                return (layer as ServiceLayer).URL;
-            }
-            if (layer is RasterLayer)
-            {
-
-            }
-            if (layer is FeatureLayer)
-            {
-
-            }
-            return "";
+            return layer?.GetType()?.GetProperty("URL")?.GetValue(layer) as string;
         }
     }
 }

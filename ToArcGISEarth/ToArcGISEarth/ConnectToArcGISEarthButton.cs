@@ -11,19 +11,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
-using ArcGIS.Desktop.Mapping.Events;
-using ArcGIS.Desktop.Mapping;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using EarthAPIUtils;
-using ArcGIS.Desktop.Framework.Threading.Tasks;
 
 namespace ToArcGISEarth
 {
@@ -31,7 +21,7 @@ namespace ToArcGISEarth
     {
         public static EarthNamedpipeAPIUtils Utils { get; set; }
         public static bool IsConnectSuccessful { get; set; } // Record the status of connecting ArcGIS Earth
-        public static Dictionary<string,string[]> IdNameDic { get; set; } // Record the layer id, layer name and layer MapLayerType
+        public static Dictionary<string, string[]> IdNameDic { get; set; } // Record the layer id, layer name and layer MapLayerType
 
         public ConnectToArcGISEarthButton()
         {
