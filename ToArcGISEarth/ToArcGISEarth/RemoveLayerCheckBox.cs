@@ -42,7 +42,7 @@ namespace ToArcGISEarth
                 // If there have some layers that they have same name, just remove one of them 
                 foreach (var item in ConnectToArcGISEarthButton.IdNameDic)
                 {
-                    if (item.Value?.Count == 2 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString())
+                    if (item.Value?.Length == 2 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString())
                     {
                         id = item.Key;
                         break;

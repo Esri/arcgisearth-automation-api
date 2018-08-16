@@ -20,7 +20,7 @@ namespace ToArcGISEarth
                 {
                     ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please connect to ArcGIS Earth");
                     this.IsChecked = false;
-                    return;                   
+                    return;
                 }
                 else
                 {
@@ -55,9 +55,9 @@ namespace ToArcGISEarth
                     currentJson = currentJson.Replace("\n", "");
                     currentJson = currentJson.Replace("\r", "");
                 }
-                List<string> nameAndType = new List<string>();
-                nameAndType.Add(layer.Name);
-                nameAndType.Add(layer.MapLayerType.ToString());
+                string[] nameAndType = new string[2];
+                nameAndType[0] = (layer.Name);
+                nameAndType[1] = (layer.MapLayerType.ToString());
                 string id = ConnectToArcGISEarthButton.Utils.AddLayer(currentJson);
                 if (!ConnectToArcGISEarthButton.IdNameDic.Keys.Contains(id))
                 {
@@ -74,7 +74,7 @@ namespace ToArcGISEarth
             }
             if (layer is RasterLayer)
             {
-                
+
             }
             if (layer is FeatureLayer)
             {

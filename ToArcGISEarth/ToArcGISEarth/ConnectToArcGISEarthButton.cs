@@ -30,13 +30,13 @@ namespace ToArcGISEarth
     internal class ConnectToArcGISEarthButton : Button
     {
         public static EarthNamedpipeAPIUtils Utils { get; set; }
-        public static bool IsConnectSuccessful { get; set; }
-        public static Dictionary<string, List<string>> IdNameDic { get; set; }
+        public static bool IsConnectSuccessful { get; set; } // Record the status of connecting ArcGIS Earth
+        public static Dictionary<string,string[]> IdNameDic { get; set; } // Record the layer id, layer name and layer MapLayerType
 
         public ConnectToArcGISEarthButton()
         {
             Utils = new EarthNamedpipeAPIUtils();
-            IdNameDic = new Dictionary<string, List<string>>();
+            IdNameDic = new Dictionary<string, string[]>();
             IsConnectSuccessful = false;
         }
 

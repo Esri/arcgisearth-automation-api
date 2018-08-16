@@ -108,7 +108,6 @@
     <Compile Include="AutomationAPI\EarthNamedpipeAPIUtils.cs" />
     <Compile Include="AutomationAPI\IEarthNamedpipeService.cs" />
     <Compile Include="ClearEarthWorkspaceButton.cs" />
-    <Compile Include="CustomControl1ViewModel.cs" />
     <Compile Include="Module1.cs" />
     <Compile Include="AutomationAPI\ProcessUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
