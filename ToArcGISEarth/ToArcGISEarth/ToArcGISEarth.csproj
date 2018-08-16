@@ -107,18 +107,14 @@
     <Compile Include="AddLayerCheckBox.cs" />
     <Compile Include="AutomationAPI\EarthNamedpipeAPIUtils.cs" />
     <Compile Include="AutomationAPI\IEarthNamedpipeService.cs" />
+    <Compile Include="ClearEarthWorkspaceButton.cs" />
+    <Compile Include="CustomControl1ViewModel.cs" />
     <Compile Include="Module1.cs" />
     <Compile Include="AutomationAPI\ProcessUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveLayerCheckBox.cs" />
-    <Compile Include="ViewLinkCheckBox.cs" />
+    <Compile Include="SyncToArcGISEarthCheckBox.cs" />
     <Compile Include="ConnectToArcGISEarthButton.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <AddInContent Include="DarkImages\GenericButtonBlue16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AddInContent Include="DarkImages\GenericButtonBlue32.png" />
   </ItemGroup>
   <ItemGroup>
     <AddInContent Include="Images\ArcGISEarth16.png" />
@@ -129,12 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <AddInContent Include="Images\GenericButtonBlue16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AddInContent Include="Images\GenericButtonBlue32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--

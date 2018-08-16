@@ -74,7 +74,7 @@ namespace ToArcGISEarth
             }
             if (layer is RasterLayer)
             {
-
+                
             }
             if (layer is FeatureLayer)
             {

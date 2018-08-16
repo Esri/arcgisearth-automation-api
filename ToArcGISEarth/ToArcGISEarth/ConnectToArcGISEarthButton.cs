@@ -59,12 +59,12 @@ namespace ToArcGISEarth
                     return;
                 }
                 else
-                {              
+                {
                     this.IsChecked = true;
                     this.Caption = "Disconnect";
                     IsConnectSuccessful = true;
                 }
             }
-        }    
+        }
     }
 }

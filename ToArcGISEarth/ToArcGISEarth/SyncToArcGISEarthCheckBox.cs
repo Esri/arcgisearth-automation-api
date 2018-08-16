@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace ToArcGISEarth
 {
-    public class ViewLinkCheckBox : CheckBox
-    {                     
+    public class SyncToArcGISEarthCheckBox : CheckBox
+    {    
         protected override void OnClick()
         {
             if ((bool)IsChecked)
@@ -38,7 +38,7 @@ namespace ToArcGISEarth
 
         private void SetCamera(MapViewCameraChangedEventArgs args)
         {
-            MapView mapView = args.MapView;
+            MapView mapView = args.MapView;          
             if (null != mapView && null != mapView.Camera)
             {
                 //currentCameraJson = JsonConvert.SerializeObject(mapView.Camera);
