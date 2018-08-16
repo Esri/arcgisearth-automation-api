@@ -21,17 +21,42 @@
       <groups>
         <!-- comment this out if you have no controls on the Addin tab to avoid
               an empty group-->
-        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true">
+        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="ToArcGISEarth_Group1_KeyTip">
           <!-- host controls within groups -->
-          <button refID="ToArcGISEarth_SyncToArcGISEarthButton" size="large" />
+          <button refID="ToArcGISEarth_ConnectToArcGISEarthButton" size="large" />
+          <checkBox refID="ToArcGISEarth_SyncToArcGISEarthCheckBox" size="large" />
+          <checkBox refID="ToArcGISEarth_AddLayerCheckBox" size="large" />
+          <checkBox refID="ToArcGISEarth_RemoveLayerCheckBox" size="large" />
+          <checkBox refID="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" size="large" />
+          <button refID="ToArcGISEarth_SaveImageFromArcGISEarthButton" size="large" />
         </group>
       </groups>
       <controls>
         <!-- add your controls here -->
-        <button id="ToArcGISEarth_SyncToArcGISEarthButton" caption="Connect" className="SyncToArcGISEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png">
-          <tooltip heading="Sync">Sync To ArcGIS Earth<disabledText /></tooltip>
+        <button id="ToArcGISEarth_ConnectToArcGISEarthButton" caption="Connect" className="ConnectToArcGISEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_ConnectToArcGISEarthButton_KeyTip">
+          <tooltip>Connect to ArcGIS Earth </tooltip>
+        </button>
+        <checkBox id="ToArcGISEarth_SyncToArcGISEarthCheckBox" caption="Sync" className="SyncToArcGISEarthCheckBox" isChecked="false" loadOnClick="true" keytip="ToArcGISEarth_SyncToArcGISEarthCheckBox_KeyTip">
+          <tooltip>Sync to ArcGIS Earth</tooltip>
+        </checkBox>
+        <checkBox id="ToArcGISEarth_AddLayerCheckBox" caption="Add layer" className="AddLayerCheckBox" isChecked="false" loadOnClick="true" keytip="ToArcGISEarth_AddLayerCheckBox_KeyTip">
+          <tooltip>Add layer into ArcGIS Pro and ArcGIS Earth</tooltip>
+        </checkBox>
+        <checkBox id="ToArcGISEarth_RemoveLayerCheckBox" caption="Remove layer" className="RemoveLayerCheckBox" isChecked="false" loadOnClick="true" keytip="ToArcGISEarth_RemoveLayerCheckBox_KeyTip">
+          <tooltip>Remove layer from ArcGIS Pro and ArcGIS Earth</tooltip>
+        </checkBox>
+        <button id="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" caption="Clear workspace" className="ClearArcGISEarthWorkspaceButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_ClearArcGISEarthWorkspaceButton_KeyTip">
+          <tooltip>Clear ArcGIS Earth workspace</tooltip>
+        </button>
+        <button id="ToArcGISEarth_SaveImageFromArcGISEarthButton" caption="Save image" className="SaveImageFromArcGISEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_SaveImageFromArcGISEarthButton_KeyTip">
+          <tooltip>Save screenshot from ArcGIS Earth</tooltip>
         </button>
       </controls>
+      <panes></panes>
     </insertModule>
   </modules>
+  <dropHandlers>
+    <!--specific file extensions can be set like so: dataTypes=".XLS|.xls"-->
+    <insertHandler id="ToArcGISEarth_DropHandler1" className="DropHandler1" dataTypes="*" />
+  </dropHandlers>
 </ArcGIS>
