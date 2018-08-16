@@ -38,7 +38,7 @@ namespace ToArcGISEarth
                 this.IsChecked = false;
                 this.Caption = "Connect";
                 IdNameDic.Clear();
-                IsConnectSuccessful = false;
+                IsConnectSuccessful = false;              
             }
             else
             {

@@ -41,7 +41,7 @@ namespace ToArcGISEarth
                 {
                     Layer layer = layerList[0] as Layer;
                     string url = GetLayerUrl(layer);
-                    if (url != null)
+                    if (String.IsNullOrWhiteSpace(url))
                     {
                         JObject addLayerJson = new JObject
                         {
@@ -61,11 +61,11 @@ namespace ToArcGISEarth
                             currentJson = currentJson.Replace("\n", "");
                             currentJson = currentJson.Replace("\r", "");
                         }
-                        string[] nameAndType = new string[2] 
+                        string[] nameAndType = new string[2]
                         {
                             layer.Name,
                             layer.MapLayerType.ToString()
-                        };                  
+                        };
                         string id = ConnectToArcGISEarthButton.Utils.AddLayer(currentJson);
                         if (!ConnectToArcGISEarthButton.IdNameDic.Keys.Contains(id))
                         {
@@ -86,7 +86,8 @@ namespace ToArcGISEarth
 
         private string GetLayerUrl(Layer layer)
         {
+            // Determine whether the layer has URL property, if has, get URL value.
             return layer?.GetType()?.GetProperty("URL")?.GetValue(layer) as string;
-        }
+        }       
     }
 }

@@ -30,9 +30,7 @@ namespace ToArcGISEarth
 
         private void ClearAll()
         {
-            ConnectToArcGISEarthButton.Utils.ClearLayers("{\"target\":\"OperationalLayers\"}");
-            ConnectToArcGISEarthButton.Utils.ClearLayers("{\"target\":\"BasemapLayers\"}");
-            ConnectToArcGISEarthButton.Utils.ClearLayers("{\"target\":\"ElevationLayers\"}");
+            ConnectToArcGISEarthButton.Utils.ClearLayers("{\"target\":\"AllLayers\"}");            
         }
     }
 }
