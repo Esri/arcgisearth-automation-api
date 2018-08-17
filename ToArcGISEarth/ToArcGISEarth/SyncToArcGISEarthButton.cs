@@ -10,26 +10,38 @@ using System.Windows;
 
 namespace ToArcGISEarth
 {
-    public class SyncToArcGISEarthCheckBox : CheckBox
+    public class SyncToArcGISEarthButton : Button
     {
+        public SyncToArcGISEarthButton()
+        {
+            this.Enabled = false;
+        }
+
         protected override void OnClick()
         {
-            if ((bool)IsChecked)
+            if (this.IsChecked)
             {
-                if (!ConnectToArcGISEarthButton.IsConnectSuccessful)
-                {
-                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please connect to ArcGIS Earth");
-                    this.IsChecked = false;
-                    return;
-                }
-                else
-                {
-                    MapViewCameraChangedEvent.Subscribe(SetCamera, false);
-                }
+                MapViewCameraChangedEvent.Unsubscribe(SetCamera);
+                this.IsChecked = false;
+            }
+            else
+            {
+                MapViewCameraChangedEvent.Subscribe(SetCamera, false);
+                this.IsChecked = true;
+            }
+        }
+
+        protected override void OnUpdate()
+        {
+            if (ConnectToArcGISEarthButton.IsConnectSuccessfully)
+            {
+                this.Enabled = true;
             }
             else
             {
                 MapViewCameraChangedEvent.Unsubscribe(SetCamera);
+                this.IsChecked = false;
+                this.Enabled = false;                             
             }
         }
 
@@ -61,14 +73,10 @@ namespace ToArcGISEarth
                     }
                     ConnectToArcGISEarthButton.Utils.SetCamera(currentCameraJson);
                 }
-                else
-                {
-                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please open a Scene");
-                }
             }
-            catch (Exception ex)
+            catch
             {
-                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(ex.Message, "Error message", MessageBoxButton.OK);
+                return;
             }
         }
     }

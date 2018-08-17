@@ -12,6 +12,7 @@
 // limitations under the License.
 
 using System.Collections.Generic;
+using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
 using EarthAPIUtils;
 
@@ -20,14 +21,14 @@ namespace ToArcGISEarth
     internal class ConnectToArcGISEarthButton : Button
     {
         public static EarthNamedpipeAPIUtils Utils { get; set; }
-        public static bool IsConnectSuccessful { get; set; } // Record the status of connecting ArcGIS Earth
+        public static bool IsConnectSuccessfully { get; set; } // Record the status of connecting ArcGIS Earth
         public static Dictionary<string, string[]> IdNameDic { get; set; } // Record the layer id, layer name and layer MapLayerType
 
         public ConnectToArcGISEarthButton()
         {
             Utils = new EarthNamedpipeAPIUtils();
             IdNameDic = new Dictionary<string, string[]>();
-            IsConnectSuccessful = false;
+            IsConnectSuccessfully = false;
         }
 
         protected override async void OnClick()
@@ -37,22 +38,21 @@ namespace ToArcGISEarth
                 Utils.CloseConnect();
                 this.IsChecked = false;
                 this.Caption = "Connect";
-                IdNameDic.Clear();
-                IsConnectSuccessful = false;              
+                IsConnectSuccessfully = false;
             }
             else
             {
                 string result = await Utils.Connect();
                 if (result != "Success")
                 {
-                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please start ArcGIS Earth with automation API opened then connect to it");
+                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please start ArcGIS Earth with automation API opened then connect to it.");
                     return;
                 }
                 else
                 {
                     this.IsChecked = true;
                     this.Caption = "Disconnect";
-                    IsConnectSuccessful = true;
+                    IsConnectSuccessfully = true;
                 }
             }
         }

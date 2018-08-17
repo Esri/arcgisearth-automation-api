@@ -8,31 +8,36 @@ namespace ToArcGISEarth
 {
     public class SaveImageFromArcGISEarthButton : Button
     {
+        public SaveImageFromArcGISEarthButton()
+        {
+            this.Enabled = false;
+        }
+
         protected override async void OnClick()
         {
             this.IsChecked = true;
-            if (!ConnectToArcGISEarthButton.IsConnectSuccessful)
+            await SaveImage();
+            this.IsChecked = false;
+            return;
+        }
+
+        protected override void OnUpdate()
+        {
+            if (ConnectToArcGISEarthButton.IsConnectSuccessfully)
             {
-                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please connect to ArcGIS Earth");
-                this.IsChecked = false;
-                return;
+                this.Enabled = true;
             }
             else
             {
-                bool result = await SaveImage();
-                if (result)
-                {
-                    MessageBox.Show("Save screenshot from ArcGIS Earth Successfully");
-                }
+                this.Enabled = false;
                 this.IsChecked = false;
-                return;
             }
         }
 
-        private async Task<bool> SaveImage()
+        private async Task SaveImage()
         {
             SaveFileDialog dialog = new SaveFileDialog
-            {            
+            {
                 Filter = "Png file|*.png|Jpeg file|*.jpg|Tiff file|*.tif",
                 DefaultExt = "png",
                 OverwritePrompt = true,
@@ -43,10 +48,8 @@ namespace ToArcGISEarth
                 if (!String.IsNullOrWhiteSpace(dialog.FileName))
                 {
                     await ConnectToArcGISEarthButton.Utils.GetSnapshot(dialog.FileName);
-                    return true;
                 }
             }
-            return false;
         }
     }
 }

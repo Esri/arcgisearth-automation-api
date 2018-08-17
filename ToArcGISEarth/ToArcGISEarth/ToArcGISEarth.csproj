@@ -100,16 +100,17 @@
     </AddInContent>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddLayerCheckBox.cs" />
+    <Compile Include="AddLayerButton.cs" />
     <Compile Include="AutomationAPI\EarthNamedpipeAPIUtils.cs" />
     <Compile Include="AutomationAPI\IEarthNamedpipeService.cs" />
     <Compile Include="ClearArcGISEarthWorkspaceButton.cs" />
+    <Compile Include="HelpButton.cs" />
     <Compile Include="Module1.cs" />
     <Compile Include="AutomationAPI\ProcessUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoveLayerCheckBox.cs" />
+    <Compile Include="RemoveLayerButton.cs" />
     <Compile Include="SaveImageFromArcGISEarthButton.cs" />
-    <Compile Include="SyncToArcGISEarthCheckBox.cs" />
+    <Compile Include="SyncToArcGISEarthButton.cs" />
     <Compile Include="ConnectToArcGISEarthButton.cs" />
   </ItemGroup>
   <ItemGroup>

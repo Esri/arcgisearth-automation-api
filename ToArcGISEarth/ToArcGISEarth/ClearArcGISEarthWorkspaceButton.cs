@@ -5,20 +5,18 @@ namespace ToArcGISEarth
 {
     public class ClearArcGISEarthWorkspaceButton : Button
     {
+        public ClearArcGISEarthWorkspaceButton()
+        {
+            this.Enabled = false;
+        }
+
         protected override void OnClick()
         {
             this.IsChecked = true;
-            if (!ConnectToArcGISEarthButton.IsConnectSuccessful)
-            {
-                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please connect to ArcGIS Earth");
-                this.IsChecked = false;
-                return;
-            }
-            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Are you sure to clear ArcGIS Earth workspace", "Tip", MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
+            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Are you sure you want to remove all items from current workspace?", "", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
             {
                 ClearAll();
-                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("ArcGIS Earth workspace has been cleared");
                 this.IsChecked = false;
             }
             else
@@ -28,9 +26,22 @@ namespace ToArcGISEarth
             }
         }
 
+        protected override void OnUpdate()
+        {
+            if (ConnectToArcGISEarthButton.IsConnectSuccessfully)
+            {
+                this.Enabled = true;
+            }
+            else
+            {
+                this.Enabled = false;
+                this.IsChecked = false;
+            }
+        }
+
         private void ClearAll()
         {
-            ConnectToArcGISEarthButton.Utils.ClearLayers("{\"target\":\"AllLayers\"}");            
+            ConnectToArcGISEarthButton.Utils.ClearLayers("{\"target\":\"AllLayers\"}");
         }
     }
 }

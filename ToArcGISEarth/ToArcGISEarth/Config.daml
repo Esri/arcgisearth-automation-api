@@ -24,32 +24,36 @@
         <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="ToArcGISEarth_Group1_KeyTip">
           <!-- host controls within groups -->
           <button refID="ToArcGISEarth_ConnectToArcGISEarthButton" size="large" />
-          <checkBox refID="ToArcGISEarth_SyncToArcGISEarthCheckBox" size="large" />
-          <checkBox refID="ToArcGISEarth_AddLayerCheckBox" size="large" />
-          <checkBox refID="ToArcGISEarth_RemoveLayerCheckBox" size="large" />
-          <checkBox refID="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" size="large" />
-          <button refID="ToArcGISEarth_SaveImageFromArcGISEarthButton" size="large" />
+          <button refID="ToArcGISEarth_SyncToArcGISEarthButton" size="middle" />
+          <button refID="ToArcGISEarth_AddLayerButton" size="middle" />
+          <button refID="ToArcGISEarth_RemoveLayerButton" size="middle" />
+          <button refID="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" size="middle" />
+          <button refID="ToArcGISEarth_SaveImageFromArcGISEarthButton" size="middle" />
+          <button refID="ToArcGISEarth_HelpButton" size="middle" />
         </group>
       </groups>
       <controls>
         <!-- add your controls here -->
-        <button id="ToArcGISEarth_ConnectToArcGISEarthButton" caption="Connect" className="ConnectToArcGISEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_ConnectToArcGISEarthButton_KeyTip">
-          <tooltip>Connect to ArcGIS Earth </tooltip>
+        <button id="ToArcGISEarth_ConnectToArcGISEarthButton" caption="Connect" className="ConnectToArcGISEarthButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CE">
+          <tooltip>This add-in demonstrates how to communicate with ArcGIS Earth via the Automation API on ArcGIS Pro 2.2.</tooltip>
         </button>
-        <checkBox id="ToArcGISEarth_SyncToArcGISEarthCheckBox" caption="Sync" className="SyncToArcGISEarthCheckBox" isChecked="false" loadOnClick="true" keytip="ToArcGISEarth_SyncToArcGISEarthCheckBox_KeyTip">
-          <tooltip>Sync to ArcGIS Earth</tooltip>
-        </checkBox>
-        <checkBox id="ToArcGISEarth_AddLayerCheckBox" caption="Add layer" className="AddLayerCheckBox" isChecked="false" loadOnClick="true" keytip="ToArcGISEarth_AddLayerCheckBox_KeyTip">
-          <tooltip>Add layer into ArcGIS Pro and ArcGIS Earth</tooltip>
-        </checkBox>
-        <checkBox id="ToArcGISEarth_RemoveLayerCheckBox" caption="Remove layer" className="RemoveLayerCheckBox" isChecked="false" loadOnClick="true" keytip="ToArcGISEarth_RemoveLayerCheckBox_KeyTip">
-          <tooltip>Remove layer from ArcGIS Pro and ArcGIS Earth</tooltip>
-        </checkBox>
-        <button id="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" caption="Clear workspace" className="ClearArcGISEarthWorkspaceButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_ClearArcGISEarthWorkspaceButton_KeyTip">
-          <tooltip>Clear ArcGIS Earth workspace</tooltip>
+        <button id="ToArcGISEarth_SyncToArcGISEarthButton" caption="Synchronize view" className="SyncToArcGISEarthButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="SE">
+          <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
         </button>
-        <button id="ToArcGISEarth_SaveImageFromArcGISEarthButton" caption="Save image" className="SaveImageFromArcGISEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="ToArcGISEarth_SaveImageFromArcGISEarthButton_KeyTip">
-          <tooltip>Save screenshot from ArcGIS Earth</tooltip>
+        <button id="ToArcGISEarth_AddLayerButton" caption="Add layer" className="AddLayerButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="AL">
+          <tooltip>Synchronize the operation when adding layer.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_RemoveLayerButton" caption="Remove layer" className="RemoveLayerButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="RL">
+          <tooltip>Synchronize the operation when removing layer.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" caption="Clear workspace" className="ClearArcGISEarthWorkspaceButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CW">
+          <tooltip>Clear workspace in ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_SaveImageFromArcGISEarthButton" caption="Save image" className="SaveImageFromArcGISEarthButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="SI">
+          <tooltip>Save current view in ArcGIS Earth as image.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="SI">
+          <tooltip>Help.</tooltip>
         </button>
       </controls>
       <panes></panes>
