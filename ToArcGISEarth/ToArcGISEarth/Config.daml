@@ -2,54 +2,52 @@
   <AddInInfo id="{94776263-9f12-4574-927e-c3c2de42bcaf}" version="1.0" desktopVersion="2.0.8933">
     <Name>ToArcGISEarth</Name>
     <Description>ArcGIS Pro to ArcGIS Earth</Description>
-    <Image>Images\AddinDesktop32.png</Image>
+    <Image>Images\ArcGISEarth32.png</Image>
     <Author>ArcGIS Earth Team</Author>
     <Company>esri, http://www.esri.com</Company>
-    <Date>7/28/2017 10:12:05 AM, 2017</Date>
+    <Date>8/20/2018 11:00:00 AM, 2018</Date>
     <Subject>Framework</Subject>
-    <!-- Note subject can be one or more of these topics:
-                    Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
   </AddInInfo>
   <modules>
-    <insertModule id="ToArcGISEarth_Module" className="Module1" autoLoad="false" caption="Module1">
-      <!-- uncomment to have the control hosted on a separate tab-->
-      <tabs>
-        <!--<tab id="ToArcGISEarth_Tab1" caption="New Tab">
-          <group refID="ToArcGISEarth_Group1"/>
-        </tab>-->
-      </tabs>
+    <insertModule id="ToArcGISEarth_Module" className="ArcGISEarthModule" autoLoad="false" caption="ArcGISEarthModule">
       <groups>
-        <!-- comment this out if you have no controls on the Addin tab to avoid
-              an empty group-->
-        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="ToArcGISEarth_Group1_KeyTip">
-          <!-- host controls within groups -->
-          <button refID="ToArcGISEarth_ConnectToArcGISEarthButton" size="large" />
-          <button refID="ToArcGISEarth_SyncToArcGISEarthButton" size="middle" />
-          <button refID="ToArcGISEarth_AddLayerButton" size="middle" />
-          <button refID="ToArcGISEarth_RemoveLayerButton" size="middle" />
-          <button refID="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" size="middle" />
-          <button refID="ToArcGISEarth_SaveImageFromArcGISEarthButton" size="middle" />
+        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TA">
+          <button refID="ToArcGISEarth_ConnectButton" size="large" />
+          <button refID="ToArcGISEarth_SplitButton" size="middle" />
+          <button refID="ToArcGISEarth_ClearWorkspaceButton" size="middle" />
+          <button refID="ToArcGISEarth_SaveImageButton" size="middle" />
           <button refID="ToArcGISEarth_HelpButton" size="middle" />
         </group>
       </groups>
+      <splitButtons>
+        <splitButton id="ToArcGISEarth_SplitButton">
+          <button refID="ToArcGISEarth_SynchronizationButton" />
+          <button refID="ToArcGISEarth_SetCameraButton" />
+          <button refID="ToArcGISEarth_AddLayerButton" />
+          <button refID="ToArcGISEarth_RemoveLayerButton" />
+        </splitButton>
+      </splitButtons>
       <controls>
-        <!-- add your controls here -->
-        <button id="ToArcGISEarth_ConnectToArcGISEarthButton" caption="Connect" className="ConnectToArcGISEarthButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CE">
+        <button id="ToArcGISEarth_ConnectButton" caption="Connect" className="ConnectButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png"
+               helpContextID="http://myown.website.com/demo" keytip="CE">
           <tooltip>This add-in demonstrates how to communicate with ArcGIS Earth via the Automation API on ArcGIS Pro 2.2.</tooltip>
         </button>
-        <button id="ToArcGISEarth_SyncToArcGISEarthButton" caption="Synchronize view" className="SyncToArcGISEarthButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="SE">
+        <button id="ToArcGISEarth_SynchronizationButton" caption="Synchronization" className="SynchronizationButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CE">
+          <tooltip>Synchronization.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_SetCameraButton" caption="Camera view" className="SetCameraButton" loadOnClick="false"  keytip="SE">
           <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
         </button>
-        <button id="ToArcGISEarth_AddLayerButton" caption="Add layer" className="AddLayerButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="AL">
+        <button id="ToArcGISEarth_AddLayerButton" caption="Add layer" className="AddLayerButton" loadOnClick="false"  keytip="AL">
           <tooltip>Synchronize the operation when adding layer.</tooltip>
         </button>
-        <button id="ToArcGISEarth_RemoveLayerButton" caption="Remove layer" className="RemoveLayerButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="RL">
+        <button id="ToArcGISEarth_RemoveLayerButton" caption="Remove layer" className="RemoveLayerButton" loadOnClick="false"  keytip="RL">
           <tooltip>Synchronize the operation when removing layer.</tooltip>
         </button>
-        <button id="ToArcGISEarth_ClearArcGISEarthWorkspaceButton" caption="Clear workspace" className="ClearArcGISEarthWorkspaceButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CW">
+        <button id="ToArcGISEarth_ClearWorkspaceButton" caption="Clear workspace" className="ClearWorkspaceButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CW">
           <tooltip>Clear workspace in ArcGIS Earth.</tooltip>
         </button>
-        <button id="ToArcGISEarth_SaveImageFromArcGISEarthButton" caption="Save image" className="SaveImageFromArcGISEarthButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="SI">
+        <button id="ToArcGISEarth_SaveImageButton" caption="Save image" className="SaveImageButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="SI">
           <tooltip>Save current view in ArcGIS Earth as image.</tooltip>
         </button>
         <button id="ToArcGISEarth_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="SI">
@@ -60,7 +58,6 @@
     </insertModule>
   </modules>
   <dropHandlers>
-    <!--specific file extensions can be set like so: dataTypes=".XLS|.xls"-->
     <insertHandler id="ToArcGISEarth_DropHandler1" className="DropHandler1" dataTypes="*" />
   </dropHandlers>
 </ArcGIS>

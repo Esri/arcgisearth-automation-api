@@ -1,14 +1,14 @@
 ﻿using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
-using System;
 using System.Collections.Generic;
-using System.Windows;
 
 namespace ToArcGISEarth
 {
     public class RemoveLayerButton : Button
     {
+        public static bool HasChecked { get; set; }
+
         public RemoveLayerButton()
         {
             this.Enabled = false;
@@ -20,25 +20,28 @@ namespace ToArcGISEarth
             {
                 LayersRemovedEvent.Unsubscribe(RemoveLayer);
                 this.IsChecked = false;
+                HasChecked = false;
             }
             else
             {
                 LayersRemovedEvent.Subscribe(RemoveLayer, false);
                 this.IsChecked = true;
+                HasChecked = true;
             }
         }
 
         protected override void OnUpdate()
         {
-            if (ConnectToArcGISEarthButton.IsConnectSuccessfully)
+            if (ToolHelper.IsConnectSuccessfully)
             {
                 this.Enabled = true;
             }
             else
             {
                 LayersRemovedEvent.Unsubscribe(RemoveLayer);
-                this.IsChecked = false;
                 this.Enabled = false;
+                this.IsChecked = false;
+                HasChecked = false;
             }
         }
 
@@ -47,12 +50,12 @@ namespace ToArcGISEarth
             try
             {
                 List<Layer> layerList = args.Layers as List<Layer>;
-                if (layerList != null && layerList.Count != 0)
+                if (layerList?.Count != 0)
                 {
                     foreach (var layer in layerList)
                     {
                         string id = "";
-                        foreach (var item in ConnectToArcGISEarthButton.IdNameDic)
+                        foreach (var item in ToolHelper.IdNameDic)
                         {
                             if (item.Value?.Length == 2 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString())
                             {
@@ -60,8 +63,8 @@ namespace ToArcGISEarth
                                 break;
                             }
                         }
-                        ConnectToArcGISEarthButton.Utils.RemoveLayer(id);
-                        ConnectToArcGISEarthButton.IdNameDic.Remove(id);
+                        ToolHelper.Utils.RemoveLayer(id);
+                        ToolHelper.IdNameDic.Remove(id);
                     }
                 }
             }

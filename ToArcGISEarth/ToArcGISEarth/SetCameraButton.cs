@@ -4,15 +4,15 @@ using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.Windows;
 
 namespace ToArcGISEarth
 {
-    public class SyncToArcGISEarthButton : Button
+    public class SetCameraButton : Button
     {
-        public SyncToArcGISEarthButton()
+        public static bool HasChecked { get; set; }
+
+        public SetCameraButton()
         {
             this.Enabled = false;
         }
@@ -23,33 +23,36 @@ namespace ToArcGISEarth
             {
                 MapViewCameraChangedEvent.Unsubscribe(SetCamera);
                 this.IsChecked = false;
+                HasChecked = false;
             }
             else
             {
                 MapViewCameraChangedEvent.Subscribe(SetCamera, false);
                 this.IsChecked = true;
+                HasChecked = true;
             }
         }
 
         protected override void OnUpdate()
         {
-            if (ConnectToArcGISEarthButton.IsConnectSuccessfully)
+            if (ToolHelper.IsConnectSuccessfully)
             {
                 this.Enabled = true;
             }
             else
-            {
-                MapViewCameraChangedEvent.Unsubscribe(SetCamera);
+            {             
+                MapViewCameraChangedEvent.Unsubscribe(SetCamera); 
+                this.Enabled = false;
                 this.IsChecked = false;
-                this.Enabled = false;                             
+                HasChecked = false;
             }
         }
 
         private void SetCamera(MapViewCameraChangedEventArgs args)
-        {
-            MapView mapView = args.MapView;
+        {           
             try
             {
+                MapView mapView = args.MapView;
                 if (null != mapView && null != mapView.Camera && mapView.ViewingMode == MapViewingMode.SceneGlobal)
                 {
                     JObject camera_j_obj = new JObject();
@@ -65,13 +68,8 @@ namespace ToArcGISEarth
                     camera_j_obj["mapPoint"] = location_j_obj;
                     camera_j_obj["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading;
                     camera_j_obj["pitch"] = mapView.Camera.Pitch + 90;
-                    var currentCameraJson = camera_j_obj.ToString();
-                    if (currentCameraJson != null)
-                    {
-                        currentCameraJson = currentCameraJson.Replace("\n", "");
-                        currentCameraJson = currentCameraJson.Replace("\r", "");
-                    }
-                    ConnectToArcGISEarthButton.Utils.SetCamera(currentCameraJson);
+                    string currentCameraJson = camera_j_obj.ToString();
+                    ToolHelper.Utils.SetCamera(currentCameraJson);
                 }
             }
             catch

@@ -3,9 +3,11 @@ using ArcGIS.Desktop.Framework.Contracts;
 
 namespace ToArcGISEarth
 {
-    public class ClearArcGISEarthWorkspaceButton : Button
+    public class ClearWorkspaceButton : Button
     {
-        public ClearArcGISEarthWorkspaceButton()
+        private const string MESSAGE_TIPS = "Are you sure you want to remove all items from current workspace?";
+
+        public ClearWorkspaceButton()
         {
             this.Enabled = false;
         }
@@ -13,7 +15,7 @@ namespace ToArcGISEarth
         protected override void OnClick()
         {
             this.IsChecked = true;
-            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Are you sure you want to remove all items from current workspace?", "", MessageBoxButton.OKCancel);
+            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS, null, MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 ClearAll();
@@ -28,7 +30,7 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
-            if (ConnectToArcGISEarthButton.IsConnectSuccessfully)
+            if (ToolHelper.IsConnectSuccessfully)
             {
                 this.Enabled = true;
             }
@@ -41,7 +43,7 @@ namespace ToArcGISEarth
 
         private void ClearAll()
         {
-            ConnectToArcGISEarthButton.Utils.ClearLayers("{\"target\":\"AllLayers\"}");
+            ToolHelper.Utils.ClearLayers("{\"target\":\"AllLayers\"}");
         }
     }
 }

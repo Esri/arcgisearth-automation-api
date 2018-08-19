@@ -103,15 +103,17 @@
     <Compile Include="AddLayerButton.cs" />
     <Compile Include="AutomationAPI\EarthNamedpipeAPIUtils.cs" />
     <Compile Include="AutomationAPI\IEarthNamedpipeService.cs" />
-    <Compile Include="ClearArcGISEarthWorkspaceButton.cs" />
+    <Compile Include="ClearWorkspaceButton.cs" />
     <Compile Include="HelpButton.cs" />
-    <Compile Include="Module1.cs" />
+    <Compile Include="ToolHelper.cs" />
+    <Compile Include="ArcGISEarthModule.cs" />
     <Compile Include="AutomationAPI\ProcessUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveLayerButton.cs" />
-    <Compile Include="SaveImageFromArcGISEarthButton.cs" />
-    <Compile Include="SyncToArcGISEarthButton.cs" />
-    <Compile Include="ConnectToArcGISEarthButton.cs" />
+    <Compile Include="SaveImageButton.cs" />
+    <Compile Include="SynchronizationButton.cs" />
+    <Compile Include="SetCameraButton.cs" />
+    <Compile Include="ConnectButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <AddInContent Include="Images\ArcGISEarth16.png" />

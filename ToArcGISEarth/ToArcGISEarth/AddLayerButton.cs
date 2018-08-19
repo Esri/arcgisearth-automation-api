@@ -1,16 +1,22 @@
-﻿using ArcGIS.Desktop.Framework.Contracts;
+﻿using ArcGIS.Core.CIM;
+using ArcGIS.Desktop.Framework.Contracts;
+using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Windows;
 
 namespace ToArcGISEarth
 {
     public class AddLayerButton : Button
     {
+        private const string MESSAGE_TIPS = "Failed to add layer to ArcGIS Earth.";
+
+        public static bool HasChecked { get; set; }
+
         public AddLayerButton()
         {
             this.Enabled = false;
@@ -22,25 +28,33 @@ namespace ToArcGISEarth
             {
                 LayersAddedEvent.Unsubscribe(AddLayer);
                 this.IsChecked = false;
+                HasChecked = false;
             }
             else
             {
                 LayersAddedEvent.Subscribe(AddLayer, false);
+                Layer layer = MapView.Active.Map.GetLayersAsFlattenedList().ToList()[0];
+                QueuedTask.Run(() =>
+                {
+                    CIMDataConnection currentDataConnection = layer.GetDataConnection();
+                });
                 this.IsChecked = true;
+                HasChecked = true;
             }
         }
 
         protected override void OnUpdate()
         {
-            if (ConnectToArcGISEarthButton.IsConnectSuccessfully)
+            if (ToolHelper.IsConnectSuccessfully)
             {
                 this.Enabled = true;
             }
             else
             {
-                LayersAddedEvent.Unsubscribe(AddLayer);           
-                this.IsChecked = false;
+                LayersAddedEvent.Unsubscribe(AddLayer);
                 this.Enabled = false;
+                this.IsChecked = false;
+                HasChecked = false;
             }
         }
 
@@ -49,14 +63,15 @@ namespace ToArcGISEarth
             try
             {
                 List<Layer> layerList = args.Layers as List<Layer>;
-                if (layerList != null && layerList.Count != 0)
+                if (layerList?.Count != 0 && !this.IsCreateNewGroupLayer(layerList))
                 {
-                    if (!IsCreateNewGroupLayer(layerList))
+                    foreach (var layer in layerList)
                     {
-                        List<string> unsuccessLayerNames = new List<string>();
-                        foreach (var layer in layerList)
+                        QueuedTask.Run(() =>
                         {
-                            string url = GetLayerUrl(layer);
+                            // Must be called on the thread this object was created on
+                            CIMObject dataConnection = layer.GetDataConnection();
+                            string url = GetDataSource(dataConnection);
                             if (!String.IsNullOrWhiteSpace(url))
                             {
                                 JObject addLayerJson = new JObject
@@ -72,60 +87,92 @@ namespace ToArcGISEarth
                                     addLayerJson["target"] = "BasemapLayers";
                                 }
                                 string currentJson = addLayerJson.ToString();
-                                if (currentJson != null)
-                                {
-                                    currentJson = currentJson.Replace("\n", "");
-                                    currentJson = currentJson.Replace("\r", "");
-                                }
                                 string[] nameAndType = new string[2]
                                 {
                                     layer.Name,
                                     layer.MapLayerType.ToString()
                                 };
-                                string id = ConnectToArcGISEarthButton.Utils.AddLayer(currentJson);
-                                if (!ConnectToArcGISEarthButton.IdNameDic.Keys.Contains(id))
+                                string id = ToolHelper.Utils.AddLayer(currentJson);
+                                if (!ToolHelper.IdNameDic.Keys.Contains(id))
                                 {
-                                    ConnectToArcGISEarthButton.IdNameDic.Add(id, nameAndType);
-                                    return;
+                                    ToolHelper.IdNameDic.Add(id, nameAndType);
                                 }
                             }
                             else
                             {
-                                unsuccessLayerNames.Add(layer.Name);
-                                continue;
+                                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS.Remove(MESSAGE_TIPS.Length - 1, 1) + " : " + layer.Name);
                             }
-                        }
-                        if (unsuccessLayerNames.Count != 0)
-                        {
-                            string result = "";
-                            foreach (var layerName in unsuccessLayerNames)
-                            {
-                                result += "\n" + layerName;
-                            }
-                            ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show($"Failed to add layer to ArcGIS Earth:{result}");
-                        }
+                        });
                     }
                 }
             }
             catch
             {
-                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to add layer to ArcGIS Earth.");
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS);
             }
-        }
-
-        private string GetLayerUrl(Layer layer)
-        {
-            // Determine whether the layer has URL property, if has, get URL value.
-            return layer?.GetType()?.GetProperty("URL")?.GetValue(layer) as string;
         }
 
         private bool IsCreateNewGroupLayer(List<Layer> layerList)
         {
-            if (layerList.Count == 1 && layerList[0].Name == "New Group Layer" && (layerList[0].GetType()?.GetProperty("Layers")?.GetValue(layerList[0]) as List<Layer>) == null)
+            return layerList?.Count == 1 && layerList[0]?.Name == "New Group Layer" && (layerList[0].GetType()?.GetProperty("Layers")?.GetValue(layerList[0]) as List<Layer>) == null;
+        }
+
+        private string GetDataSource(CIMObject dataConnection)
+        {
+            string source = null;
+            if (dataConnection != null)
             {
-                return true;
+                //  Shapfile, raster, tpk, Feature Layer
+                if (dataConnection is CIMStandardDataConnection)
+                {
+                    WorkspaceFactory factory = (dataConnection as CIMStandardDataConnection).WorkspaceFactory;
+                    string connectStr;
+                    if (factory == WorkspaceFactory.FeatureService)
+                    {
+                        connectStr = (dataConnection as CIMStandardDataConnection).WorkspaceConnectionString; // e.g.  "URL=http://www.arcgis.com"
+                        if (connectStr?.Length > 4)
+                        {
+                            return source = connectStr.Substring(4);
+                        }
+                    }
+                    if (factory == WorkspaceFactory.Shapefile || factory == WorkspaceFactory.Raster)
+                    {
+                        string fileDirectory = "";
+                        string fileName = (dataConnection as CIMStandardDataConnection).Dataset; // e.g.  "test.shp"
+                        connectStr = (dataConnection as CIMStandardDataConnection).WorkspaceConnectionString; // e.g.  "DATABASE=D:\Temp"
+                        if (connectStr?.Length > 9)
+                        {
+                            fileDirectory = connectStr.Substring(9) + Path.DirectorySeparatorChar;
+                        }
+                        return source = fileDirectory + fileName;
+                    }
+                }
+                // Kml, kmz
+                if (dataConnection is CIMKMLDataConnection)
+                {
+                    return source = (dataConnection as CIMKMLDataConnection).KMLURI;
+                }
+                // Spk, slpk
+                if (dataConnection is CIMSceneDataConnection)
+                {
+                    string realUrl = (dataConnection as CIMSceneDataConnection).URI; // e.g. "file:/D:/temp/test.slpk/layers/0"
+                    Uri.TryCreate(realUrl, UriKind.RelativeOrAbsolute, out Uri uri);
+                    if (uri != null)
+                    {
+                        realUrl = uri.AbsolutePath;
+                        if (realUrl.Length >= 9)
+                        {
+                            return source = realUrl.Remove(realUrl.Length - 9, 9); // e.g.  "/D:/temp/test.slpk"
+                        }
+                    }
+                }
+                // Imagary Layer, Map Image Layer, Tile Layer , Scene Layer
+                if (dataConnection is CIMAGSServiceConnection)
+                {
+                    return source = (dataConnection as CIMAGSServiceConnection).URL;
+                }
             }
-            return false;
+            return source;
         }
     }
 }

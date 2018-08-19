@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ArcGIS.Desktop.Framework.Contracts;
-using ArcGIS.Desktop.Framework.Dialogs;
 using Microsoft.Win32;
 
 namespace ToArcGISEarth
 {
-    public class SaveImageFromArcGISEarthButton : Button
+    public class SaveImageButton : Button
     {
-        public SaveImageFromArcGISEarthButton()
+        public SaveImageButton()
         {
             this.Enabled = false;
         }
@@ -23,7 +22,7 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
-            if (ConnectToArcGISEarthButton.IsConnectSuccessfully)
+            if (ToolHelper.IsConnectSuccessfully)
             {
                 this.Enabled = true;
             }
@@ -47,7 +46,7 @@ namespace ToArcGISEarth
             {
                 if (!String.IsNullOrWhiteSpace(dialog.FileName))
                 {
-                    await ConnectToArcGISEarthButton.Utils.GetSnapshot(dialog.FileName);
+                    await ToolHelper.Utils.GetSnapshot(dialog.FileName);
                 }
             }
         }
