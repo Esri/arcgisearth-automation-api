@@ -33,11 +33,6 @@ namespace ToArcGISEarth
             else
             {
                 LayersAddedEvent.Subscribe(AddLayer, false);
-                Layer layer = MapView.Active.Map.GetLayersAsFlattenedList().ToList()[0];
-                QueuedTask.Run(() =>
-                {
-                    CIMDataConnection currentDataConnection = layer.GetDataConnection();
-                });
                 this.IsChecked = true;
                 HasChecked = true;
             }
@@ -129,7 +124,7 @@ namespace ToArcGISEarth
                     string connectStr;
                     if (factory == WorkspaceFactory.FeatureService)
                     {
-                        connectStr = (dataConnection as CIMStandardDataConnection).WorkspaceConnectionString; // e.g.  "URL=http://www.arcgis.com"
+                        connectStr = (dataConnection as CIMStandardDataConnection).WorkspaceConnectionString; // e.g.  "URL=http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"
                         if (connectStr?.Length > 4)
                         {
                             return source = connectStr.Substring(4);

@@ -40,8 +40,8 @@ namespace ToArcGISEarth
                 this.Enabled = true;
             }
             else
-            {             
-                MapViewCameraChangedEvent.Unsubscribe(SetCamera); 
+            {
+                MapViewCameraChangedEvent.Unsubscribe(SetCamera);
                 this.Enabled = false;
                 this.IsChecked = false;
                 HasChecked = false;
@@ -49,13 +49,13 @@ namespace ToArcGISEarth
         }
 
         private void SetCamera(MapViewCameraChangedEventArgs args)
-        {           
+        {
             try
             {
                 MapView mapView = args.MapView;
                 if (null != mapView && null != mapView.Camera && mapView.ViewingMode == MapViewingMode.SceneGlobal)
                 {
-                    JObject camera_j_obj = new JObject();
+                    JObject cameraJson = new JObject();
                     Dictionary<string, double> location = new Dictionary<string, double>
                     {
                         ["x"] = mapView.Camera.X,
@@ -65,11 +65,10 @@ namespace ToArcGISEarth
 
                     // Convert ArcGIS Pro camera to ArcGIS Earth
                     JObject location_j_obj = JObject.Parse(JsonConvert.SerializeObject(location));
-                    camera_j_obj["mapPoint"] = location_j_obj;
-                    camera_j_obj["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading;
-                    camera_j_obj["pitch"] = mapView.Camera.Pitch + 90;
-                    string currentCameraJson = camera_j_obj.ToString();
-                    ToolHelper.Utils.SetCamera(currentCameraJson);
+                    cameraJson["mapPoint"] = location_j_obj;
+                    cameraJson["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading;
+                    cameraJson["pitch"] = mapView.Camera.Pitch + 90;
+                    ToolHelper.Utils.SetCamera(cameraJson.ToString());
                 }
             }
             catch
