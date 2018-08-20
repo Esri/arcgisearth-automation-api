@@ -167,14 +167,13 @@ namespace ToArcGISEarth
                 {
                     return source = (dataConnection as CIMAGSServiceConnection).URL;
                 }
+                // Wms
                 if (dataConnection is CIMWMSServiceConnection)
                 {
                     return source = ((dataConnection as CIMWMSServiceConnection).ServerConnection as CIMProjectServerConnection).URL;
                 }
             }
             return source;
-        }
-
-        
+        }       
     }
 }

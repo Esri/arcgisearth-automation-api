@@ -7,7 +7,7 @@ namespace ToArcGISEarth
         private const string CONNECTION_SUCCESS = "Success";
         private const string CAPTION_CONNECT = "Connect";
         private const string CAPTION_DISCONNECT = "Disconnect";
-        private const string MESSAGE_TIPS = "Please start ArcGIS Earth with automation API opened then connect to it.";
+        private const string MESSAGE_TIPS = "Please make sure ArcGIS Earth is running and the Automation API is configured as enabled. Then try to connect again.";
 
         protected override async void OnClick()
         {

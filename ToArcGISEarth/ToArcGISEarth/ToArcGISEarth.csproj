@@ -124,6 +124,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <AddInContent Include="Images\SaveImage16.png" />
+    <AddInContent Include="Images\ClearWorkspace16.png" />
+    <AddInContent Include="Images\Help16.png" />
+    <AddInContent Include="Images\Synchronization16.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--
   PackageAction can be:
