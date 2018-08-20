@@ -21,13 +21,13 @@ namespace ToArcGISEarth
         {
             if (this.IsChecked)
             {
-                MapViewCameraChangedEvent.Unsubscribe(SetCamera);
+                MapViewCameraChangedEvent.Unsubscribe(this.SetCamera);
                 this.IsChecked = false;
                 HasChecked = false;
             }
             else
             {
-                MapViewCameraChangedEvent.Subscribe(SetCamera, false);
+                MapViewCameraChangedEvent.Subscribe(this.SetCamera, false);
                 this.IsChecked = true;
                 HasChecked = true;
             }
@@ -41,7 +41,7 @@ namespace ToArcGISEarth
             }
             else
             {
-                MapViewCameraChangedEvent.Unsubscribe(SetCamera);
+                MapViewCameraChangedEvent.Unsubscribe(this.SetCamera);
                 this.Enabled = false;
                 this.IsChecked = false;
                 HasChecked = false;

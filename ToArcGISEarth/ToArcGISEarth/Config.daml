@@ -32,7 +32,7 @@
           <tooltip>This add-in demonstrates how to communicate with ArcGIS Earth via the Automation API on ArcGIS Pro 2.2.</tooltip>
         </button>
         <button id="ToArcGISEarth_SynchronizationButton" caption="Synchronization" className="SynchronizationButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CE">
-          <tooltip>Synchronization.</tooltip>
+          <tooltip>Synchronization operations between ArcGIS Pro and ArcGIS Earth.</tooltip>
         </button>
         <button id="ToArcGISEarth_SetCameraButton" caption="Camera view" className="SetCameraButton" loadOnClick="false"  keytip="SE">
           <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
@@ -47,10 +47,10 @@
           <tooltip>Clear workspace in ArcGIS Earth.</tooltip>
         </button>
         <button id="ToArcGISEarth_SaveImageButton" caption="Save image" className="SaveImageButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="SI">
-          <tooltip>Save current view in ArcGIS Earth as image.</tooltip>
+          <tooltip>Save current view as image in ArcGIS Earth.</tooltip>
         </button>
         <button id="ToArcGISEarth_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="SI">
-          <tooltip>Help.</tooltip>
+          <tooltip>See ArcGIS Earth Automation API help document for more details.</tooltip>
         </button>
       </controls>
       <panes></panes>

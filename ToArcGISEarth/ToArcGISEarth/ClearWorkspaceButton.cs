@@ -18,7 +18,7 @@ namespace ToArcGISEarth
             MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS, null, MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
-                ClearAll();
+                this.ClearAll();
                 this.IsChecked = false;
             }
             else

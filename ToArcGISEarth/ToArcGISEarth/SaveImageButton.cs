@@ -15,7 +15,7 @@ namespace ToArcGISEarth
         protected override async void OnClick()
         {
             this.IsChecked = true;
-            await SaveImage();
+            await this.SaveImage();
             this.IsChecked = false;
             return;
         }
@@ -38,16 +38,14 @@ namespace ToArcGISEarth
             SaveFileDialog dialog = new SaveFileDialog
             {
                 Filter = "Png file|*.png|Jpeg file|*.jpg|Tiff file|*.tif",
+                FileName = "ArcGIS Earth.png",
                 DefaultExt = "png",
                 OverwritePrompt = true,
                 RestoreDirectory = true
             };
             if (dialog.ShowDialog() == true)
             {
-                if (!String.IsNullOrWhiteSpace(dialog.FileName))
-                {
-                    await ToolHelper.Utils.GetSnapshot(dialog.FileName);
-                }
+                await ToolHelper.Utils.GetSnapshot(dialog.FileName);
             }
         }
     }

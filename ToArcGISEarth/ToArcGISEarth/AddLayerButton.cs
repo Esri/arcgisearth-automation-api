@@ -26,13 +26,13 @@ namespace ToArcGISEarth
         {
             if (this.IsChecked)
             {
-                LayersAddedEvent.Unsubscribe(AddLayer);
+                LayersAddedEvent.Unsubscribe(this.AddLayer);
                 this.IsChecked = false;
                 HasChecked = false;
             }
             else
             {
-                LayersAddedEvent.Subscribe(AddLayer, false);
+                LayersAddedEvent.Subscribe(this.AddLayer, false);
                 this.IsChecked = true;
                 HasChecked = true;
             }
@@ -46,7 +46,7 @@ namespace ToArcGISEarth
             }
             else
             {
-                LayersAddedEvent.Unsubscribe(AddLayer);
+                LayersAddedEvent.Unsubscribe(this.AddLayer);
                 this.Enabled = false;
                 this.IsChecked = false;
                 HasChecked = false;
@@ -66,7 +66,7 @@ namespace ToArcGISEarth
                         {
                             // Must be called on the thread this object was created on
                             CIMObject dataConnection = layer.GetDataConnection();
-                            string url = GetDataSource(dataConnection);
+                            string url = this.GetDataSource(dataConnection);
                             if (!String.IsNullOrWhiteSpace(url))
                             {
                                 JObject addLayerJson = new JObject

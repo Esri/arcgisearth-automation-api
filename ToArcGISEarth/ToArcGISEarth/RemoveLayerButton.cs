@@ -18,13 +18,13 @@ namespace ToArcGISEarth
         {
             if (this.IsChecked)
             {
-                LayersRemovedEvent.Unsubscribe(RemoveLayer);
+                LayersRemovedEvent.Unsubscribe(this.RemoveLayer);
                 this.IsChecked = false;
                 HasChecked = false;
             }
             else
             {
-                LayersRemovedEvent.Subscribe(RemoveLayer, false);
+                LayersRemovedEvent.Subscribe(this.RemoveLayer, false);
                 this.IsChecked = true;
                 HasChecked = true;
             }
@@ -38,7 +38,7 @@ namespace ToArcGISEarth
             }
             else
             {
-                LayersRemovedEvent.Unsubscribe(RemoveLayer);
+                LayersRemovedEvent.Unsubscribe(this.RemoveLayer);
                 this.Enabled = false;
                 this.IsChecked = false;
                 HasChecked = false;
