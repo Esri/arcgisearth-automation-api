@@ -1,4 +1,5 @@
 ﻿using ArcGIS.Core.CIM;
+using ArcGIS.Desktop.Editing;
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
@@ -15,26 +16,23 @@ namespace ToArcGISEarth
     {
         private const string MESSAGE_TIPS = "Failed to add layer to ArcGIS Earth.";
 
-        public static bool HasChecked { get; set; }
-
         public AddLayerButton()
         {
             this.Enabled = false;
         }
 
         protected override void OnClick()
-        {
+        {           
             if (this.IsChecked)
             {
-                LayersAddedEvent.Unsubscribe(this.AddLayer);
+                LayersAddedEvent.Unsubscribe(this.AddLayer);            
                 this.IsChecked = false;
-                HasChecked = false;
+
             }
             else
             {
                 LayersAddedEvent.Subscribe(this.AddLayer, false);
                 this.IsChecked = true;
-                HasChecked = true;
             }
         }
 
@@ -49,8 +47,7 @@ namespace ToArcGISEarth
                 LayersAddedEvent.Unsubscribe(this.AddLayer);
                 this.Enabled = false;
                 this.IsChecked = false;
-                HasChecked = false;
-            }
+            }        
         }
 
         private void AddLayer(LayerEventsArgs args)
@@ -73,6 +70,10 @@ namespace ToArcGISEarth
                                 {
                                     ["URI"] = url
                                 };
+                                if (dataConnection is CIMWMSServiceConnection)
+                                {
+                                    addLayerJson["type"] = "OGCWMS"; // ArcGIS Earth Auotmation API can't autoatic recognize wms service.
+                                }
                                 if (layer.MapLayerType == ArcGIS.Core.CIM.MapLayerType.Operational)
                                 {
                                     addLayerJson["target"] = "OperationalLayers";
@@ -166,8 +167,14 @@ namespace ToArcGISEarth
                 {
                     return source = (dataConnection as CIMAGSServiceConnection).URL;
                 }
+                if (dataConnection is CIMWMSServiceConnection)
+                {
+                    return source = ((dataConnection as CIMWMSServiceConnection).ServerConnection as CIMProjectServerConnection).URL;
+                }
             }
             return source;
         }
+
+        
     }
 }

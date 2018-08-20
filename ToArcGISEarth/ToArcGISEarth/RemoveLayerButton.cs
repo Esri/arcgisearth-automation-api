@@ -6,9 +6,7 @@ using System.Collections.Generic;
 namespace ToArcGISEarth
 {
     public class RemoveLayerButton : Button
-    {
-        public static bool HasChecked { get; set; }
-
+    {    
         public RemoveLayerButton()
         {
             this.Enabled = false;
@@ -20,13 +18,11 @@ namespace ToArcGISEarth
             {
                 LayersRemovedEvent.Unsubscribe(this.RemoveLayer);
                 this.IsChecked = false;
-                HasChecked = false;
             }
             else
             {
                 LayersRemovedEvent.Subscribe(this.RemoveLayer, false);
                 this.IsChecked = true;
-                HasChecked = true;
             }
         }
 
@@ -41,7 +37,6 @@ namespace ToArcGISEarth
                 LayersRemovedEvent.Unsubscribe(this.RemoveLayer);
                 this.Enabled = false;
                 this.IsChecked = false;
-                HasChecked = false;
             }
         }
 
@@ -65,6 +60,7 @@ namespace ToArcGISEarth
                         }
                         ToolHelper.Utils.RemoveLayer(id);
                         ToolHelper.IdNameDic.Remove(id);
+                        return;
                     }
                 }
             }

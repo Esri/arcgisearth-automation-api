@@ -10,8 +10,6 @@ namespace ToArcGISEarth
 {
     public class SetCameraButton : Button
     {
-        public static bool HasChecked { get; set; }
-
         public SetCameraButton()
         {
             this.Enabled = false;
@@ -23,13 +21,11 @@ namespace ToArcGISEarth
             {
                 MapViewCameraChangedEvent.Unsubscribe(this.SetCamera);
                 this.IsChecked = false;
-                HasChecked = false;
             }
             else
             {
                 MapViewCameraChangedEvent.Subscribe(this.SetCamera, false);
                 this.IsChecked = true;
-                HasChecked = true;
             }
         }
 
@@ -44,7 +40,6 @@ namespace ToArcGISEarth
                 MapViewCameraChangedEvent.Unsubscribe(this.SetCamera);
                 this.Enabled = false;
                 this.IsChecked = false;
-                HasChecked = false;
             }
         }
 
