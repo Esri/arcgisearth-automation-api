@@ -130,6 +130,12 @@
     <AddInContent Include="Images\Help16.png" />
     <AddInContent Include="Images\Synchronization16.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AddInContent Include="Images\ClearWorkspace32.png" />
+    <AddInContent Include="Images\Help32.png" />
+    <AddInContent Include="Images\SaveImage32.png" />
+    <AddInContent Include="Images\Synchronization32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--
   PackageAction can be:

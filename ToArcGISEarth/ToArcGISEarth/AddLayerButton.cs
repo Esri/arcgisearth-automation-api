@@ -22,10 +22,10 @@ namespace ToArcGISEarth
         }
 
         protected override void OnClick()
-        {           
+        {
             if (this.IsChecked)
             {
-                LayersAddedEvent.Unsubscribe(this.AddLayer);            
+                LayersAddedEvent.Unsubscribe(this.AddLayer);
                 this.IsChecked = false;
 
             }
@@ -47,7 +47,7 @@ namespace ToArcGISEarth
                 LayersAddedEvent.Unsubscribe(this.AddLayer);
                 this.Enabled = false;
                 this.IsChecked = false;
-            }        
+            }
         }
 
         private void AddLayer(LayerEventsArgs args)
@@ -61,7 +61,7 @@ namespace ToArcGISEarth
                     {
                         QueuedTask.Run(() =>
                         {
-                            // Must be called on the thread this object was created on
+                            // This method or property must be called within the lambda passed to QueuedTask.Run.
                             CIMObject dataConnection = layer.GetDataConnection();
                             string url = this.GetDataSource(dataConnection);
                             if (!String.IsNullOrWhiteSpace(url))
@@ -165,6 +165,20 @@ namespace ToArcGISEarth
                 // Imagary Layer, Map Image Layer, Tile Layer , Scene Layer
                 if (dataConnection is CIMAGSServiceConnection)
                 {
+                    // Imager server
+                    if ((dataConnection as CIMAGSServiceConnection).ObjectType == "ImageServer")
+                    {
+                        string url = (dataConnection as CIMAGSServiceConnection).URL;
+                        if (url.Contains("services"))
+                        {
+                            string[] splitStr = url.Split(new string[] { "services" }, StringSplitOptions.None);
+                            if (splitStr?.Length >= 2 && splitStr.FirstOrDefault() != null)
+                            {
+                                return splitStr[0] + "rest/" + "services" + splitStr[1];
+                            }
+                        }
+                        return null;
+                    }
                     return source = (dataConnection as CIMAGSServiceConnection).URL;
                 }
                 // Wms
@@ -174,6 +188,11 @@ namespace ToArcGISEarth
                 }
             }
             return source;
-        }       
+        }
+
+        private void aa(Layer layer)
+        {
+            string a = layer.GetDefinition().SourceURI;
+        }
     }
 }
