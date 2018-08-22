@@ -140,33 +140,21 @@ namespace ToArcGISEarth
 
         #region Elevation sufaces
 
-        public static Dictionary<int, string> AddedElevationSource(CIMMapElevationSurface[] previousElevationSurfaces, CIMMapElevationSurface[] currentElevationSurfaces, ref bool? IsAddedElevationSource)
+        public static Dictionary<int, string> AddedOrRemovedElevationSource(CIMMapElevationSurface[] previousElevationSurfaces, CIMMapElevationSurface[] currentElevationSurfaces, ref bool? addOrRemove)
         {
             if (currentElevationSurfaces != null)
             {
-                IsAddedElevationSource = null;
+                addOrRemove = null;
                 Dictionary<int, string> previousDic = GetAllElevationSource(previousElevationSurfaces, out int e1);
                 Dictionary<int, string> currentDic = GetAllElevationSource(currentElevationSurfaces, out int e2);
-                IsAddedElevationSource = e1 < e2;
-                if (IsAddedElevationSource == true)
+                if (e1 < e2)
                 {
+                    addOrRemove = true;
                     return GetAddedElevationSource(previousDic, currentDic);
                 }
-                return null;
-            }
-            return null;
-        }
-
-        public static Dictionary<int, string> RemovedElevationSource(CIMMapElevationSurface[] previousElevationSurfaces, CIMMapElevationSurface[] currentElevationSurfaces, ref bool? IsRemoveElevationSource)
-        {
-            if (currentElevationSurfaces != null)
-            {
-                IsRemoveElevationSource = null;
-                Dictionary<int, string> previousDic = GetAllElevationSource(previousElevationSurfaces, out int e1);
-                Dictionary<int, string> currentDic = GetAllElevationSource(currentElevationSurfaces, out int e2);
-                IsRemoveElevationSource = e1 > e2;
-                if (IsRemoveElevationSource == true)
+                if (e1 > e2)
                 {
+                    addOrRemove = false;
                     return GetRemovedElevationSource(previousDic, currentDic);
                 }
                 return null;

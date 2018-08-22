@@ -23,19 +23,25 @@ namespace ToArcGISEarth
 
         private Timer timer;
         private event PropertyChangedEventHandler ElevationSourceAddedChanged;
-        private Dictionary<int, string> layerSource = new Dictionary<int, string>(); // layerSource[0]: id  layerSource[1]: url
-        private bool? IsAddedElevationSource = null;
+        private event PropertyChangedEventHandler ElevationSourceRemovedChanged;
+        private Dictionary<int, string> layerSource = new Dictionary<int, string>();
+        private bool? addOrRemove = null;
         private CIMMap _myIMMap = new CIMMap();
         public CIMMap MyCIMMap
         {
             get { return _myIMMap; }
             set
             {
-                layerSource = ToolHelper.AddedElevationSource(_myIMMap.ElevationSurfaces, value.ElevationSurfaces, ref IsAddedElevationSource);
+                layerSource = ToolHelper.AddedOrRemovedElevationSource(_myIMMap.ElevationSurfaces, value.ElevationSurfaces, ref addOrRemove);
                 if (this.IsElevationSourceAddedChanged())
                 {
                     _myIMMap = value;
                     ElevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs("MyCIMMap"));
+                }
+                if (this.IsElevationSourceRemovedChanged() && RemoveLayerButton.HasChecked)
+                {
+                    _myIMMap = value;
+                    ElevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs("MyCIMMap"));
                 }
             }
         }
@@ -48,7 +54,7 @@ namespace ToArcGISEarth
             timer = new Timer
             {
                 Enabled = true,
-                Interval = 2000
+                Interval = 1000
             };
             timer.Elapsed += (s, e) =>
             {
@@ -56,22 +62,29 @@ namespace ToArcGISEarth
                 {
                     MyCIMMap = MapView.Active?.Map?.GetDefinition();
                 });
-            };         
+            };
+            ElevationSourceAddedChanged += ElevationSourceAddedEvent;
+            ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
         }
 
         protected override void OnClick()
         {
             if (this.IsChecked)
             {
-                ElevationSourceAddedChanged -= ElevationSourceAddedEvent;
                 LayersAddedEvent.Unsubscribe(this.AddLayer);
                 this.timer.Stop();
-                this.timer.Enabled = false;
                 this.IsChecked = false;
+                if (RemoveLayerButton.HasChecked)
+                {
+                    ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
+                }
             }
             else
             {
-                ElevationSourceAddedChanged += ElevationSourceAddedEvent;
+                if (RemoveLayerButton.HasChecked)
+                {
+                    ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
+                }
                 LayersAddedEvent.Subscribe(this.AddLayer, false);
                 QueuedTask.Run(() =>
                 {
@@ -91,7 +104,6 @@ namespace ToArcGISEarth
             }
             else
             {
-                ElevationSourceAddedChanged -= ElevationSourceAddedEvent;
                 LayersAddedEvent.Unsubscribe(this.AddLayer);
                 this.Enabled = false;
                 this.IsChecked = false;
@@ -166,7 +178,21 @@ namespace ToArcGISEarth
             if (layerSource != null && layerSource.Count != 0)
             {
                 // added elevation source
-                if (IsAddedElevationSource == true)
+                if (addOrRemove == true)
+                {
+                    return layerSource.Values.FirstOrDefault() != null;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        private bool IsElevationSourceRemovedChanged()
+        {
+            if (layerSource != null && layerSource.Count != 0)
+            {
+                // added elevation source
+                if (addOrRemove == false)
                 {
                     return layerSource.Values.FirstOrDefault() != null;
                 }
@@ -177,7 +203,7 @@ namespace ToArcGISEarth
 
         private void ElevationSourceAddedEvent(object sender, PropertyChangedEventArgs args)
         {
-            if (IsAddedElevationSource == true && layerSource?.Count != 0)
+            if (addOrRemove == true && layerSource?.Count != 0)
             {
                 string url = layerSource.Values.FirstOrDefault();
                 JObject addLayerJson = new JObject
@@ -191,21 +217,38 @@ namespace ToArcGISEarth
                          url,
                         "ElevationLayers"
                 };
-                if (IsAddedElevationSource == true)
+                try
                 {
-                    try
+                    string id = ToolHelper.Utils.AddLayer(currentJson);
+                    if (!ToolHelper.IdNameDic.Keys.Contains(id))
                     {
-                        string id = ToolHelper.Utils.AddLayer(currentJson);
-                        if (!ToolHelper.IdNameDic.Keys.Contains(id))
-                        {
-                            ToolHelper.IdNameDic.Add(id, nameAndType);
-                        }
-                    }
-                    catch
-                    {
-                        ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS);
+                        ToolHelper.IdNameDic.Add(id, nameAndType);
                     }
                 }
+                catch
+                {
+                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS);
+                }
+            }
+        }
+
+        private void ElevationSourceRemovedEvent(object sender, PropertyChangedEventArgs args)
+        {
+            if (addOrRemove == false && layerSource?.Count != 0)
+            {
+                string url = layerSource.Values.FirstOrDefault();
+                string id = "";
+                foreach (var item in ToolHelper.IdNameDic)
+                {
+                    if (item.Value?.Length == 2 && item.Value[0] == url && item.Value[1] == "ElevationLayers")
+                    {
+                        id = item.Key;
+                        break;
+                    }
+                }
+                ToolHelper.Utils.RemoveLayer(id);
+                ToolHelper.IdNameDic.Remove(id);
+                return;
             }
         }
     }
