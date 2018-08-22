@@ -7,8 +7,11 @@ using ArcGIS.Desktop.Mapping.Events;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace ToArcGISEarth
 {
@@ -16,22 +19,66 @@ namespace ToArcGISEarth
     {
         private const string MESSAGE_TIPS = "Failed to add layer to ArcGIS Earth.";
 
+        #region  ElevationSource variable and property
+
+        private Timer timer;
+        private event PropertyChangedEventHandler ElevationSourceAddedChanged;
+        private Dictionary<int, string> layerSource = new Dictionary<int, string>(); // layerSource[0]: id  layerSource[1]: url
+        private bool? IsAddedElevationSource = null;
+        private CIMMap _myIMMap = new CIMMap();
+        public CIMMap MyCIMMap
+        {
+            get { return _myIMMap; }
+            set
+            {
+                layerSource = ToolHelper.AddedElevationSource(_myIMMap.ElevationSurfaces, value.ElevationSurfaces, ref IsAddedElevationSource);
+                if (this.IsElevationSourceAddedChanged())
+                {
+                    _myIMMap = value;
+                    ElevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs("MyCIMMap"));
+                }
+            }
+        }
+
+        #endregion ElevationSource variable and property
+
         public AddLayerButton()
         {
             this.Enabled = false;
+            timer = new Timer
+            {
+                Enabled = true,
+                Interval = 2000
+            };
+            timer.Elapsed += (s, e) =>
+            {
+                QueuedTask.Run(() =>
+                {
+                    MyCIMMap = MapView.Active?.Map?.GetDefinition();
+                });
+            };         
         }
 
         protected override void OnClick()
         {
             if (this.IsChecked)
             {
+                ElevationSourceAddedChanged -= ElevationSourceAddedEvent;
                 LayersAddedEvent.Unsubscribe(this.AddLayer);
+                this.timer.Stop();
+                this.timer.Enabled = false;
                 this.IsChecked = false;
-
             }
             else
             {
+                ElevationSourceAddedChanged += ElevationSourceAddedEvent;
                 LayersAddedEvent.Subscribe(this.AddLayer, false);
+                QueuedTask.Run(() =>
+                {
+                    _myIMMap = MapView.Active.Map.GetDefinition();
+                });
+                this.timer.Enabled = true;
+                this.timer.Start();
                 this.IsChecked = true;
             }
         }
@@ -44,6 +91,7 @@ namespace ToArcGISEarth
             }
             else
             {
+                ElevationSourceAddedChanged -= ElevationSourceAddedEvent;
                 LayersAddedEvent.Unsubscribe(this.AddLayer);
                 this.Enabled = false;
                 this.IsChecked = false;
@@ -61,9 +109,9 @@ namespace ToArcGISEarth
                     {
                         QueuedTask.Run(() =>
                         {
-                            // This method or property must be called within the lambda passed to QueuedTask.Run.
+                            // This method or property must be called within the lambda passed to QueuedTask.Run. 
                             CIMObject dataConnection = layer.GetDataConnection();
-                            string url = this.GetDataSource(dataConnection);
+                            string url = ToolHelper.GetDataSource(dataConnection, false);
                             if (!String.IsNullOrWhiteSpace(url))
                             {
                                 JObject addLayerJson = new JObject
@@ -113,86 +161,52 @@ namespace ToArcGISEarth
             return layerList?.Count == 1 && layerList[0]?.Name == "New Group Layer" && (layerList[0].GetType()?.GetProperty("Layers")?.GetValue(layerList[0]) as List<Layer>) == null;
         }
 
-        private string GetDataSource(CIMObject dataConnection)
+        private bool IsElevationSourceAddedChanged()
         {
-            string source = null;
-            if (dataConnection != null)
+            if (layerSource != null && layerSource.Count != 0)
             {
-                //  Shapfile, raster, tpk, Feature Layer
-                if (dataConnection is CIMStandardDataConnection)
+                // added elevation source
+                if (IsAddedElevationSource == true)
                 {
-                    WorkspaceFactory factory = (dataConnection as CIMStandardDataConnection).WorkspaceFactory;
-                    string connectStr;
-                    if (factory == WorkspaceFactory.FeatureService)
-                    {
-                        connectStr = (dataConnection as CIMStandardDataConnection).WorkspaceConnectionString; // e.g.  "URL=http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"
-                        if (connectStr?.Length > 4)
-                        {
-                            return source = connectStr.Substring(4);
-                        }
-                    }
-                    if (factory == WorkspaceFactory.Shapefile || factory == WorkspaceFactory.Raster)
-                    {
-                        string fileDirectory = "";
-                        string fileName = (dataConnection as CIMStandardDataConnection).Dataset; // e.g.  "test.shp"
-                        connectStr = (dataConnection as CIMStandardDataConnection).WorkspaceConnectionString; // e.g.  "DATABASE=D:\Temp"
-                        if (connectStr?.Length > 9)
-                        {
-                            fileDirectory = connectStr.Substring(9) + Path.DirectorySeparatorChar;
-                        }
-                        return source = fileDirectory + fileName;
-                    }
+                    return layerSource.Values.FirstOrDefault() != null;
                 }
-                // Kml, kmz
-                if (dataConnection is CIMKMLDataConnection)
-                {
-                    return source = (dataConnection as CIMKMLDataConnection).KMLURI;
-                }
-                // Spk, slpk
-                if (dataConnection is CIMSceneDataConnection)
-                {
-                    string realUrl = (dataConnection as CIMSceneDataConnection).URI; // e.g. "file:/D:/temp/test.slpk/layers/0"
-                    Uri.TryCreate(realUrl, UriKind.RelativeOrAbsolute, out Uri uri);
-                    if (uri != null)
-                    {
-                        realUrl = uri.AbsolutePath;
-                        if (realUrl.Length >= 9)
-                        {
-                            return source = realUrl.Remove(realUrl.Length - 9, 9); // e.g.  "/D:/temp/test.slpk"
-                        }
-                    }
-                }
-                // Imagary Layer, Map Image Layer, Tile Layer , Scene Layer
-                if (dataConnection is CIMAGSServiceConnection)
-                {
-                    // Imager server
-                    if ((dataConnection as CIMAGSServiceConnection).ObjectType == "ImageServer")
-                    {
-                        string url = (dataConnection as CIMAGSServiceConnection).URL;
-                        if (url.Contains("services"))
-                        {
-                            string[] splitStr = url.Split(new string[] { "services" }, StringSplitOptions.None);
-                            if (splitStr?.Length >= 2 && splitStr.FirstOrDefault() != null)
-                            {
-                                return splitStr[0] + "rest/" + "services" + splitStr[1];
-                            }
-                        }
-                        return null;
-                    }
-                    return source = (dataConnection as CIMAGSServiceConnection).URL;
-                }
-                // Wms
-                if (dataConnection is CIMWMSServiceConnection)
-                {
-                    return source = ((dataConnection as CIMWMSServiceConnection).ServerConnection as CIMProjectServerConnection).URL;
-                }
+                return false;
             }
-            return source;
+            return false;
         }
 
-        private void aa(Layer layer)
+        private void ElevationSourceAddedEvent(object sender, PropertyChangedEventArgs args)
         {
-            string a = layer.GetDefinition().SourceURI;
+            if (IsAddedElevationSource == true && layerSource?.Count != 0)
+            {
+                string url = layerSource.Values.FirstOrDefault();
+                JObject addLayerJson = new JObject
+                {
+                    ["URI"] = url,
+                    ["target"] = "ElevationLayers"
+                };
+                string currentJson = addLayerJson.ToString();
+                string[] nameAndType = new string[2]
+                {
+                         url,
+                        "ElevationLayers"
+                };
+                if (IsAddedElevationSource == true)
+                {
+                    try
+                    {
+                        string id = ToolHelper.Utils.AddLayer(currentJson);
+                        if (!ToolHelper.IdNameDic.Keys.Contains(id))
+                        {
+                            ToolHelper.IdNameDic.Add(id, nameAndType);
+                        }
+                    }
+                    catch
+                    {
+                        ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS);
+                    }
+                }
+            }
         }
     }
 }
