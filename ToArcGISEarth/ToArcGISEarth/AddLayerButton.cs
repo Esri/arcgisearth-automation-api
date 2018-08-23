@@ -23,7 +23,7 @@ namespace ToArcGISEarth
         private event PropertyChangedEventHandler ElevationSourceAddedChanged;
         private event PropertyChangedEventHandler ElevationSourceRemovedChanged;
         private Dictionary<int, string> layerSource = new Dictionary<int, string>();
-        private bool? addOrRemove = null; // true: added elevation source, false: removed elevation source, null: do nothing
+        private bool? addOrRemove = null; // True: added elevation source, false: removed elevation source, null: do nothing
         private CIMMap _myIMMap = new CIMMap();
         public CIMMap MyCIMMap
         {
@@ -176,7 +176,7 @@ namespace ToArcGISEarth
         {
             if (layerSource != null && layerSource.Count != 0)
             {
-                // added elevation source
+                // Added elevation source
                 if (addOrRemove == true)
                 {
                     return layerSource.Values.FirstOrDefault() != null;
@@ -190,7 +190,7 @@ namespace ToArcGISEarth
         {
             if (layerSource != null && layerSource.Count != 0)
             {
-                // added elevation source
+                // Removed elevation source
                 if (addOrRemove == false)
                 {
                     return layerSource.Values.FirstOrDefault() != null;
