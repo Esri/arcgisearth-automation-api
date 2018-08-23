@@ -1,13 +1,7 @@
-﻿using ArcGIS.Core.CIM;
-using ArcGIS.Desktop.Framework.Contracts;
-using ArcGIS.Desktop.Framework.Threading.Tasks;
+﻿using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Timers;
 
 namespace ToArcGISEarth
 {

@@ -8,9 +8,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace ToArcGISEarth
@@ -25,7 +23,7 @@ namespace ToArcGISEarth
         private event PropertyChangedEventHandler ElevationSourceAddedChanged;
         private event PropertyChangedEventHandler ElevationSourceRemovedChanged;
         private Dictionary<int, string> layerSource = new Dictionary<int, string>();
-        private bool? addOrRemove = null;
+        private bool? addOrRemove = null; // true: added elevation source, false: removed elevation source, null: do nothing
         private CIMMap _myIMMap = new CIMMap();
         public CIMMap MyCIMMap
         {
@@ -56,6 +54,7 @@ namespace ToArcGISEarth
                 Enabled = true,
                 Interval = 1000
             };
+            // Update current MyCIMMap every 1 second
             timer.Elapsed += (s, e) =>
             {
                 QueuedTask.Run(() =>
