@@ -133,7 +133,15 @@ namespace ToArcGISEarth
 
         private static string GetWmsUrl(CIMWMSServiceConnection dataConnection)
         {
-            return (dataConnection?.ServerConnection as CIMProjectServerConnection).URL;
+            if (dataConnection?.ServerConnection is CIMProjectServerConnection)
+            {
+                return (dataConnection?.ServerConnection as CIMProjectServerConnection).URL;
+            }
+            if (dataConnection?.ServerConnection is CIMInternetServerConnection)
+            {
+                return (dataConnection?.ServerConnection as CIMInternetServerConnection).URL;
+            }
+            return null;
         }
 
         #endregion  Get data source
