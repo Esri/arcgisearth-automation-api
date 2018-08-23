@@ -29,7 +29,7 @@ namespace ToArcGISEarth
 
         #region Get data source
 
-        public static string GetDataSource(CIMObject dataConnection, bool isGetElevationSource)
+        public static string GetDataSource(CIMObject dataConnection)
         {
             if (dataConnection != null)
             {
@@ -59,7 +59,7 @@ namespace ToArcGISEarth
                 // Imagary Layer, Map Image Layer, Tile Layer , Scene Layer
                 if (dataConnection is CIMAGSServiceConnection)
                 {
-                    return GetNotFeatureServerUrl(dataConnection as CIMAGSServiceConnection, isGetElevationSource);
+                    return GetNotFeatureServerUrl(dataConnection as CIMAGSServiceConnection);
                 }
                 // Wms
                 if (dataConnection is CIMWMSServiceConnection)
@@ -112,10 +112,10 @@ namespace ToArcGISEarth
             return null;
         }
 
-        private static string GetNotFeatureServerUrl(CIMAGSServiceConnection dataConnection, bool isAddToElevationSource)
+        private static string GetNotFeatureServerUrl(CIMAGSServiceConnection dataConnection)
         {
             // Imager server
-            if (dataConnection?.ObjectType == "ImageServer" && isAddToElevationSource == false)
+            if (dataConnection?.ObjectType == "ImageServer")
             {
                 string url = dataConnection?.URL;
                 if (url.Contains("services"))
@@ -182,7 +182,7 @@ namespace ToArcGISEarth
                     for (int j = 0; j < baseSources?.Length; j++)
                     {
                         // id , url
-                        idUrlDirc.Add(count, ToolHelper.GetDataSource(baseSources[j].DataConnection, true));
+                        idUrlDirc.Add(count, ToolHelper.GetDataSource(baseSources[j].DataConnection));
                         count++;
                     }
                 }

@@ -122,7 +122,7 @@ namespace ToArcGISEarth
                         {
                             // This method or property must be called within the lambda passed to QueuedTask.Run. 
                             CIMObject dataConnection = layer.GetDataConnection();
-                            string url = ToolHelper.GetDataSource(dataConnection, false);
+                            string url = ToolHelper.GetDataSource(dataConnection);
                             if (!String.IsNullOrWhiteSpace(url))
                             {
                                 JObject addLayerJson = new JObject
