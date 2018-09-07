@@ -95,30 +95,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <AddInContent Include="Config.daml" />
-    <AddInContent Include="Images\AddInDesktop16.png" />
-    <AddInContent Include="Images\AddInDesktop32.png" />
-    <AddInContent Include="DarkImages\AddInDesktop16.png" />
-    <AddInContent Include="DarkImages\AddInDesktop32.png" />
+    <AddInContent Include="Config.daml">
+      <SubType>Designer</SubType>
+    </AddInContent>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EarthNamedpipeAPIUtils.cs" />
-    <Compile Include="IEarthNamedpipeService.cs" />
-    <Compile Include="Module1.cs" />
+    <Compile Include="AddLayerButton.cs" />
+    <Compile Include="AutomationAPI\EarthNamedpipeAPIUtils.cs" />
+    <Compile Include="AutomationAPI\IEarthNamedpipeService.cs" />
+    <Compile Include="ClearWorkspaceButton.cs" />
+    <Compile Include="HelpButton.cs" />
+    <Compile Include="ToolHelper.cs" />
+    <Compile Include="ArcGISEarthModule.cs" />
+    <Compile Include="AutomationAPI\ProcessUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SyncToArcGISEarthButton.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <AddInContent Include="Images\GenericButtonBlue16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AddInContent Include="Images\GenericButtonBlue32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AddInContent Include="DarkImages\GenericButtonBlue16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AddInContent Include="DarkImages\GenericButtonBlue32.png" />
+    <Compile Include="RemoveLayerButton.cs" />
+    <Compile Include="SaveImageButton.cs" />
+    <Compile Include="SetCameraButton.cs" />
+    <Compile Include="ConnectButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <AddInContent Include="Images\ArcGISEarth16.png" />
@@ -129,6 +123,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <AddInContent Include="Images\SaveImage16.png" />
+    <AddInContent Include="Images\ClearWorkspace16.png" />
+    <AddInContent Include="Images\Help16.png" />
+    <AddInContent Include="Images\Synchronization16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AddInContent Include="Images\ClearWorkspace32.png" />
+    <AddInContent Include="Images\Help32.png" />
+    <AddInContent Include="Images\SaveImage32.png" />
+    <AddInContent Include="Images\Synchronization32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--

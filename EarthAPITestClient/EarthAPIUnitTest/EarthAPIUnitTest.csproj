@@ -54,7 +54,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AddLayerTest.cs" />
     <Compile Include="CameraTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
