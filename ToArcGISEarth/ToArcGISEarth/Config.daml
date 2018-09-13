@@ -1,37 +1,59 @@
 ﻿<ArcGIS defaultAssembly="ToArcGISEarth.dll" defaultNamespace="ToArcGISEarth" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{94776263-9f12-4574-927e-c3c2de42bcaf}" version="1.0" desktopVersion="2.0.8933">
+  <AddInInfo id="{94776263-9f12-4574-927e-c3c2de42bcaf}" version="1.1" desktopVersion="2.2">
     <Name>ToArcGISEarth</Name>
     <Description>ArcGIS Pro to ArcGIS Earth</Description>
-    <Image>Images\AddinDesktop32.png</Image>
-    <Author>ArcGIS Earth Team</Author>
+    <Image>Images\ArcGISEarth32.png</Image>
+    <Author>ArcGIS Earth Tutorials</Author>
     <Company>esri, http://www.esri.com</Company>
-    <Date>7/28/2017 10:12:05 AM, 2017</Date>
+    <Date>8/20/2018 11:00:00 AM, 2018</Date>
     <Subject>Framework</Subject>
-    <!-- Note subject can be one or more of these topics:
-                    Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
   </AddInInfo>
   <modules>
-    <insertModule id="ToArcGISEarth_Module" className="Module1" autoLoad="false" caption="Module1">
-      <!-- uncomment to have the control hosted on a separate tab-->
-      <tabs>
-        <!--<tab id="ToArcGISEarth_Tab1" caption="New Tab">
-          <group refID="ToArcGISEarth_Group1"/>
-        </tab>-->
-      </tabs>
+    <insertModule id="ToArcGISEarth_Module" className="ArcGISEarthModule" autoLoad="false" caption="ArcGISEarthModule">
       <groups>
-        <!-- comment this out if you have no controls on the Addin tab to avoid
-              an empty group-->
-        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true">
-          <!-- host controls within groups -->
-          <button refID="ToArcGISEarth_SyncToArcGISEarthButton" size="large" />
+        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
+          <button refID="ToArcGISEarth_ConnectButton" size="large" />
+          <menu refID="ToArcGISEarth_SynchronizationMenu" size="middle"/>
+          <button refID="ToArcGISEarth_ClearWorkspaceButton" size="middle" />
+          <button refID="ToArcGISEarth_SaveImageButton" size="middle" />
+          <button refID="ToArcGISEarth_HelpButton" size="middle" />
         </group>
       </groups>
+      <menus>
+        <menu id="ToArcGISEarth_SynchronizationMenu" caption="Synchronization" smallImage="Images\Synchronization16.png" largeImage="Images\Synchronization32.png" keytip="SZ" >
+          <tooltip>Synchronization operations between ArcGIS Pro and ArcGIS Earth.</tooltip>
+          <button refID="ToArcGISEarth_SetCameraButton" />
+          <button refID="ToArcGISEarth_AddLayerButton" />
+          <button refID="ToArcGISEarth_RemoveLayerButton" />
+        </menu>
+      </menus>
       <controls>
-        <!-- add your controls here -->
-        <button id="ToArcGISEarth_SyncToArcGISEarthButton" caption="Connect" className="SyncToArcGISEarthButton" loadOnClick="true" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png">
-          <tooltip heading="Sync">Sync To ArcGIS Earth<disabledText /></tooltip>
+        <button id="ToArcGISEarth_ConnectButton" caption="Connect" className="ConnectButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CE">
+          <tooltip>This add-in demonstrates how to communicate with ArcGIS Earth via the Automation API in ArcGIS Pro 2.2.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_SetCameraButton" caption="Camera view" className="SetCameraButton" loadOnClick="false"  keytip="SC">
+          <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_AddLayerButton" caption="Add layer" className="AddLayerButton" loadOnClick="false"  keytip="AL">
+          <tooltip>Synchronize the operation when adding layer.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_RemoveLayerButton" caption="Remove layer" className="RemoveLayerButton" loadOnClick="false"  keytip="RL">
+          <tooltip>Synchronize the operation when removing layer.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_ClearWorkspaceButton" caption="Clear workspace" className="ClearWorkspaceButton" loadOnClick="false" smallImage="Images\ClearWorkspace16.png" largeImage="Images\ClearWorkspace32.png" keytip="CW">
+          <tooltip>Clear workspace in ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_SaveImageButton" caption="Save image" className="SaveImageButton" loadOnClick="false" smallImage="Images\SaveImage16.png" largeImage="Images\SaveImage32.png" keytip="SI">
+          <tooltip>Save current view as image in ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="Images\Help16.png" largeImage="Images\Help32.png" keytip="HE">
+          <tooltip>See ArcGIS Earth Automation API help document for more details.</tooltip>
         </button>
       </controls>
+      <panes></panes>
     </insertModule>
   </modules>
+  <dropHandlers>
+    <insertHandler id="ToArcGISEarth_DropHandler1" className="DropHandler1" dataTypes="*" />
+  </dropHandlers>
 </ArcGIS>
