@@ -81,13 +81,13 @@ namespace ToArcGISEarth
             if (IsChecked)
             {
                 LayersAddedEvent.Unsubscribe(AddLayerToEarth);
-                ElevationSourceAddedChanged -= ElevationSourceAdded;
+                ElevationSourceAddedChanged -= AddElevationSource;
                 IsChecked = false;
             }
             else
             {
                 LayersAddedEvent.Subscribe(AddLayerToEarth, false);
-                ElevationSourceAddedChanged += ElevationSourceRemoved;
+                ElevationSourceAddedChanged += AddElevationSource;
                 _timer.Enabled = true;
                 _timer.Start();
                 IsChecked = true;
@@ -142,10 +142,11 @@ namespace ToArcGISEarth
                                     addLayerJson["target"] = "BasemapLayers";
                                 }
                                 string currentJson = addLayerJson.ToString();
-                                string[] nameAndType = new string[2]
+                                string[] nameAndType = new string[3]
                                 {
                                     layer.Name,
-                                    layer.MapLayerType.ToString()
+                                    layer.MapLayerType.ToString(),
+                                    null
                                 };
                                 string id = ToolHelper.Utils.AddLayer(currentJson);
                                 if (!ToolHelper.IdNameDic.Keys.Contains(id))
@@ -202,41 +203,42 @@ namespace ToArcGISEarth
         {
             if (RemoveLayerButton.HasChecked)
             {
-                ElevationSourceRemovedChanged += ElevationSourceRemoved;
+                ElevationSourceRemovedChanged += RemoveElevationSource;
             }
             else
             {
-                ElevationSourceRemovedChanged -= ElevationSourceRemoved;
+                ElevationSourceRemovedChanged -= RemoveElevationSource;
             }
         }
 
-        private void ElevationSourceAdded(object sender, PropertyChangedEventArgs args)
+        private void AddElevationSource(object sender, PropertyChangedEventArgs args)
         {
             if (_sourcesOperation == ElevationSourcesOperation.Add && _elevationSources?.Count > 0)
             {
                 try
                 {
-                    string url = null;
                     if (_elevationSources.FirstOrDefault()?.Length >= 3)
                     {
-                        url = _elevationSources.FirstOrDefault()[2];
-                    }
-                    JObject addLayerJson = new JObject
-                    {
-                        ["URI"] = url,
-                        ["target"] = "ElevationLayers"
-                    };
-                    string currentJson = addLayerJson.ToString();
-                    string[] nameAndType = new string[2]
-                    {
-                         url,
-                        "ElevationLayers"
-                    };
-
-                    string id = ToolHelper.Utils.AddLayer(currentJson);
-                    if (!ToolHelper.IdNameDic.Keys.Contains(id))
-                    {
-                        ToolHelper.IdNameDic.Add(id, nameAndType);
+                        string surfaceName = _elevationSources.FirstOrDefault()[0];
+                        string sourceName = _elevationSources.FirstOrDefault()[1];
+                        string sourceUrl = _elevationSources.FirstOrDefault()[2];
+                        JObject addLayerJson = new JObject
+                        {
+                            ["URI"] = sourceUrl,
+                            ["target"] = "ElevationLayers"
+                        };
+                        string currentJson = addLayerJson.ToString();
+                        string[] nameAndType = new string[3]
+                        {
+                           surfaceName,
+                           sourceName,
+                           sourceUrl
+                        };
+                        string id = ToolHelper.Utils.AddLayer(currentJson);
+                        if (!ToolHelper.IdNameDic.Keys.Contains(id))
+                        {
+                            ToolHelper.IdNameDic.Add(id, nameAndType);
+                        }
                     }
                 }
                 catch
@@ -246,7 +248,7 @@ namespace ToArcGISEarth
             }
         }
 
-        private void ElevationSourceRemoved(object sender, PropertyChangedEventArgs args)
+        private void RemoveElevationSource(object sender, PropertyChangedEventArgs args)
         {
             if (_sourcesOperation == ElevationSourcesOperation.Remove && _elevationSources?.Count > 0)
             {
@@ -257,7 +259,7 @@ namespace ToArcGISEarth
                     {
                         foreach (var item in ToolHelper.IdNameDic)
                         {
-                            if (item.Value?.Length == 2 && source?.Length >= 3 && item.Value[0] == source[2] && item.Value[1] == "ElevationLayers")
+                            if (item.Value?.Length == 3 && source?.Length >= 3 && item.Value[0] == source[0] && item.Value[1] == source[1] && item.Value[2] == source[2])
                             {
                                 idList.Add(item.Key);
                             }

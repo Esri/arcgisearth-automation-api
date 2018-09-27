@@ -71,7 +71,7 @@ namespace ToArcGISEarth
                     {
                         foreach (var item in ToolHelper.IdNameDic)
                         {
-                            if (item.Value?.Length == 2 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString())
+                            if (item.Value?.Length == 3 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString() && item.Value[2] == null)
                             {
                                 idList.Add(item.Key);
                             }
