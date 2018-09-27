@@ -23,22 +23,22 @@ namespace ToArcGISEarth
         public static bool HasChecked { get; set; }
         public RemoveLayerButton()
         {
-            this.Enabled = false;
+            Enabled = false;
             HasChecked = false;
         }
 
         protected override void OnClick()
         {
-            if (this.IsChecked)
+            if (IsChecked)
             {
-                LayersRemovedEvent.Unsubscribe(this.RemoveLayer);
-                this.IsChecked = false;
+                LayersRemovedEvent.Unsubscribe(RemoveLayer);
+                IsChecked = false;
                 HasChecked = false;
             }
             else
             {
-                LayersRemovedEvent.Subscribe(this.RemoveLayer, false);
-                this.IsChecked = true;
+                LayersRemovedEvent.Subscribe(RemoveLayer, false);
+                IsChecked = true;
                 HasChecked = true;
             }
         }
@@ -47,13 +47,13 @@ namespace ToArcGISEarth
         {
             if (ToolHelper.IsConnectSuccessfully)
             {
-                this.Enabled = true;
+                Enabled = true;
             }
             else
             {
-                LayersRemovedEvent.Unsubscribe(this.RemoveLayer);
-                this.Enabled = false;
-                this.IsChecked = false;
+                LayersRemovedEvent.Unsubscribe(RemoveLayer);
+                Enabled = false;
+                IsChecked = false;
                 HasChecked = false;
             }
         }

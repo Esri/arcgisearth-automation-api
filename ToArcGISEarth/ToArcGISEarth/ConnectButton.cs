@@ -28,12 +28,12 @@ namespace ToArcGISEarth
             {
                 if (ToolHelper.IsArcGISEarthRunning)
                 {
-                    this.Enabled = true;
-                    if (this.IsChecked)
+                    Enabled = true;
+                    if (IsChecked)
                     {
                         ToolHelper.Utils.CloseConnect();
-                        this.IsChecked = false;
-                        this.Caption = CAPTION_CONNECT;
+                        IsChecked = false;
+                        Caption = CAPTION_CONNECT;
                         ToolHelper.IsConnectSuccessfully = false;
                     }
                     else
@@ -46,8 +46,8 @@ namespace ToArcGISEarth
                         }
                         else
                         {
-                            this.IsChecked = true;
-                            this.Caption = CAPTION_DISCONNECT;
+                            IsChecked = true;
+                            Caption = CAPTION_DISCONNECT;
                             ToolHelper.IsConnectSuccessfully = true;
                         }
                     }
@@ -60,9 +60,9 @@ namespace ToArcGISEarth
             else
             {
                 ToolHelper.IsConnectSuccessfully = false;
-                this.IsChecked = false;
-                this.Caption = CAPTION_CONNECT;
-                this.Enabled = false;
+                IsChecked = false;
+                Caption = CAPTION_CONNECT;
+                Enabled = false;
             }
         }
 
@@ -70,20 +70,20 @@ namespace ToArcGISEarth
         {
             if (ToolHelper.IsArcGISProSceneOpening)
             {
-                this.Enabled = true;
+                Enabled = true;
                 if (!ToolHelper.IsArcGISEarthRunning)
                 {
                     ToolHelper.IsConnectSuccessfully = false;
-                    this.IsChecked = false;
-                    this.Caption = CAPTION_CONNECT;
+                    IsChecked = false;
+                    Caption = CAPTION_CONNECT;
                 }
             }
             else
             {
                 ToolHelper.IsConnectSuccessfully = false;
-                this.IsChecked = false;
-                this.Caption = CAPTION_CONNECT;
-                this.Enabled = false;
+                IsChecked = false;
+                Caption = CAPTION_CONNECT;
+                Enabled = false;
             }
         }
     }

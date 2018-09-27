@@ -46,12 +46,12 @@ namespace ToArcGISEarth
             set
             {
                 _elevationSources = ToolHelper.AddedOrRemovedElevationSources(_myIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref _sourcesOperation);
-                if (this.IsElevationSourceAddedChanged() && IsChecked)
+                if (IsElevationSourceAddedChanged() && IsChecked)
                 {
                     _myIMMap = value;
                     ElevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyCIMMap)));
                 }
-                if (this.IsElevationSourceRemovedChanged() && RemoveLayerButton.HasChecked)
+                if (IsElevationSourceRemovedChanged() && RemoveLayerButton.HasChecked)
                 {
                     _myIMMap = value;
                     ElevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyCIMMap)));
@@ -63,7 +63,7 @@ namespace ToArcGISEarth
 
         public AddLayerButton()
         {
-            this.Enabled = false;
+            Enabled = false;
             _timer = new Timer
             {
                 Enabled = true,
@@ -83,11 +83,11 @@ namespace ToArcGISEarth
 
         protected override void OnClick()
         {
-            if (this.IsChecked)
+            if (IsChecked)
             {
-                LayersAddedEvent.Unsubscribe(this.AddLayer);
-                this._timer.Stop();
-                this.IsChecked = false;
+                LayersAddedEvent.Unsubscribe(AddLayer);
+                _timer.Stop();
+                IsChecked = false;
                 if (RemoveLayerButton.HasChecked)
                 {
                     ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
@@ -99,14 +99,14 @@ namespace ToArcGISEarth
                 {
                     ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
                 }
-                LayersAddedEvent.Subscribe(this.AddLayer, false);
+                LayersAddedEvent.Subscribe(AddLayer, false);
                 QueuedTask.Run(() =>
                 {
                     _myIMMap = MapView.Active.Map.GetDefinition();
                 });
-                this._timer.Enabled = true;
-                this._timer.Start();
-                this.IsChecked = true;
+                _timer.Enabled = true;
+                _timer.Start();
+                IsChecked = true;
             }
         }
 
@@ -114,13 +114,13 @@ namespace ToArcGISEarth
         {
             if (ToolHelper.IsConnectSuccessfully)
             {
-                this.Enabled = true;
+                Enabled = true;
             }
             else
             {
-                LayersAddedEvent.Unsubscribe(this.AddLayer);
-                this.Enabled = false;
-                this.IsChecked = false;
+                LayersAddedEvent.Unsubscribe(AddLayer);
+                Enabled = false;
+                IsChecked = false;
             }
         }
 
@@ -129,7 +129,7 @@ namespace ToArcGISEarth
             try
             {
                 List<Layer> layerList = args.Layers as List<Layer>;
-                if (layerList?.Count != 0 && !this.IsCreateNewGroupLayer(layerList))
+                if (layerList?.Count != 0 && !IsCreateNewGroupLayer(layerList))
                 {
                     foreach (var layer in layerList)
                     {

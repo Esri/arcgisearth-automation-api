@@ -25,20 +25,20 @@ namespace ToArcGISEarth
     {
         public SetCameraButton()
         {
-            this.Enabled = false;
+            Enabled = false;
         }
 
         protected override void OnClick()
         {
-            if (this.IsChecked)
+            if (IsChecked)
             {
-                MapViewCameraChangedEvent.Unsubscribe(this.SetCamera);
-                this.IsChecked = false;
+                MapViewCameraChangedEvent.Unsubscribe(SetCamera);
+                IsChecked = false;
             }
             else
             {
-                MapViewCameraChangedEvent.Subscribe(this.SetCamera, false);
-                this.IsChecked = true;
+                MapViewCameraChangedEvent.Subscribe(SetCamera, false);
+                IsChecked = true;
             }
         }
 
@@ -46,13 +46,13 @@ namespace ToArcGISEarth
         {
             if (ToolHelper.IsConnectSuccessfully)
             {
-                this.Enabled = true;
+                Enabled = true;
             }
             else
             {
-                MapViewCameraChangedEvent.Unsubscribe(this.SetCamera);
-                this.Enabled = false;
-                this.IsChecked = false;
+                MapViewCameraChangedEvent.Unsubscribe(SetCamera);
+                Enabled = false;
+                IsChecked = false;
             }
         }
 

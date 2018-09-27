@@ -22,21 +22,21 @@ namespace ToArcGISEarth
 
         public ClearWorkspaceButton()
         {
-            this.Enabled = false;
+            Enabled = false;
         }
 
         protected override void OnClick()
         {
-            this.IsChecked = true;
+            IsChecked = true;
             MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS, null, MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
-                this.ClearAll();
-                this.IsChecked = false;
+                ClearAll();
+                IsChecked = false;
             }
             else
             {
-                this.IsChecked = false;
+                IsChecked = false;
                 return;
             }
         }
@@ -45,12 +45,12 @@ namespace ToArcGISEarth
         {
             if (ToolHelper.IsConnectSuccessfully)
             {
-                this.Enabled = true;
+                Enabled = true;
             }
             else
             {
-                this.Enabled = false;
-                this.IsChecked = false;
+                Enabled = false;
+                IsChecked = false;
             }
         }
 
