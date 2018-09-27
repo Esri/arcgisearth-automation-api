@@ -30,7 +30,7 @@ namespace ToArcGISEarth
             get { return _myIMMap; }
             set
             {
-                layerSource = ToolHelper.AddedOrRemovedElevationSource(_myIMMap.ElevationSurfaces, value.ElevationSurfaces, ref addOrRemove);
+                layerSource = ToolHelper.AddedOrRemovedElevationSource(_myIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref addOrRemove);
                 if (this.IsElevationSourceAddedChanged())
                 {
                     _myIMMap = value;
