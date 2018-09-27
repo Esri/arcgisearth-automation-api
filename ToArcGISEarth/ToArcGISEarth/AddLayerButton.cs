@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Timers;
+using static ToArcGISEarth.ToolHelper;
 
 namespace ToArcGISEarth
 {
@@ -19,19 +20,20 @@ namespace ToArcGISEarth
 
         #region  ElevationSource variable and property
 
-        private Timer timer;
+        private Timer _timer;
         private event PropertyChangedEventHandler ElevationSourceAddedChanged;
         private event PropertyChangedEventHandler ElevationSourceRemovedChanged;
-        private List<string[]> layerSource = new List<string[]>();
-        private bool? addOrRemove = null; // True: added elevation source, false: removed elevation source, null: do nothing
+        private List<string[]> _elevationSources = new List<string[]>();
+        //  private bool? addOrRemove = null; // True: added elevation source, false: removed elevation source, null: do nothing
+        private ElevationSourcesOperation _sourcesOperation = ElevationSourcesOperation.Null;
         private CIMMap _myIMMap = new CIMMap();
         public CIMMap MyCIMMap
         {
             get { return _myIMMap; }
             set
             {
-                layerSource = ToolHelper.AddedOrRemovedElevationSources(_myIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref addOrRemove);
-                if (this.IsElevationSourceAddedChanged() && this.IsChecked)
+                _elevationSources = ToolHelper.AddedOrRemovedElevationSources(_myIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref _sourcesOperation);
+                if (this.IsElevationSourceAddedChanged() && IsChecked)
                 {
                     _myIMMap = value;
                     ElevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyCIMMap)));
@@ -49,13 +51,13 @@ namespace ToArcGISEarth
         public AddLayerButton()
         {
             this.Enabled = false;
-            timer = new Timer
+            _timer = new Timer
             {
                 Enabled = true,
                 Interval = 1000
             };
             // Update current MyCIMMap every 1 second
-            timer.Elapsed += (s, e) =>
+            _timer.Elapsed += (s, e) =>
             {
                 QueuedTask.Run(() =>
                 {
@@ -71,7 +73,7 @@ namespace ToArcGISEarth
             if (this.IsChecked)
             {
                 LayersAddedEvent.Unsubscribe(this.AddLayer);
-                this.timer.Stop();
+                this._timer.Stop();
                 this.IsChecked = false;
                 if (RemoveLayerButton.HasChecked)
                 {
@@ -89,8 +91,8 @@ namespace ToArcGISEarth
                 {
                     _myIMMap = MapView.Active.Map.GetDefinition();
                 });
-                this.timer.Enabled = true;
-                this.timer.Start();
+                this._timer.Enabled = true;
+                this._timer.Start();
                 this.IsChecked = true;
             }
         }
@@ -174,12 +176,12 @@ namespace ToArcGISEarth
 
         private bool IsElevationSourceAddedChanged()
         {
-            if (layerSource != null && layerSource.Count != 0)
+            if (_elevationSources != null && _elevationSources.Count > 0)
             {
                 // Added elevation source
-                if (addOrRemove == true)
+                if (_sourcesOperation == ElevationSourcesOperation.Add)
                 {
-                    return layerSource.Count() != 0;
+                    return true;
                 }
                 return false;
             }
@@ -188,10 +190,10 @@ namespace ToArcGISEarth
 
         private bool IsElevationSourceRemovedChanged()
         {
-            if (layerSource != null && layerSource.Count != 0)
+            if (_elevationSources != null && _elevationSources.Count > 0)
             {
                 // Removed elevation source
-                if (addOrRemove == false)
+                if (_sourcesOperation == ElevationSourcesOperation.Remove)
                 {
                     return true;
                 }
@@ -202,9 +204,13 @@ namespace ToArcGISEarth
 
         private void ElevationSourceAddedEvent(object sender, PropertyChangedEventArgs args)
         {
-            if (addOrRemove == true && layerSource?.Count != 0)
+            if (_sourcesOperation == ElevationSourcesOperation.Add && _elevationSources?.Count > 0)
             {
-                string url = layerSource.FirstOrDefault()?[2];
+                string url = null;
+                if (_elevationSources.FirstOrDefault()?.Length >= 3)
+                {
+                    url = _elevationSources.FirstOrDefault()[2];
+                }
                 JObject addLayerJson = new JObject
                 {
                     ["URI"] = url,
@@ -233,16 +239,16 @@ namespace ToArcGISEarth
 
         private void ElevationSourceRemovedEvent(object sender, PropertyChangedEventArgs args)
         {
-            if (addOrRemove == false && layerSource?.Count != 0)
+            if (_sourcesOperation == ElevationSourcesOperation.Remove && _elevationSources?.Count > 0)
             {
                 try
                 {
                     List<string> idList = new List<string>();
-                    foreach (var source in layerSource)
+                    foreach (var source in _elevationSources)
                     {
                         foreach (var item in ToolHelper.IdNameDic)
                         {
-                            if (item.Value?.Length == 2 && item.Value[0] == source[2] && item.Value[1] == "ElevationLayers")
+                            if (item.Value?.Length == 2 && source?.Length >= 3 && item.Value[0] == source[2] && item.Value[1] == "ElevationLayers")
                             {
                                 idList.Add(item.Key);
                             }

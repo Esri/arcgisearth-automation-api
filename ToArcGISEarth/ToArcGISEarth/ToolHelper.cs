@@ -148,22 +148,22 @@ namespace ToArcGISEarth
 
         #region Elevation sufaces
 
-        public static List<string[]> AddedOrRemovedElevationSources(CIMMapElevationSurface[] previousElevationSurfaces, CIMMapElevationSurface[] currentElevationSurfaces, ref bool? addOrRemove)
+        public static List<string[]> AddedOrRemovedElevationSources(CIMMapElevationSurface[] previousElevationSurfaces, CIMMapElevationSurface[] currentElevationSurfaces, ref ElevationSourcesOperation operation)
         {
             if (currentElevationSurfaces != null)
             {
-                addOrRemove = null;
+                operation = ElevationSourcesOperation.Null;
                 List<string[]> previousList = GetAllElevationSources(previousElevationSurfaces, out int e1);
                 List<string[]> currentList = GetAllElevationSources(currentElevationSurfaces, out int e2);
                 if (e1 < e2)
                 {
-                    addOrRemove = true;
-                    return GetChangedElevationSources(previousList, currentList, (bool)addOrRemove);
+                    operation = ElevationSourcesOperation.Add;
+                    return GetChangedElevationSources(previousList, currentList, operation);
                 }
                 if (e1 > e2)
                 {
-                    addOrRemove = false;
-                    return GetChangedElevationSources(previousList, currentList, (bool)addOrRemove);
+                    operation = ElevationSourcesOperation.Remove;
+                    return GetChangedElevationSources(previousList, currentList, operation);
                 }
                 return null;
             }
@@ -189,16 +189,17 @@ namespace ToArcGISEarth
             return sourcesList;
         }
 
-        private static List<string[]> GetChangedElevationSources(List<string[]> previousList, List<string[]> currentList, bool addSource)
+        private static List<string[]> GetChangedElevationSources(List<string[]> previousList, List<string[]> currentList, ElevationSourcesOperation operation)
         {
-            if (addSource)
+            if (operation == ElevationSourcesOperation.Add)
             {
                 return currentList?.Except(previousList, new ListStringArrComparer<string[]>())?.ToList();
             }
-            else
+            if (operation == ElevationSourcesOperation.Remove)
             {
                 return previousList?.Except(currentList, new ListStringArrComparer<string[]>())?.ToList();
             }
+            return null;
         }
 
         private class ListStringArrComparer<T> : IEqualityComparer<T>
@@ -229,6 +230,13 @@ namespace ToArcGISEarth
             {
                 return obj.ToString().GetHashCode();
             }
+        }
+
+        public enum ElevationSourcesOperation
+        {
+            Add,
+            Remove,
+            Null
         }
 
         #endregion Elevation sufaces
