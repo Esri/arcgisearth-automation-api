@@ -152,7 +152,7 @@ namespace ToArcGISEarth
         {
             if (currentElevationSurfaces != null)
             {
-                operation = ElevationSourcesOperation.Null;
+                operation = ElevationSourcesOperation.None;
                 List<string[]> previousList = GetAllElevationSources(previousElevationSurfaces, out int e1);
                 List<string[]> currentList = GetAllElevationSources(currentElevationSurfaces, out int e2);
                 if (e1 < e2)
@@ -234,9 +234,9 @@ namespace ToArcGISEarth
 
         public enum ElevationSourcesOperation
         {
+            None,
             Add,
-            Remove,
-            Null
+            Remove
         }
 
         #endregion Elevation sufaces

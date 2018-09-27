@@ -25,7 +25,7 @@ namespace ToArcGISEarth
         private event PropertyChangedEventHandler ElevationSourceRemovedChanged;
         private List<string[]> _elevationSources = new List<string[]>();
         //  private bool? addOrRemove = null; // True: added elevation source, false: removed elevation source, null: do nothing
-        private ElevationSourcesOperation _sourcesOperation = ElevationSourcesOperation.Null;
+        private ElevationSourcesOperation _sourcesOperation = ElevationSourcesOperation.None;
         private CIMMap _myIMMap = new CIMMap();
         public CIMMap MyCIMMap
         {
