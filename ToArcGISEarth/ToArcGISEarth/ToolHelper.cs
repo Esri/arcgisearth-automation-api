@@ -148,32 +148,32 @@ namespace ToArcGISEarth
 
         #region Elevation sufaces
 
-        public static Dictionary<int, string> AddedOrRemovedElevationSource(CIMMapElevationSurface[] previousElevationSurfaces, CIMMapElevationSurface[] currentElevationSurfaces, ref bool? addOrRemove)
+        public static List<string[]> AddedOrRemovedElevationSources(CIMMapElevationSurface[] previousElevationSurfaces, CIMMapElevationSurface[] currentElevationSurfaces, ref bool? addOrRemove)
         {
             if (currentElevationSurfaces != null)
             {
                 addOrRemove = null;
-                Dictionary<int, string> previousDic = GetAllElevationSource(previousElevationSurfaces, out int e1);
-                Dictionary<int, string> currentDic = GetAllElevationSource(currentElevationSurfaces, out int e2);
+                List<string[]> previousList = GetAllElevationSources(previousElevationSurfaces, out int e1);
+                List<string[]> currentList = GetAllElevationSources(currentElevationSurfaces, out int e2);
                 if (e1 < e2)
                 {
                     addOrRemove = true;
-                    return GetAddedElevationSource(previousDic, currentDic);
+                    return GetChangedElevationSources(previousList, currentList, (bool)addOrRemove);
                 }
                 if (e1 > e2)
                 {
                     addOrRemove = false;
-                    return GetRemovedElevationSource(previousDic, currentDic);
+                    return GetChangedElevationSources(previousList, currentList, (bool)addOrRemove);
                 }
                 return null;
             }
             return null;
         }
 
-        private static Dictionary<int, string> GetAllElevationSource(CIMMapElevationSurface[] elevationSurfaces, out int count)
+        private static List<string[]> GetAllElevationSources(CIMMapElevationSurface[] elevationSurfaces, out int count)
         {
             count = 0;
-            Dictionary<int, string> idUrlDirc = new Dictionary<int, string>();
+            List<string[]> sourcesList = new List<string[]>();
             if (elevationSurfaces != null)
             {
                 for (int i = 0; i < elevationSurfaces.Length; i++)
@@ -181,66 +181,58 @@ namespace ToArcGISEarth
                     var baseSources = elevationSurfaces[i].BaseSources;
                     for (int j = 0; j < baseSources?.Length; j++)
                     {
-                        // id , url
-                        idUrlDirc.Add(count, ToolHelper.GetDataSource(baseSources[j].DataConnection));
+                        sourcesList.Add(new string[3] { elevationSurfaces[i].Name, baseSources[j].Name, ToolHelper.GetDataSource(baseSources[j].DataConnection) });
                         count++;
                     }
                 }
             }
-            return idUrlDirc;
+            return sourcesList;
         }
 
-        private static Dictionary<int, string> GetAddedElevationSource(Dictionary<int, string> previousDic, Dictionary<int, string> currentDic)
+        private static List<string[]> GetChangedElevationSources(List<string[]> previousList, List<string[]> currentList, bool addSource)
         {
-            if (currentDic?.Count > previousDic?.Count)
+            if (addSource)
             {
-                currentDic.OrderBy(p => p.Value);
-                previousDic.OrderBy(p => p.Value);
-                foreach (var item in currentDic)
-                {
-                    if (previousDic.ContainsKey(item.Key))
-                    {
-                        if (previousDic.TryGetValue(item.Key, out string url) && url != item.Value)
-                        {
-                            return new Dictionary<int, string> { { item.Key, item.Value } };
-                        }
-                    }
-                    else
-                    {
-                        // Pro can only load an elevation source at once
-                        return new Dictionary<int, string> { { item.Key, item.Value } };
-                    }
-                }
-                return null;
+                return currentList?.Except(previousList, new ListStringArrComparer<string[]>())?.ToList();
             }
-            return null;
+            else
+            {
+                return previousList?.Except(currentList, new ListStringArrComparer<string[]>())?.ToList();
+            }
         }
 
-        private static Dictionary<int, string> GetRemovedElevationSource(Dictionary<int, string> previousDic, Dictionary<int, string> currentDic)
+        private class ListStringArrComparer<T> : IEqualityComparer<T>
         {
-            if (currentDic?.Count < previousDic?.Count)
+            public bool Equals(T x, T y)
             {
-                currentDic.OrderBy(p => p.Value);
-                previousDic.OrderBy(p => p.Value);
-                foreach (var item in previousDic)
+                if (x is string[] && y is string[])
                 {
-                    if (currentDic.ContainsKey(item.Key))
+                    string[] xArr = x as string[];
+                    string[] yArr = y as string[];
+                    if (xArr?.Length == 3 && yArr?.Length == 3)
                     {
-                        if (currentDic.TryGetValue(item.Key, out string url) && url != item.Value)
+                        for (int i = 0; i < xArr.Length; i++)
                         {
-                            return new Dictionary<int, string> { { item.Key, item.Value } };
+                            if (xArr[i] != yArr[i])
+                            {
+                                return false;
+                            }
                         }
+                        return true;
                     }
-                    else
-                    {
-                        return new Dictionary<int, string> { { item.Key, item.Value } };
-                    }
+                    return false;
                 }
-                return null;
+                return false;
             }
-            return null;
+
+            public int GetHashCode(T obj)
+            {
+                return obj.ToString().GetHashCode();
+            }
         }
 
         #endregion Elevation sufaces
     }
 }
+
+

@@ -22,7 +22,7 @@ namespace ToArcGISEarth
         private Timer timer;
         private event PropertyChangedEventHandler ElevationSourceAddedChanged;
         private event PropertyChangedEventHandler ElevationSourceRemovedChanged;
-        private Dictionary<int, string> layerSource = new Dictionary<int, string>();
+        private List<string[]> layerSource = new List<string[]>();
         private bool? addOrRemove = null; // True: added elevation source, false: removed elevation source, null: do nothing
         private CIMMap _myIMMap = new CIMMap();
         public CIMMap MyCIMMap
@@ -30,16 +30,16 @@ namespace ToArcGISEarth
             get { return _myIMMap; }
             set
             {
-                layerSource = ToolHelper.AddedOrRemovedElevationSource(_myIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref addOrRemove);
-                if (this.IsElevationSourceAddedChanged())
+                layerSource = ToolHelper.AddedOrRemovedElevationSources(_myIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref addOrRemove);
+                if (this.IsElevationSourceAddedChanged() && this.IsChecked)
                 {
                     _myIMMap = value;
-                    ElevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs("MyCIMMap"));
+                    ElevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyCIMMap)));
                 }
                 if (this.IsElevationSourceRemovedChanged() && RemoveLayerButton.HasChecked)
                 {
                     _myIMMap = value;
-                    ElevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs("MyCIMMap"));
+                    ElevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyCIMMap)));
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace ToArcGISEarth
                 // Added elevation source
                 if (addOrRemove == true)
                 {
-                    return layerSource.Values.FirstOrDefault() != null;
+                    return layerSource.Count() != 0;
                 }
                 return false;
             }
@@ -193,7 +193,7 @@ namespace ToArcGISEarth
                 // Removed elevation source
                 if (addOrRemove == false)
                 {
-                    return layerSource.Values.FirstOrDefault() != null;
+                    return true;
                 }
                 return false;
             }
@@ -204,7 +204,7 @@ namespace ToArcGISEarth
         {
             if (addOrRemove == true && layerSource?.Count != 0)
             {
-                string url = layerSource.Values.FirstOrDefault();
+                string url = layerSource.FirstOrDefault()?[2];
                 JObject addLayerJson = new JObject
                 {
                     ["URI"] = url,
@@ -235,19 +235,29 @@ namespace ToArcGISEarth
         {
             if (addOrRemove == false && layerSource?.Count != 0)
             {
-                string url = layerSource.Values.FirstOrDefault();
-                string id = "";
-                foreach (var item in ToolHelper.IdNameDic)
+                try
                 {
-                    if (item.Value?.Length == 2 && item.Value[0] == url && item.Value[1] == "ElevationLayers")
+                    List<string> idList = new List<string>();
+                    foreach (var source in layerSource)
                     {
-                        id = item.Key;
-                        break;
+                        foreach (var item in ToolHelper.IdNameDic)
+                        {
+                            if (item.Value?.Length == 2 && item.Value[0] == source[2] && item.Value[1] == "ElevationLayers")
+                            {
+                                idList.Add(item.Key);
+                            }
+                        }
                     }
+                    foreach (var id in idList)
+                    {
+                        ToolHelper.Utils.RemoveLayer(id);
+                        ToolHelper.IdNameDic.Remove(id);
+                    }
+                    return;
                 }
-                ToolHelper.Utils.RemoveLayer(id);
-                ToolHelper.IdNameDic.Remove(id);
-                return;
+                catch
+                {
+                }
             }
         }
     }
