@@ -18,8 +18,6 @@ namespace ToArcGISEarth
 {
     public class ClearWorkspaceButton : Button
     {
-        private const string MESSAGE_TIPS = "Are you sure you want to remove all items from current workspace?";
-
         public ClearWorkspaceButton()
         {
             Enabled = false;
@@ -28,7 +26,7 @@ namespace ToArcGISEarth
         protected override void OnClick()
         {
             IsChecked = true;
-            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS, null, MessageBoxButton.OKCancel);
+            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Are you sure you want to remove all items from current workspace?", null, MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 ClearAll();
@@ -36,8 +34,7 @@ namespace ToArcGISEarth
             }
             else
             {
-                IsChecked = false;
-                return;
+                IsChecked = false;              
             }
         }
 

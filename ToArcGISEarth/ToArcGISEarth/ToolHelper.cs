@@ -28,21 +28,21 @@ namespace ToArcGISEarth
         public static bool IsConnectSuccessfully { get; set; } = false; // Recording the status of connecting to ArcGIS Earth
         public static Dictionary<string, string[]> IdNameDic { get; set; } = new Dictionary<string, string[]>(); // Recording the layer id, layer name and layer MapLayerType         
         public static bool IsArcGISEarthRunning { get { return ArcGISEarthRunning(); } }
-        public static bool IsArcGISProSceneOpening { get { return ArcGISProSceneOpening(); } }
+        public static bool IsArcGISProGlobalSceneOpening { get { return ArcGISProGlobalSceneOpening(); } }
 
         private static bool ArcGISEarthRunning()
         {
             return Process.GetProcessesByName("ArcGISEarth").Length > 0;
         }
 
-        private static bool ArcGISProSceneOpening()
+        private static bool ArcGISProGlobalSceneOpening()
         {
-            return MapView.Active?.Map?.IsScene == true;
+            return MapView.Active?.Map?.IsScene == true && MapView.Active?.Map.DefaultViewingMode == MapViewingMode.SceneGlobal;
         }
 
         #region Get data source
 
-        public static string GetDataSource(CIMObject dataConnection)
+        public static string GetDataSource(CIMDataConnection dataConnection)
         {
             if (dataConnection != null)
             {
@@ -52,11 +52,11 @@ namespace ToArcGISEarth
                     WorkspaceFactory factory = (dataConnection as CIMStandardDataConnection).WorkspaceFactory;
                     if (factory == WorkspaceFactory.FeatureService)
                     {
-                        return GetFeatureServerUrl(dataConnection as CIMStandardDataConnection);
+                        return GetServiceUrl(dataConnection);
                     }
                     if (factory == WorkspaceFactory.Shapefile || factory == WorkspaceFactory.Raster)
                     {
-                        return GetShpRasterUrl(dataConnection as CIMStandardDataConnection);
+                        return GetShpAndRasterUrl(dataConnection as CIMStandardDataConnection);
                     }
                 }
                 // Kml, kmz
@@ -72,7 +72,7 @@ namespace ToArcGISEarth
                 // Imagary Layer, Map Image Layer, Tile Layer , Scene Layer
                 if (dataConnection is CIMAGSServiceConnection)
                 {
-                    return GetNotFeatureServerUrl(dataConnection as CIMAGSServiceConnection);
+                    return GetServiceUrl(dataConnection);
                 }
                 // Wms
                 if (dataConnection is CIMWMSServiceConnection)
@@ -83,17 +83,7 @@ namespace ToArcGISEarth
             return null;
         }
 
-        private static string GetFeatureServerUrl(CIMStandardDataConnection dataConnection)
-        {
-            string connectStr = dataConnection?.WorkspaceConnectionString; // e.g.  "URL=http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"
-            if (connectStr?.Length > 4)
-            {
-                return connectStr.Substring(4);
-            }
-            return null;
-        }
-
-        private static string GetShpRasterUrl(CIMStandardDataConnection dataConnection)
+        private static string GetShpAndRasterUrl(CIMStandardDataConnection dataConnection)
         {
             string fileDirectory = "";
             string fileName = dataConnection?.Dataset; // e.g.  "test.shp"
@@ -125,23 +115,38 @@ namespace ToArcGISEarth
             return null;
         }
 
-        private static string GetNotFeatureServerUrl(CIMAGSServiceConnection dataConnection)
+        private static string GetServiceUrl(CIMDataConnection dataConnection)
         {
-            // Imager server
-            if (dataConnection?.ObjectType == "ImageServer")
+            if (dataConnection is CIMStandardDataConnection)
             {
-                string url = dataConnection?.URL;
-                if (url.Contains("services"))
+                // Feature service
+                string connectStr = (dataConnection as CIMStandardDataConnection)?.WorkspaceConnectionString; // e.g.  "URL=http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"
+                if (connectStr?.Length > 4)
                 {
-                    string[] splitStr = url.Split(new string[] { "services" }, StringSplitOptions.None);
-                    if (splitStr?.Length >= 2 && splitStr.FirstOrDefault() != null)
-                    {
-                        return splitStr[0] + "rest/" + "services" + splitStr[1];
-                    }
+                    return connectStr.Substring(4);
                 }
                 return null;
             }
-            return dataConnection.URL;
+            if (dataConnection is CIMAGSServiceConnection)
+            {
+                // Imager service
+                if ((dataConnection as CIMAGSServiceConnection)?.ObjectType == "ImageServer")
+                {
+                    string url = (dataConnection as CIMAGSServiceConnection)?.URL;
+                    if (url.Contains("services"))
+                    {
+                        string[] splitStr = url.Split(new string[] { "services" }, StringSplitOptions.None);
+                        if (splitStr?.Length >= 2 && splitStr.FirstOrDefault() != null)
+                        {
+                            return splitStr[0] + "rest/" + "services" + splitStr[1];
+                        }
+                    }
+                    return null;
+                }
+                // Other service
+                return (dataConnection as CIMAGSServiceConnection).URL;
+            }
+            return null;
         }
 
         private static string GetWmsUrl(CIMWMSServiceConnection dataConnection)

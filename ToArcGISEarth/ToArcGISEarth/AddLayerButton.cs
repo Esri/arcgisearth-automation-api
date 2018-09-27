@@ -18,7 +18,6 @@ using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -29,32 +28,29 @@ namespace ToArcGISEarth
 {
     public class AddLayerButton : Button
     {
-        private const string MESSAGE_TIPS = "Failed to add layer to ArcGIS Earth.";
-
         #region  ElevationSource variable and property
 
         private Timer _timer;
         private event PropertyChangedEventHandler ElevationSourceAddedChanged;
         private event PropertyChangedEventHandler ElevationSourceRemovedChanged;
         private List<string[]> _elevationSources = new List<string[]>();
-        //  private bool? addOrRemove = null; // True: added elevation source, false: removed elevation source, null: do nothing
         private ElevationSourcesOperation _sourcesOperation = ElevationSourcesOperation.None;
-        private CIMMap _myIMMap = new CIMMap();
-        public CIMMap MyCIMMap
+        private CIMMap currentCIMMap = new CIMMap();
+        public CIMMap CurrentCIMMap
         {
-            get { return _myIMMap; }
+            get { return currentCIMMap; }
             set
             {
-                _elevationSources = ToolHelper.AddedOrRemovedElevationSources(_myIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref _sourcesOperation);
+                _elevationSources = ToolHelper.AddedOrRemovedElevationSources(currentCIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref _sourcesOperation);
                 if (IsElevationSourceAddedChanged() && IsChecked)
                 {
-                    _myIMMap = value;
-                    ElevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyCIMMap)));
+                    currentCIMMap = value;
+                    ElevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
                 }
                 if (IsElevationSourceRemovedChanged() && RemoveLayerButton.HasChecked)
                 {
-                    _myIMMap = value;
-                    ElevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MyCIMMap)));
+                    currentCIMMap = value;
+                    ElevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
                 }
             }
         }
@@ -69,41 +65,29 @@ namespace ToArcGISEarth
                 Enabled = true,
                 Interval = 1000
             };
-            // Update current MyCIMMap every 1 second
+            // Update current CurrentCIMMap every 1 second
             _timer.Elapsed += (s, e) =>
             {
                 QueuedTask.Run(() =>
                 {
-                    MyCIMMap = MapView.Active?.Map?.GetDefinition();
+                    CurrentCIMMap = MapView.Active?.Map?.GetDefinition();
                 });
             };
-            ElevationSourceAddedChanged += ElevationSourceAddedEvent;
-            ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
+            _timer.Start();
         }
 
         protected override void OnClick()
         {
             if (IsChecked)
             {
-                LayersAddedEvent.Unsubscribe(AddLayer);
-                _timer.Stop();
+                LayersAddedEvent.Unsubscribe(AddLayerToEarthEvent);
+                ElevationSourceAddedChanged -= ElevationSourceAddedEvent;
                 IsChecked = false;
-                if (RemoveLayerButton.HasChecked)
-                {
-                    ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
-                }
             }
             else
             {
-                if (RemoveLayerButton.HasChecked)
-                {
-                    ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
-                }
-                LayersAddedEvent.Subscribe(AddLayer, false);
-                QueuedTask.Run(() =>
-                {
-                    _myIMMap = MapView.Active.Map.GetDefinition();
-                });
+                LayersAddedEvent.Subscribe(AddLayerToEarthEvent, false);
+                ElevationSourceAddedChanged += ElevationSourceAddedEvent;
                 _timer.Enabled = true;
                 _timer.Start();
                 IsChecked = true;
@@ -118,13 +102,14 @@ namespace ToArcGISEarth
             }
             else
             {
-                LayersAddedEvent.Unsubscribe(AddLayer);
+                LayersAddedEvent.Unsubscribe(AddLayerToEarthEvent);
                 Enabled = false;
                 IsChecked = false;
             }
+            SetElevationSourceRemovedChangedStatus();
         }
 
-        private void AddLayer(LayerEventsArgs args)
+        private void AddLayerToEarthEvent(LayerEventsArgs args)
         {
             try
             {
@@ -136,9 +121,9 @@ namespace ToArcGISEarth
                         QueuedTask.Run(() =>
                         {
                             // This method or property must be called within the lambda passed to QueuedTask.Run. 
-                            CIMObject dataConnection = layer.GetDataConnection();
+                            CIMDataConnection dataConnection = layer.GetDataConnection();
                             string url = ToolHelper.GetDataSource(dataConnection);
-                            if (!String.IsNullOrWhiteSpace(url))
+                            if (!string.IsNullOrWhiteSpace(url))
                             {
                                 JObject addLayerJson = new JObject
                                 {
@@ -148,11 +133,11 @@ namespace ToArcGISEarth
                                 {
                                     addLayerJson["type"] = "OGCWMS"; // ArcGIS Earth Auotmation API can't autoatic recognize wms service.
                                 }
-                                if (layer.MapLayerType == ArcGIS.Core.CIM.MapLayerType.Operational)
+                                if (layer.MapLayerType == MapLayerType.Operational)
                                 {
                                     addLayerJson["target"] = "OperationalLayers";
                                 }
-                                if (layer.MapLayerType == ArcGIS.Core.CIM.MapLayerType.BasemapBackground)
+                                if (layer.MapLayerType == MapLayerType.BasemapBackground)
                                 {
                                     addLayerJson["target"] = "BasemapLayers";
                                 }
@@ -170,7 +155,7 @@ namespace ToArcGISEarth
                             }
                             else
                             {
-                                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS.Remove(MESSAGE_TIPS.Length - 1, 1) + " : " + layer.Name);
+                                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to add layer to ArcGIS Earth" + " : " + layer.Name);
                             }
                         });
                     }
@@ -178,7 +163,7 @@ namespace ToArcGISEarth
             }
             catch
             {
-                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS);
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to add layer to ArcGIS Earth.");
             }
         }
 
@@ -190,8 +175,7 @@ namespace ToArcGISEarth
         private bool IsElevationSourceAddedChanged()
         {
             if (_elevationSources != null && _elevationSources.Count > 0)
-            {
-                // Added elevation source
+            {               
                 if (_sourcesOperation == ElevationSourcesOperation.Add)
                 {
                     return true;
@@ -204,8 +188,7 @@ namespace ToArcGISEarth
         private bool IsElevationSourceRemovedChanged()
         {
             if (_elevationSources != null && _elevationSources.Count > 0)
-            {
-                // Removed elevation source
+            {             
                 if (_sourcesOperation == ElevationSourcesOperation.Remove)
                 {
                     return true;
@@ -215,28 +198,41 @@ namespace ToArcGISEarth
             return false;
         }
 
+        private void SetElevationSourceRemovedChangedStatus()
+        {
+            if (RemoveLayerButton.HasChecked)
+            {
+                ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
+            }
+            else
+            {
+                ElevationSourceRemovedChanged -= ElevationSourceRemovedEvent;
+            }
+        }
+
         private void ElevationSourceAddedEvent(object sender, PropertyChangedEventArgs args)
         {
             if (_sourcesOperation == ElevationSourcesOperation.Add && _elevationSources?.Count > 0)
             {
-                string url = null;
-                if (_elevationSources.FirstOrDefault()?.Length >= 3)
-                {
-                    url = _elevationSources.FirstOrDefault()[2];
-                }
-                JObject addLayerJson = new JObject
-                {
-                    ["URI"] = url,
-                    ["target"] = "ElevationLayers"
-                };
-                string currentJson = addLayerJson.ToString();
-                string[] nameAndType = new string[2]
-                {
-                         url,
-                        "ElevationLayers"
-                };
                 try
                 {
+                    string url = null;
+                    if (_elevationSources.FirstOrDefault()?.Length >= 3)
+                    {
+                        url = _elevationSources.FirstOrDefault()[2];
+                    }
+                    JObject addLayerJson = new JObject
+                    {
+                        ["URI"] = url,
+                        ["target"] = "ElevationLayers"
+                    };
+                    string currentJson = addLayerJson.ToString();
+                    string[] nameAndType = new string[2]
+                    {
+                         url,
+                        "ElevationLayers"
+                    };
+
                     string id = ToolHelper.Utils.AddLayer(currentJson);
                     if (!ToolHelper.IdNameDic.Keys.Contains(id))
                     {
@@ -245,7 +241,7 @@ namespace ToArcGISEarth
                 }
                 catch
                 {
-                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS);
+                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to add layer to ArcGIS Earth.");
                 }
             }
         }
@@ -272,7 +268,6 @@ namespace ToArcGISEarth
                         ToolHelper.Utils.RemoveLayer(id);
                         ToolHelper.IdNameDic.Remove(id);
                     }
-                    return;
                 }
                 catch
                 {

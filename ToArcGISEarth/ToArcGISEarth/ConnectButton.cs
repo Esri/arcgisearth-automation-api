@@ -17,72 +17,55 @@ namespace ToArcGISEarth
 {
     public class ConnectButton : Button
     {
-        private const string CONNECTION_SUCCESS = "Success";
-        private const string CAPTION_CONNECT = "Connect";
-        private const string CAPTION_DISCONNECT = "Disconnect";
-        private const string MESSAGE_TIPS = "Please make sure ArcGIS Earth is running and the Automation API is configured as enabled. Then try to connect again.";
-
         protected override async void OnClick()
         {
-            if (ToolHelper.IsArcGISProSceneOpening)
+            if (ToolHelper.IsArcGISEarthRunning)
             {
-                if (ToolHelper.IsArcGISEarthRunning)
+                if (IsChecked)
                 {
-                    Enabled = true;
-                    if (IsChecked)
-                    {
-                        ToolHelper.Utils.CloseConnect();
-                        IsChecked = false;
-                        Caption = CAPTION_CONNECT;
-                        ToolHelper.IsConnectSuccessfully = false;
-                    }
-                    else
-                    {
-                        string result = await ToolHelper.Utils.Connect();
-                        if (result != CONNECTION_SUCCESS)
-                        {
-                            ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS);
-                            return;
-                        }
-                        else
-                        {
-                            IsChecked = true;
-                            Caption = CAPTION_DISCONNECT;
-                            ToolHelper.IsConnectSuccessfully = true;
-                        }
-                    }
+                    ToolHelper.Utils.CloseConnect();
+                    IsChecked = false;
+                    Caption = "Connect";
+                    ToolHelper.IsConnectSuccessfully = false;
                 }
                 else
                 {
-                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(MESSAGE_TIPS);
+                    string result = await ToolHelper.Utils.Connect();
+                    if (result != "Success")
+                    {
+                        ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please make sure ArcGIS Earth is running and the Automation API is configured as enabled. Then try to connect again.");
+                    }
+                    else
+                    {
+                        IsChecked = true;
+                        Caption = "Disconnect";
+                        ToolHelper.IsConnectSuccessfully = true;
+                    }
                 }
             }
             else
             {
-                ToolHelper.IsConnectSuccessfully = false;
-                IsChecked = false;
-                Caption = CAPTION_CONNECT;
-                Enabled = false;
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Please make sure ArcGIS Earth is running and the Automation API is configured as enabled. Then try to connect again.");
             }
         }
 
         protected override void OnUpdate()
         {
-            if (ToolHelper.IsArcGISProSceneOpening)
+            if (ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
                 if (!ToolHelper.IsArcGISEarthRunning)
                 {
                     ToolHelper.IsConnectSuccessfully = false;
                     IsChecked = false;
-                    Caption = CAPTION_CONNECT;
+                    Caption = "Connect";
                 }
             }
             else
             {
                 ToolHelper.IsConnectSuccessfully = false;
                 IsChecked = false;
-                Caption = CAPTION_CONNECT;
+                Caption = "Connect";
                 Enabled = false;
             }
         }

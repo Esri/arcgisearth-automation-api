@@ -21,6 +21,7 @@ namespace ToArcGISEarth
     public class RemoveLayerButton : Button
     {
         public static bool HasChecked { get; set; }
+
         public RemoveLayerButton()
         {
             Enabled = false;
@@ -31,13 +32,13 @@ namespace ToArcGISEarth
         {
             if (IsChecked)
             {
-                LayersRemovedEvent.Unsubscribe(RemoveLayer);
+                LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarthEvent);
                 IsChecked = false;
                 HasChecked = false;
             }
             else
             {
-                LayersRemovedEvent.Subscribe(RemoveLayer, false);
+                LayersRemovedEvent.Subscribe(RemoveLayerFromEarthEvent, false);
                 IsChecked = true;
                 HasChecked = true;
             }
@@ -51,40 +52,40 @@ namespace ToArcGISEarth
             }
             else
             {
-                LayersRemovedEvent.Unsubscribe(RemoveLayer);
+                LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarthEvent);
                 Enabled = false;
                 IsChecked = false;
                 HasChecked = false;
             }
         }
 
-        private void RemoveLayer(LayerEventsArgs args)
+        private void RemoveLayerFromEarthEvent(LayerEventsArgs args)
         {
             try
             {
                 List<Layer> layerList = args.Layers as List<Layer>;
                 if (layerList?.Count != 0)
                 {
+                    List<string> idList = new List<string>();
                     foreach (var layer in layerList)
                     {
-                        string id = "";
                         foreach (var item in ToolHelper.IdNameDic)
                         {
                             if (item.Value?.Length == 2 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString())
                             {
-                                id = item.Key;
-                                break;
+                                idList.Add(item.Key);
                             }
                         }
+                    }
+                    foreach (var id in idList)
+                    {
                         ToolHelper.Utils.RemoveLayer(id);
                         ToolHelper.IdNameDic.Remove(id);
-                        return;
                     }
                 }
             }
             catch
             {
-                return;
             }
         }
     }
