@@ -32,13 +32,13 @@ namespace ToArcGISEarth
         {
             if (IsChecked)
             {
-                LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarthEvent);
+                LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarth);
                 IsChecked = false;
                 HasChecked = false;
             }
             else
             {
-                LayersRemovedEvent.Subscribe(RemoveLayerFromEarthEvent, false);
+                LayersRemovedEvent.Subscribe(RemoveLayerFromEarth, false);
                 IsChecked = true;
                 HasChecked = true;
             }
@@ -52,14 +52,14 @@ namespace ToArcGISEarth
             }
             else
             {
-                LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarthEvent);
+                LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarth);
                 Enabled = false;
                 IsChecked = false;
                 HasChecked = false;
             }
         }
 
-        private void RemoveLayerFromEarthEvent(LayerEventsArgs args)
+        private void RemoveLayerFromEarth(LayerEventsArgs args)
         {
             try
             {

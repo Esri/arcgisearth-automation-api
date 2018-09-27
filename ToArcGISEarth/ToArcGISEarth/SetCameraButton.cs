@@ -32,12 +32,12 @@ namespace ToArcGISEarth
         {
             if (IsChecked)
             {
-                MapViewCameraChangedEvent.Unsubscribe(SetCameraInEarthEvent);
+                MapViewCameraChangedEvent.Unsubscribe(SetCameraInEarth);
                 IsChecked = false;
             }
             else
             {
-                MapViewCameraChangedEvent.Subscribe(SetCameraInEarthEvent, false);
+                MapViewCameraChangedEvent.Subscribe(SetCameraInEarth, false);
                 IsChecked = true;
             }
         }
@@ -50,13 +50,13 @@ namespace ToArcGISEarth
             }
             else
             {
-                MapViewCameraChangedEvent.Unsubscribe(SetCameraInEarthEvent);
+                MapViewCameraChangedEvent.Unsubscribe(SetCameraInEarth);
                 Enabled = false;
                 IsChecked = false;
             }
         }
 
-        private void SetCameraInEarthEvent(MapViewCameraChangedEventArgs args)
+        private void SetCameraInEarth(MapViewCameraChangedEventArgs args)
         {
             try
             {

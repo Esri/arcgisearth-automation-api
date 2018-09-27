@@ -80,14 +80,14 @@ namespace ToArcGISEarth
         {
             if (IsChecked)
             {
-                LayersAddedEvent.Unsubscribe(AddLayerToEarthEvent);
-                ElevationSourceAddedChanged -= ElevationSourceAddedEvent;
+                LayersAddedEvent.Unsubscribe(AddLayerToEarth);
+                ElevationSourceAddedChanged -= ElevationSourceAdded;
                 IsChecked = false;
             }
             else
             {
-                LayersAddedEvent.Subscribe(AddLayerToEarthEvent, false);
-                ElevationSourceAddedChanged += ElevationSourceAddedEvent;
+                LayersAddedEvent.Subscribe(AddLayerToEarth, false);
+                ElevationSourceAddedChanged += ElevationSourceRemoved;
                 _timer.Enabled = true;
                 _timer.Start();
                 IsChecked = true;
@@ -102,14 +102,14 @@ namespace ToArcGISEarth
             }
             else
             {
-                LayersAddedEvent.Unsubscribe(AddLayerToEarthEvent);
+                LayersAddedEvent.Unsubscribe(AddLayerToEarth);
                 Enabled = false;
                 IsChecked = false;
             }
             SetElevationSourceRemovedChangedStatus();
         }
 
-        private void AddLayerToEarthEvent(LayerEventsArgs args)
+        private void AddLayerToEarth(LayerEventsArgs args)
         {
             try
             {
@@ -175,7 +175,7 @@ namespace ToArcGISEarth
         private bool IsElevationSourceAddedChanged()
         {
             if (_elevationSources != null && _elevationSources.Count > 0)
-            {               
+            {
                 if (_sourcesOperation == ElevationSourcesOperation.Add)
                 {
                     return true;
@@ -188,7 +188,7 @@ namespace ToArcGISEarth
         private bool IsElevationSourceRemovedChanged()
         {
             if (_elevationSources != null && _elevationSources.Count > 0)
-            {             
+            {
                 if (_sourcesOperation == ElevationSourcesOperation.Remove)
                 {
                     return true;
@@ -202,15 +202,15 @@ namespace ToArcGISEarth
         {
             if (RemoveLayerButton.HasChecked)
             {
-                ElevationSourceRemovedChanged += ElevationSourceRemovedEvent;
+                ElevationSourceRemovedChanged += ElevationSourceRemoved;
             }
             else
             {
-                ElevationSourceRemovedChanged -= ElevationSourceRemovedEvent;
+                ElevationSourceRemovedChanged -= ElevationSourceRemoved;
             }
         }
 
-        private void ElevationSourceAddedEvent(object sender, PropertyChangedEventArgs args)
+        private void ElevationSourceAdded(object sender, PropertyChangedEventArgs args)
         {
             if (_sourcesOperation == ElevationSourcesOperation.Add && _elevationSources?.Count > 0)
             {
@@ -246,7 +246,7 @@ namespace ToArcGISEarth
             }
         }
 
-        private void ElevationSourceRemovedEvent(object sender, PropertyChangedEventArgs args)
+        private void ElevationSourceRemoved(object sender, PropertyChangedEventArgs args)
         {
             if (_sourcesOperation == ElevationSourcesOperation.Remove && _elevationSources?.Count > 0)
             {
