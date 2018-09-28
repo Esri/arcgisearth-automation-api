@@ -49,9 +49,9 @@ namespace ToArcGISEarth
         {
             SaveFileDialog dialog = new SaveFileDialog
             {
-                Filter = "Png file|*.png|Jpeg file|*.jpg|Tiff file|*.tif",
-                FileName = "ArcGIS Earth.png",
-                DefaultExt = "png",
+                Filter = "Jpeg Files|*.jpg|Png Files|*.png|Tiff Files|*.tif",
+                FileName = "ArcGIS Earth.jpg",
+                DefaultExt = "jpg",
                 OverwritePrompt = true,
                 RestoreDirectory = true
             };

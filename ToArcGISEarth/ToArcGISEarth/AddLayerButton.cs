@@ -81,7 +81,7 @@ namespace ToArcGISEarth
             if (IsChecked)
             {
                 LayersAddedEvent.Unsubscribe(AddLayerToEarth);
-                ElevationSourceAddedChanged -= AddElevationSource;
+                ElevationSourceAddedChanged -= AddElevationSource;                
                 IsChecked = false;
             }
             else
@@ -175,28 +175,12 @@ namespace ToArcGISEarth
 
         private bool IsElevationSourceAddedChanged()
         {
-            if (_elevationSources != null && _elevationSources.Count > 0)
-            {
-                if (_sourcesOperation == ElevationSourcesOperation.Add)
-                {
-                    return true;
-                }
-                return false;
-            }
-            return false;
+            return _elevationSources != null && _elevationSources?.Count > 0 && _sourcesOperation == ElevationSourcesOperation.Add;
         }
 
         private bool IsElevationSourceRemovedChanged()
         {
-            if (_elevationSources != null && _elevationSources.Count > 0)
-            {
-                if (_sourcesOperation == ElevationSourcesOperation.Remove)
-                {
-                    return true;
-                }
-                return false;
-            }
-            return false;
+            return _elevationSources != null && _elevationSources?.Count > 0 && _sourcesOperation == ElevationSourcesOperation.Remove;
         }
 
         private void SetElevationSourceRemovedChangedStatus()
@@ -243,7 +227,7 @@ namespace ToArcGISEarth
                 }
                 catch
                 {
-                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to add layer to ArcGIS Earth.");
+                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to add source to ArcGIS Earth.");
                 }
             }
         }
