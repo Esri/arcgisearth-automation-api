@@ -25,20 +25,20 @@ namespace ToArcGISEarth
     {
         public SetCameraButton()
         {
-            this.Enabled = false;
+            Enabled = false;
         }
 
         protected override void OnClick()
         {
-            if (this.IsChecked)
+            if (IsChecked)
             {
-                MapViewCameraChangedEvent.Unsubscribe(this.SetCamera);
-                this.IsChecked = false;
+                MapViewCameraChangedEvent.Unsubscribe(SetCameraInEarth);
+                IsChecked = false;
             }
             else
             {
-                MapViewCameraChangedEvent.Subscribe(this.SetCamera, false);
-                this.IsChecked = true;
+                MapViewCameraChangedEvent.Subscribe(SetCameraInEarth, false);
+                IsChecked = true;
             }
         }
 
@@ -46,24 +46,24 @@ namespace ToArcGISEarth
         {
             if (ToolHelper.IsConnectSuccessfully)
             {
-                this.Enabled = true;
+                Enabled = true;
             }
             else
             {
-                MapViewCameraChangedEvent.Unsubscribe(this.SetCamera);
-                this.Enabled = false;
-                this.IsChecked = false;
+                MapViewCameraChangedEvent.Unsubscribe(SetCameraInEarth);
+                Enabled = false;
+                IsChecked = false;
             }
         }
 
-        private void SetCamera(MapViewCameraChangedEventArgs args)
+        private void SetCameraInEarth(MapViewCameraChangedEventArgs args)
         {
             try
             {
                 MapView mapView = args.MapView;
                 if (null != mapView && null != mapView.Camera && mapView.ViewingMode == MapViewingMode.SceneGlobal)
                 {
-                    JObject cameraJson = new JObject();
+                    JObject cameraJObject = new JObject();
                     Dictionary<string, double> location = new Dictionary<string, double>
                     {
                         ["x"] = mapView.Camera.X,
@@ -72,16 +72,15 @@ namespace ToArcGISEarth
                     };
 
                     // Convert ArcGIS Pro camera to ArcGIS Earth
-                    JObject location_j_obj = JObject.Parse(JsonConvert.SerializeObject(location));
-                    cameraJson["mapPoint"] = location_j_obj;
-                    cameraJson["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading;
-                    cameraJson["pitch"] = mapView.Camera.Pitch + 90;
-                    ToolHelper.Utils.SetCamera(cameraJson.ToString());
+                    JObject locationJObject = JObject.Parse(JsonConvert.SerializeObject(location));
+                    cameraJObject["mapPoint"] = locationJObject;
+                    cameraJObject["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading;
+                    cameraJObject["pitch"] = mapView.Camera.Pitch + 90;
+                    ToolHelper.Utils.SetCamera(cameraJObject.ToString());
                 }
             }
             catch
             {
-                return;
             }
         }
     }

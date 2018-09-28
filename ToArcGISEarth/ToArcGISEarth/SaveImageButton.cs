@@ -21,14 +21,14 @@ namespace ToArcGISEarth
     {
         public SaveImageButton()
         {
-            this.Enabled = false;
+            Enabled = false;
         }
 
         protected override async void OnClick()
         {
-            this.IsChecked = true;
-            await this.SaveImage();
-            this.IsChecked = false;
+            IsChecked = true;
+            await SaveImage();
+            IsChecked = false;
             return;
         }
 
@@ -36,12 +36,12 @@ namespace ToArcGISEarth
         {
             if (ToolHelper.IsConnectSuccessfully)
             {
-                this.Enabled = true;
+                Enabled = true;
             }
             else
             {
-                this.Enabled = false;
-                this.IsChecked = false;
+                Enabled = false;
+                IsChecked = false;
             }
         }
 
@@ -49,9 +49,9 @@ namespace ToArcGISEarth
         {
             SaveFileDialog dialog = new SaveFileDialog
             {
-                Filter = "Png file|*.png|Jpeg file|*.jpg|Tiff file|*.tif",
-                FileName = "ArcGIS Earth.png",
-                DefaultExt = "png",
+                Filter = "Jpeg Files|*.jpg|Png Files|*.png|Tiff Files|*.tif",
+                FileName = "ArcGIS Earth.jpg",
+                DefaultExt = "jpg",
                 OverwritePrompt = true,
                 RestoreDirectory = true
             };
