@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGISEarth.AutoAPI.Utils",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGISEarth.AutoAPI.Examples", "ArcGISEarth.AutoAPI.Examples\ArcGISEarth.AutoAPI.Examples.csproj", "{E6B66EF3-7476-4B46-8B15-468E77065F46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGISProToArcGISEarth", "ArcGISProToArcGISEarth\src\ArcGISProToArcGISEarth.csproj", "{94776263-9F12-4574-927E-C3C2DE42BCAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGISProToArcGISEarth", "ArcGISProToArcGISEarth\ArcGISProToArcGISEarth.csproj", "{94776263-9F12-4574-927E-C3C2DE42BCAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

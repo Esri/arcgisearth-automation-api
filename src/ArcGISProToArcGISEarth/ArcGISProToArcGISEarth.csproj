@@ -129,7 +129,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ArcGISEarth.AutoAPI.Utils\ArcGISEarth.AutoAPI.Utils.csproj">
+    <ProjectReference Include="..\ArcGISEarth.AutoAPI.Utils\ArcGISEarth.AutoAPI.Utils.csproj">
       <Project>{c5d42c1e-7456-416f-81b3-d1462c423c18}</Project>
       <Name>ArcGISEarth.AutoAPI.Utils</Name>
     </ProjectReference>
