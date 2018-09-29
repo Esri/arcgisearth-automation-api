@@ -8,8 +8,8 @@
     <ProjectGuid>{94776263-9F12-4574-927E-C3C2DE42BCAF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ToArcGISEarth</RootNamespace>
-    <AssemblyName>ToArcGISEarth</AssemblyName>
+    <RootNamespace>ArcGISProToArcGISEarth</RootNamespace>
+    <AssemblyName>ArcGISProToArcGISEarth</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,9 +38,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -118,9 +115,6 @@
     <AddInContent Include="Images\ArcGISEarth32.png" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <AddInContent Include="Images\SaveImage16.png" />
     <AddInContent Include="Images\ClearWorkspace16.png" />
     <AddInContent Include="Images\Help16.png" />
@@ -133,7 +127,9 @@
     <AddInContent Include="Images\Synchronization32.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>11.0.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--

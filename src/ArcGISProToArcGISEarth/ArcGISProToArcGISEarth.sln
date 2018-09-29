@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToArcGISEarth", "ToArcGISEarth\ToArcGISEarth.csproj", "{94776263-9F12-4574-927E-C3C2DE42BCAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcGISProToArcGISEarth", "src\ArcGISProToArcGISEarth.csproj", "{94776263-9F12-4574-927E-C3C2DE42BCAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

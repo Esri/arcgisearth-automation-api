@@ -7,12 +7,13 @@
     <ProjectGuid>{E6B66EF3-7476-4B46-8B15-468E77065F46}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EarthAPITestClient</RootNamespace>
-    <AssemblyName>EarthAPITestClient</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>ArcGISEarth.AutoAPI.Examples</RootNamespace>
+    <AssemblyName>ArcGISEarth.AutoAPI.Examples</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -101,9 +102,9 @@
     <Resource Include="examples.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EarthAPIUtils\EarthAPIUtils.csproj">
+    <ProjectReference Include="..\ArcGISEarth.AutoAPI.Utils\ArcGISEarth.AutoAPI.Utils.csproj">
       <Project>{c5d42c1e-7456-416f-81b3-d1462c423c18}</Project>
-      <Name>EarthAPIUtils</Name>
+      <Name>ArcGISEarth.AutoAPI.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
