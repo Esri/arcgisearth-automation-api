@@ -13,7 +13,7 @@
 
 using ArcGIS.Core.CIM;
 using ArcGIS.Desktop.Mapping;
-using EarthAPIUtils;
+using ArcGISEarth.AutoAPI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

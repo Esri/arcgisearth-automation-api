@@ -1,4 +1,4 @@
-﻿<Window x:Class="EarthAPITestClient.MainWindow"
+﻿<Window x:Class="ArcGISEarth.AutoAPI.Examples.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ArcGISEarth.AutoAPI.Examples" Height="595.333" Width="800" Closed="Window_Closed" ResizeMode="CanMinimize">

@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ArcGISProToArcGISEarth</RootNamespace>
-    <AssemblyName>ArcGISProToArcGISEarth</AssemblyName>
+    <AssemblyName>ToArcGISEarth</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -97,13 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddLayerButton.cs" />
-    <Compile Include="AutomationAPI\EarthNamedpipeAPIUtils.cs" />
-    <Compile Include="AutomationAPI\IEarthNamedpipeService.cs" />
     <Compile Include="ClearWorkspaceButton.cs" />
     <Compile Include="HelpButton.cs" />
     <Compile Include="ToolHelper.cs" />
     <Compile Include="ArcGISEarthModule.cs" />
-    <Compile Include="AutomationAPI\ProcessUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveLayerButton.cs" />
     <Compile Include="SaveImageButton.cs" />
@@ -130,6 +127,12 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ArcGISEarth.AutoAPI.Utils\ArcGISEarth.AutoAPI.Utils.csproj">
+      <Project>{c5d42c1e-7456-416f-81b3-d1462c423c18}</Project>
+      <Name>ArcGISEarth.AutoAPI.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--

@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace EarthAPIUtils
+namespace ArcGISEarth.AutoAPI.Utils
 {
     public class MessageStringEventArgs : EventArgs
     {

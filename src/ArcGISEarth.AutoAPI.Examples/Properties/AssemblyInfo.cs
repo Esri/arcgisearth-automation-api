@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EarthAPITestClient")]
+[assembly: AssemblyTitle("ArcGISEarth.AutoAPI.Examples")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Esri Inc.")]
-[assembly: AssemblyProduct("EarthAPITestClient")]
-[assembly: AssemblyCopyright("Copyright © Esri Inc. 2017")]
+[assembly: AssemblyProduct("ArcGISEarth.AutoAPI.Examples")]
+[assembly: AssemblyCopyright("Copyright © Esri Inc. 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

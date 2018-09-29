@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EarthAPIUtils
+namespace ArcGISEarth.AutoAPI.Utils
 {
     public delegate bool ProcessStdOutCallBack(string msg);
 
