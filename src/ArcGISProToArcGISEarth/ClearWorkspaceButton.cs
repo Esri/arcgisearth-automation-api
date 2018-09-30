@@ -40,6 +40,7 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
+            // Set button status when status of connecting to ArcGIS Earth changed.
             if (ToolHelper.IsConnectSuccessfully)
             {
                 Enabled = true;
@@ -53,6 +54,7 @@ namespace ToArcGISEarth
 
         private void ClearAll()
         {
+            // Clear ArcGIS Earth workspace.
             ToolHelper.Utils.ClearLayers("{\"target\":\"AllLayers\"}");
         }
     }

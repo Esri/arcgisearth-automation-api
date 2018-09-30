@@ -24,19 +24,30 @@ namespace ToArcGISEarth
 {
     public static class ToolHelper
     {
+        // ArcGIS Earth automation api utils.
         public static EarthNamedpipeAPIUtils Utils { get; } = new EarthNamedpipeAPIUtils();
-        public static bool IsConnectSuccessfully { get; set; } = false; // Recording the status of connecting to ArcGIS Earth
-        public static Dictionary<string, string[]> IdNameDic { get; set; } = new Dictionary<string, string[]>(); // Recording the layer id, layer name and layer MapLayerType         
+
+        // Logging the status of connecting to ArcGIS Earth.
+        public static bool IsConnectSuccessfully { get; set; } = false;
+
+        // Logging id and it's infomation when adding layer or elevation source. 
+        public static Dictionary<string, string[]> IDandInfoDic { get; set; } = new Dictionary<string, string[]>();
+
+        // Logging the status of ArcGIS Earth running.
         public static bool IsArcGISEarthRunning { get { return ArcGISEarthRunning(); } }
+
+        // Logging the status of ArcGIS Pro global scene opening.
         public static bool IsArcGISProGlobalSceneOpening { get { return ArcGISProGlobalSceneOpening(); } }
 
         private static bool ArcGISEarthRunning()
         {
+            // Determine whether ArcGIS Earth is in the system process.
             return Process.GetProcessesByName("ArcGISEarth").Length > 0;
         }
 
         private static bool ArcGISProGlobalSceneOpening()
         {
+            // Determine whether the current map of ArcGIS Pro is a scene and the scene's DefaultViewingMode is SceneGlobal.
             return MapView.Active?.Map?.IsScene == true && MapView.Active?.Map.DefaultViewingMode == MapViewingMode.SceneGlobal;
         }
 
@@ -44,39 +55,46 @@ namespace ToArcGISEarth
 
         public static string GetDataSource(CIMDataConnection dataConnection)
         {
+            // For more information about CIMDataConnect class and its derived classes, please refer to http://pro.arcgis.com/en/pro-app/sdk/api-reference/#topic943.html.
             if (dataConnection != null)
             {
-                //  Shapfile, raster, tpk, Feature Layer
+                //  DataConnection of Shapefile, Raster, TPK and Feature Layer.
                 if (dataConnection is CIMStandardDataConnection)
                 {
                     WorkspaceFactory factory = (dataConnection as CIMStandardDataConnection).WorkspaceFactory;
                     if (factory == WorkspaceFactory.FeatureService)
                     {
-                        return GetServiceUrl(dataConnection);
+                        // Get url of Feature Layer.
+                        return GetServiceUrl(dataConnection as CIMStandardDataConnection);
                     }
                     if (factory == WorkspaceFactory.Shapefile || factory == WorkspaceFactory.Raster)
                     {
+                        // Get url of Shapefile and Rater.
                         return GetShpAndRasterUrl(dataConnection as CIMStandardDataConnection);
                     }
                 }
-                // Kml, kmz
+                // DataConnection of Kml and Kmz.
                 if (dataConnection is CIMKMLDataConnection)
                 {
+                    // Get url of Kml and Kmz.
                     return GetKmlUrl(dataConnection as CIMKMLDataConnection);
                 }
-                // Spk, slpk
+                // DataConnection of SPK and SLPK.
                 if (dataConnection is CIMSceneDataConnection)
                 {
+                    // Get url of SPK and SLPK.
                     return GetSpkUrl(dataConnection as CIMSceneDataConnection);
                 }
-                // Imagary Layer, Map Image Layer, Tile Layer , Scene Layer
+                // DataConnection of Imagary Layer, Map Image Layer, Tile Layer , Scene Layer.
                 if (dataConnection is CIMAGSServiceConnection)
                 {
-                    return GetServiceUrl(dataConnection);
+                    // Get url of Imagary Layer, Map Image Layer, Tile Layer , Scene Layer.
+                    return GetServiceUrl(dataConnection as CIMAGSServiceConnection);
                 }
-                // Wms
+                // DataConnection of WMS
                 if (dataConnection is CIMWMSServiceConnection)
                 {
+                    // Get url of WMS.
                     return GetWmsUrl(dataConnection as CIMWMSServiceConnection);
                 }
             }
@@ -85,31 +103,31 @@ namespace ToArcGISEarth
 
         private static string GetShpAndRasterUrl(CIMStandardDataConnection dataConnection)
         {
+            string connectStr = dataConnection?.WorkspaceConnectionString; // e.g.  "DATABASE=D:\Temp".
+            string fileName = dataConnection?.Dataset; // e.g.  "test.shp".  
             string fileDirectory = "";
-            string fileName = dataConnection?.Dataset; // e.g.  "test.shp"
-            string connectStr = dataConnection?.WorkspaceConnectionString; // e.g.  "DATABASE=D:\Temp"
             if (connectStr?.Length > 9)
             {
-                fileDirectory = connectStr.Substring(9) + Path.DirectorySeparatorChar;
+                fileDirectory = connectStr.Substring(9) + Path.DirectorySeparatorChar; // e.g. "D:\Temp\".
             }
-            return fileDirectory + fileName;
+            return fileDirectory + fileName; // e.g. "D:\Temp\test.shp".
         }
 
         private static string GetKmlUrl(CIMKMLDataConnection dataConnection)
         {
-            return dataConnection?.KMLURI;
+            return dataConnection?.KMLURI; // e.g "D:\Temp\KML_Samples.kml".
         }
 
         private static string GetSpkUrl(CIMSceneDataConnection dataConnection)
         {
-            string realUrl = dataConnection?.URI; // e.g. "file:/D:/temp/test.slpk/layers/0"
+            string realUrl = dataConnection?.URI; // e.g. "file:/D:/temp/test.slpk/layers/0".
             Uri.TryCreate(realUrl, UriKind.RelativeOrAbsolute, out Uri uri);
             if (uri != null)
             {
-                realUrl = uri.AbsolutePath;
+                realUrl = uri.AbsolutePath; // e.g. "D:/temp/test.slpk/layers/0".
                 if (realUrl.Length >= 9)
                 {
-                    return realUrl.Remove(realUrl.Length - 9, 9); // e.g.  "/D:/temp/test.slpk"
+                    return realUrl.Remove(realUrl.Length - 9, 9); // e.g.  "/D:/temp/test.slpk".
                 }
             }
             return null;
@@ -119,11 +137,11 @@ namespace ToArcGISEarth
         {
             if (dataConnection is CIMStandardDataConnection)
             {
-                // Feature service
-                string connectStr = (dataConnection as CIMStandardDataConnection)?.WorkspaceConnectionString; // e.g.  "URL=http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0"
+                // Feature service 
+                string connectStr = (dataConnection as CIMStandardDataConnection)?.WorkspaceConnectionString; // e.g.  "URL=http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0".
                 if (connectStr?.Length > 4)
                 {
-                    return connectStr.Substring(4);
+                    return connectStr.Substring(4); // e.g. "http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0".
                 }
                 return null;
             }
@@ -132,18 +150,18 @@ namespace ToArcGISEarth
                 // Imager service
                 if ((dataConnection as CIMAGSServiceConnection)?.ObjectType == "ImageServer")
                 {
-                    string url = (dataConnection as CIMAGSServiceConnection)?.URL;
+                    string url = (dataConnection as CIMAGSServiceConnection)?.URL; // e.g. "http://services.arcgisonline.com/arcgis/services/World_Imagery/MapServer".
                     if (url.Contains("services"))
                     {
                         string[] splitStr = url.Split(new string[] { "services" }, StringSplitOptions.None);
                         if (splitStr?.Length >= 2 && splitStr.FirstOrDefault() != null)
                         {
-                            return splitStr[0] + "rest/" + "services" + splitStr[1];
+                            return splitStr[0] + "rest/" + "services" + splitStr[1]; // e.g. "http://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer".
                         }
                     }
                     return null;
                 }
-                // Other service
+                // Other services
                 return (dataConnection as CIMAGSServiceConnection).URL;
             }
             return null;
@@ -153,7 +171,7 @@ namespace ToArcGISEarth
         {
             if (dataConnection?.ServerConnection is CIMProjectServerConnection)
             {
-                return (dataConnection?.ServerConnection as CIMProjectServerConnection).URL;
+                return (dataConnection?.ServerConnection as CIMProjectServerConnection).URL; // e.g. "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi"
             }
             if (dataConnection?.ServerConnection is CIMInternetServerConnection)
             {
@@ -170,15 +188,22 @@ namespace ToArcGISEarth
         {
             if (currentElevationSurfaces != null)
             {
+                // Set ElevationSourcesOperation to none.
                 operation = ElevationSourcesOperation.None;
-                List<string[]> previousList = GetAllElevationSources(previousElevationSurfaces, out int e1);
-                List<string[]> currentList = GetAllElevationSources(currentElevationSurfaces, out int e2);
-                if (e1 < e2)
+
+                // Get previous and current elevation sources list.
+                List<string[]> previousList = GetAllElevationSources(previousElevationSurfaces, out int previousCount);
+                List<string[]> currentList = GetAllElevationSources(currentElevationSurfaces, out int currentCount);
+
+                // Get added elevation source list.
+                if (previousCount < currentCount)
                 {
                     operation = ElevationSourcesOperation.Add;
                     return GetChangedElevationSources(previousList, currentList, operation);
                 }
-                if (e1 > e2)
+
+                // Get removed elevation source list.
+                if (previousCount > currentCount)
                 {
                     operation = ElevationSourcesOperation.Remove;
                     return GetChangedElevationSources(previousList, currentList, operation);
@@ -190,15 +215,22 @@ namespace ToArcGISEarth
 
         private static List<string[]> GetAllElevationSources(CIMMapElevationSurface[] elevationSurfaces, out int count)
         {
+            // Get all count of elevation sources.
             count = 0;
             List<string[]> sourcesList = new List<string[]>();
             if (elevationSurfaces != null)
             {
+                // Get all elevation surfaces. 
                 for (int i = 0; i < elevationSurfaces.Length; i++)
                 {
+                    // Get all base sources of each elevation surface.
                     var baseSources = elevationSurfaces[i].BaseSources;
                     for (int j = 0; j < baseSources?.Length; j++)
                     {
+                        // Add to list. 
+                        // string[0]:elevation surface name,
+                        // string[1]:elevation source name, 
+                        // string[2]:elevation source url.
                         sourcesList.Add(new string[3] { elevationSurfaces[i].Name, baseSources[j].Name, ToolHelper.GetDataSource(baseSources[j].DataConnection) });
                         count++;
                     }
@@ -211,10 +243,12 @@ namespace ToArcGISEarth
         {
             if (operation == ElevationSourcesOperation.Add)
             {
+                // When added a elevation source, return the source.
                 return currentList?.Except(previousList, new ListStringArrComparer<string[]>())?.ToList();
             }
             if (operation == ElevationSourcesOperation.Remove)
             {
+                // When removed elevation source, return the sources.
                 return previousList?.Except(currentList, new ListStringArrComparer<string[]>())?.ToList();
             }
             return null;
@@ -228,6 +262,7 @@ namespace ToArcGISEarth
                 {
                     string[] xArr = x as string[];
                     string[] yArr = y as string[];
+                    // Determine whether two string[3] are equal, compare each item of them.
                     if (xArr?.Length == 3 && yArr?.Length == 3)
                     {
                         for (int i = 0; i < xArr.Length; i++)

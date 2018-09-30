@@ -19,10 +19,12 @@ namespace ToArcGISEarth
     {
         protected override async void OnClick()
         {
+            // Determine whether ArcGIS Earth running.
             if (ToolHelper.IsArcGISEarthRunning)
             {
                 if (IsChecked)
                 {
+                    // Close connecting to ArcGIS Earth and set button status.
                     ToolHelper.Utils.CloseConnect();
                     IsChecked = false;
                     Caption = "Connect";
@@ -30,6 +32,7 @@ namespace ToArcGISEarth
                 }
                 else
                 {
+                    // try to connect to ArcGIS Earth.
                     string result = await ToolHelper.Utils.Connect();
                     if (result != "Success")
                     {
@@ -37,6 +40,7 @@ namespace ToArcGISEarth
                     }
                     else
                     {
+                        // Connecting to ArcGIS successfully and set button status. 
                         IsChecked = true;
                         Caption = "Disconnect";
                         ToolHelper.IsConnectSuccessfully = true;
@@ -51,9 +55,11 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
+            // Determine whether ArcGIS Pro global scene is opening. 
             if (ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
+                // Set button status when ArcGIS Earth is not running.
                 if (!ToolHelper.IsArcGISEarthRunning)
                 {
                     ToolHelper.IsConnectSuccessfully = false;
@@ -63,6 +69,7 @@ namespace ToArcGISEarth
             }
             else
             {
+                // Set button status when ArcGIS Pro global scene is not opening.
                 ToolHelper.IsConnectSuccessfully = false;
                 IsChecked = false;
                 Caption = "Connect";

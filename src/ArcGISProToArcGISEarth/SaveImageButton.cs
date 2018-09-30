@@ -34,6 +34,7 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
+            // Set button status when status of connecting to ArcGIS Earth changed.
             if (ToolHelper.IsConnectSuccessfully)
             {
                 Enabled = true;
@@ -47,6 +48,7 @@ namespace ToArcGISEarth
 
         private async Task SaveImage()
         {
+            // Set save file options.
             SaveFileDialog dialog = new SaveFileDialog
             {
                 Filter = "Jpeg Files|*.jpg|Png Files|*.png|Tiff Files|*.tif",
@@ -57,6 +59,7 @@ namespace ToArcGISEarth
             };
             if (dialog.ShowDialog() == true)
             {
+                // Get screenshot from ArcGIS Earth.
                 await ToolHelper.Utils.GetSnapshot(dialog.FileName);
             }
         }

@@ -9,7 +9,7 @@
     <Subject>Framework</Subject>
   </AddInInfo>
   <modules>
-    <insertModule id="ToArcGISEarth_Module" className="ArcGISEarthModule" autoLoad="false" caption="ArcGISEarthModule">
+    <insertModule id="ArcGISProToArcGISEarth" className="ArcGISEarthModule" autoLoad="false" caption="ArcGISEarthModule">
       <groups>
         <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
           <button refID="ToArcGISEarth_ConnectButton" size="large" />

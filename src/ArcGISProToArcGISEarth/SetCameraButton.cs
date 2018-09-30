@@ -44,6 +44,7 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
+            // Set button status when status of connecting to ArcGIS Earth changed.
             if (ToolHelper.IsConnectSuccessfully)
             {
                 Enabled = true;
@@ -60,22 +61,25 @@ namespace ToArcGISEarth
         {
             try
             {
+                // Get current camera of ArcGIS Pro.
                 MapView mapView = args.MapView;
                 if (null != mapView && null != mapView.Camera && mapView.ViewingMode == MapViewingMode.SceneGlobal)
                 {
                     JObject cameraJObject = new JObject();
+                    // Get map view loaction.
                     Dictionary<string, double> location = new Dictionary<string, double>
                     {
                         ["x"] = mapView.Camera.X,
                         ["y"] = mapView.Camera.Y,
                         ["z"] = mapView.Camera.Z
                     };
-
                     // Convert ArcGIS Pro camera to ArcGIS Earth
                     JObject locationJObject = JObject.Parse(JsonConvert.SerializeObject(location));
+                    // Set json key for ArcGIS Earth.
                     cameraJObject["mapPoint"] = locationJObject;
                     cameraJObject["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading;
                     cameraJObject["pitch"] = mapView.Camera.Pitch + 90;
+                    // Set camera in ArcGIS Earth.
                     ToolHelper.Utils.SetCamera(cameraJObject.ToString());
                 }
             }

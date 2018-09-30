@@ -20,7 +20,8 @@ namespace ToArcGISEarth
 {
     public class RemoveLayerButton : Button
     {
-        public static bool HasChecked { get; set; }
+        // Static property, to log the button IsChecked status.
+        public static bool HasChecked { get; private set; }
 
         public RemoveLayerButton()
         {
@@ -32,12 +33,14 @@ namespace ToArcGISEarth
         {
             if (IsChecked)
             {
+                // Unsubscribe RemoveLayerFromEarth and set button status.
                 LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarth);
                 IsChecked = false;
                 HasChecked = false;
             }
             else
             {
+                // Subscribe RemoveLayerFromEarth and set button status.
                 LayersRemovedEvent.Subscribe(RemoveLayerFromEarth, false);
                 IsChecked = true;
                 HasChecked = true;
@@ -46,6 +49,7 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
+            // Set button status when status of connecting to ArcGIS Earth changed.
             if (ToolHelper.IsConnectSuccessfully)
             {
                 Enabled = true;
@@ -63,24 +67,28 @@ namespace ToArcGISEarth
         {
             try
             {
+                // Get removed layer list.
                 List<Layer> layerList = args.Layers as List<Layer>;
                 if (layerList?.Count != 0)
                 {
+                    // Use temp list to log the id of removed elevation sources in ArcGIS Pro. 
                     List<string> idList = new List<string>();
                     foreach (var layer in layerList)
                     {
-                        foreach (var item in ToolHelper.IdNameDic)
+                        foreach (var item in ToolHelper.IDandInfoDic)
                         {
+                            // Find and save removed id.
                             if (item.Value?.Length == 3 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString() && item.Value[2] == null)
                             {
                                 idList.Add(item.Key);
                             }
                         }
                     }
+                    // Remove elevation sources in ArcGIS Earth and removed id of these sources.
                     foreach (var id in idList)
                     {
                         ToolHelper.Utils.RemoveLayer(id);
-                        ToolHelper.IdNameDic.Remove(id);
+                        ToolHelper.IDandInfoDic.Remove(id);
                     }
                 }
             }
