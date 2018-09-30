@@ -54,7 +54,7 @@ namespace ToArcGISEarth
                 {
                     currentCIMMap = value;
                     ElevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
-                }
+                }             
             }
         }
 
@@ -111,7 +111,6 @@ namespace ToArcGISEarth
             {
                 // Unsubscribe events of adding layer and elevation source.
                 LayersAddedEvent.Unsubscribe(AddLayerToEarth);
-                ElevationSourceAddedChanged -= AddElevationSource;
                 Enabled = false;
                 IsChecked = false;
             }

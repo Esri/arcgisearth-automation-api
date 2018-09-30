@@ -186,7 +186,7 @@ namespace ToArcGISEarth
 
         public static List<string[]> AddedOrRemovedElevationSources(CIMMapElevationSurface[] previousElevationSurfaces, CIMMapElevationSurface[] currentElevationSurfaces, ref ElevationSourcesOperation operation)
         {
-            if (currentElevationSurfaces != null)
+            try
             {
                 // Set ElevationSourcesOperation to none.
                 operation = ElevationSourcesOperation.None;
@@ -208,8 +208,10 @@ namespace ToArcGISEarth
                     operation = ElevationSourcesOperation.Remove;
                     return GetChangedElevationSources(previousList, currentList, operation);
                 }
-                return null;
             }
+            catch 
+            {
+            }           
             return null;
         }
 
