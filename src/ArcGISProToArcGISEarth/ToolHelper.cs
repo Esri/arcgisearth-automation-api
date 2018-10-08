@@ -24,6 +24,13 @@ namespace ToArcGISEarth
 {
     public static class ToolHelper
     {
+        public enum ElevationSourcesOperation
+        {
+            None,
+            Add,
+            Remove
+        }
+
         // ArcGIS Earth automation api utils.
         public static EarthNamedpipeAPIUtils Utils { get; } = new EarthNamedpipeAPIUtils();
 
@@ -34,22 +41,10 @@ namespace ToArcGISEarth
         public static Dictionary<string, string[]> IDandInfoDic { get; set; } = new Dictionary<string, string[]>();
 
         // Logging the status of ArcGIS Earth running.
-        public static bool IsArcGISEarthRunning { get { return ArcGISEarthRunning(); } }
+        public static bool IsArcGISEarthRunning { get { return Process.GetProcessesByName("ArcGISEarth").Length > 0; } }
 
         // Logging the status of ArcGIS Pro global scene opening.
-        public static bool IsArcGISProGlobalSceneOpening { get { return ArcGISProGlobalSceneOpening(); } }
-
-        private static bool ArcGISEarthRunning()
-        {
-            // Determine whether ArcGIS Earth is in the system process.
-            return Process.GetProcessesByName("ArcGISEarth").Length > 0;
-        }
-
-        private static bool ArcGISProGlobalSceneOpening()
-        {
-            // Determine whether the current map of ArcGIS Pro is a scene and the scene's DefaultViewingMode is SceneGlobal.
-            return MapView.Active?.Map?.IsScene == true && MapView.Active?.Map.DefaultViewingMode == MapViewingMode.SceneGlobal;
-        }
+        public static bool IsArcGISProGlobalSceneOpening { get { return MapView.Active?.Map?.IsScene == true && MapView.Active?.Map.DefaultViewingMode == MapViewingMode.SceneGlobal; } }
 
         #region Get data source
 
@@ -69,21 +64,21 @@ namespace ToArcGISEarth
                     }
                     if (factory == WorkspaceFactory.Shapefile || factory == WorkspaceFactory.Raster)
                     {
-                        // Get url of Shapefile and Rater.
-                        return GetShpAndRasterUrl(dataConnection as CIMStandardDataConnection);
+                        // Get path name of Shapefile or Rater.
+                        return GetStandardDataPathName(dataConnection as CIMStandardDataConnection);
                     }
                 }
                 // DataConnection of Kml and Kmz.
                 if (dataConnection is CIMKMLDataConnection)
                 {
-                    // Get url of Kml and Kmz.
-                    return GetKmlUrl(dataConnection as CIMKMLDataConnection);
+                    // Get path name of Kml and Kmz.
+                    return GetKMLDataPathName(dataConnection as CIMKMLDataConnection);
                 }
                 // DataConnection of SPK and SLPK.
                 if (dataConnection is CIMSceneDataConnection)
                 {
-                    // Get url of SPK and SLPK.
-                    return GetSpkUrl(dataConnection as CIMSceneDataConnection);
+                    // Get path name of SPK and SLPK.
+                    return GetSceneDataPathName(dataConnection as CIMSceneDataConnection);
                 }
                 // DataConnection of Imagary Layer, Map Image Layer, Tile Layer , Scene Layer.
                 if (dataConnection is CIMAGSServiceConnection)
@@ -101,7 +96,7 @@ namespace ToArcGISEarth
             return null;
         }
 
-        private static string GetShpAndRasterUrl(CIMStandardDataConnection dataConnection)
+        private static string GetStandardDataPathName(CIMStandardDataConnection dataConnection)
         {
             string connectStr = dataConnection?.WorkspaceConnectionString; // e.g.  "DATABASE=D:\Temp".
             string fileName = dataConnection?.Dataset; // e.g.  "test.shp".  
@@ -113,12 +108,12 @@ namespace ToArcGISEarth
             return fileDirectory + fileName; // e.g. "D:\Temp\test.shp".
         }
 
-        private static string GetKmlUrl(CIMKMLDataConnection dataConnection)
+        private static string GetKMLDataPathName(CIMKMLDataConnection dataConnection)
         {
             return dataConnection?.KMLURI; // e.g "D:\Temp\KML_Samples.kml".
         }
 
-        private static string GetSpkUrl(CIMSceneDataConnection dataConnection)
+        private static string GetSceneDataPathName(CIMSceneDataConnection dataConnection)
         {
             string realUrl = dataConnection?.URI; // e.g. "file:/D:/temp/test.slpk/layers/0".
             Uri.TryCreate(realUrl, UriKind.RelativeOrAbsolute, out Uri uri);
@@ -209,9 +204,9 @@ namespace ToArcGISEarth
                     return GetChangedElevationSources(previousList, currentList, operation);
                 }
             }
-            catch 
+            catch
             {
-            }           
+            }
             return null;
         }
 
@@ -285,13 +280,6 @@ namespace ToArcGISEarth
             {
                 return obj.ToString().GetHashCode();
             }
-        }
-
-        public enum ElevationSourcesOperation
-        {
-            None,
-            Add,
-            Remove
         }
 
         #endregion Elevation sufaces
