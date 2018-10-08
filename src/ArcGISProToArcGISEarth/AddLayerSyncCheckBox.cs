@@ -26,13 +26,13 @@ using static ToArcGISEarth.ToolHelper;
 
 namespace ToArcGISEarth
 {
-    public class AddLayerButton : Button
+    public class AddLayerSyncCheckBox : Button
     {
         #region  ElevationSource variable and property
 
         private Timer _timer;
-        private event PropertyChangedEventHandler ElevationSourceAddedChanged;
-        private event PropertyChangedEventHandler ElevationSourceRemovedChanged;
+        private event PropertyChangedEventHandler _elevationSourceAddedChanged;
+        private event PropertyChangedEventHandler _elevationSourceRemovedChanged;
         private List<string[]> _elevationSources = new List<string[]>();
         private ElevationSourcesOperation _sourcesOperation = ElevationSourcesOperation.None;
         private CIMMap currentCIMMap = new CIMMap();
@@ -43,24 +43,24 @@ namespace ToArcGISEarth
             {
                 // If elevation sources changed, get changed source list.
                 _elevationSources = ToolHelper.AddedOrRemovedElevationSources(currentCIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref _sourcesOperation);
-                // If added source, trigger ElevationSourceAddedChanged.
-                if (IsElevationSourceAddedChanged() && IsChecked)
+                // If added source, trigger _elevationSourceAddedChanged.
+                if (Is_elevationSourceAddedChanged() && IsChecked)
                 {
                     currentCIMMap = value;
-                    ElevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
+                    _elevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
                 }
-                // If removed source, trigger ElevationSourceRemovedChanged.
-                if (IsElevationSourceRemovedChanged() && RemoveLayerButton.HasChecked)
+                // If removed source, trigger _elevationSourceRemovedChanged.
+                if (Is_elevationSourceRemovedChanged() && RemoveLayerSyncCheckBox.HasChecked)
                 {
                     currentCIMMap = value;
-                    ElevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
-                }             
+                    _elevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
+                }
             }
         }
 
         #endregion ElevationSource variable and property
 
-        public AddLayerButton()
+        public AddLayerSyncCheckBox()
         {
             Enabled = false;
             _timer = new Timer
@@ -86,14 +86,14 @@ namespace ToArcGISEarth
             {
                 // Unsubscribe events of adding layer and elevation source.
                 LayersAddedEvent.Unsubscribe(AddLayerToEarth);
-                ElevationSourceAddedChanged -= AddElevationSource;
+                _elevationSourceAddedChanged -= AddElevationSource;
                 IsChecked = false;
             }
             else
             {
                 // Subscribe events of adding layer and elevation source.
                 LayersAddedEvent.Subscribe(AddLayerToEarth, false);
-                ElevationSourceAddedChanged += AddElevationSource;
+                _elevationSourceAddedChanged += AddElevationSource;
                 _timer.Enabled = true;
                 _timer.Start();
                 IsChecked = true;
@@ -114,8 +114,8 @@ namespace ToArcGISEarth
                 Enabled = false;
                 IsChecked = false;
             }
-            // Update ElevationSourceRemovedChanged status.
-            SetElevationSourceRemovedChangedStatus();
+            // Update _elevationSourceRemovedChanged status.
+            Set_elevationSourceRemovedChangedStatus();
         }
 
         private void AddLayerToEarth(LayerEventsArgs args)
@@ -189,28 +189,28 @@ namespace ToArcGISEarth
             return layerList?.Count == 1 && layerList[0]?.Name == "New Group Layer" && (layerList[0].GetType()?.GetProperty("Layers")?.GetValue(layerList[0]) as List<Layer>) == null;
         }
 
-        private bool IsElevationSourceAddedChanged()
+        private bool Is_elevationSourceAddedChanged()
         {
             // Determine whether added layer. 
             return _elevationSources != null && _elevationSources?.Count > 0 && _sourcesOperation == ElevationSourcesOperation.Add;
         }
 
-        private bool IsElevationSourceRemovedChanged()
+        private bool Is_elevationSourceRemovedChanged()
         {
             // Determine whether removed layer. 
             return _elevationSources != null && _elevationSources?.Count > 0 && _sourcesOperation == ElevationSourcesOperation.Remove;
         }
 
-        private void SetElevationSourceRemovedChangedStatus()
+        private void Set_elevationSourceRemovedChangedStatus()
         {
-            // When RemoveLayerButton is checked, ElevationSourceRemovedChanged event subscribe RemoveElevationSource; Otherwise, unsubscribe RemoveElevationSource.
-            if (RemoveLayerButton.HasChecked)
+            // When RemoveLayerButton is checked, _elevationSourceRemovedChanged event subscribe RemoveElevationSource; Otherwise, unsubscribe RemoveElevationSource.
+            if (RemoveLayerSyncCheckBox.HasChecked)
             {
-                ElevationSourceRemovedChanged += RemoveElevationSource;
+                _elevationSourceRemovedChanged += RemoveElevationSource;
             }
             else
             {
-                ElevationSourceRemovedChanged -= RemoveElevationSource;
+                _elevationSourceRemovedChanged -= RemoveElevationSource;
             }
         }
 

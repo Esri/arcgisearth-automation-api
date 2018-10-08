@@ -21,9 +21,9 @@ using System.Collections.Generic;
 
 namespace ToArcGISEarth
 {
-    public class SetCameraButton : Button
+    public class SetCameraSyncCheckBox : Button
     {
-        public SetCameraButton()
+        public SetCameraSyncCheckBox()
         {
             Enabled = false;
         }
@@ -65,20 +65,21 @@ namespace ToArcGISEarth
                 MapView mapView = args.MapView;
                 if (null != mapView && null != mapView.Camera && mapView.ViewingMode == MapViewingMode.SceneGlobal)
                 {
-                    JObject cameraJObject = new JObject();
-                    // Get map view loaction.
-                    Dictionary<string, double> location = new Dictionary<string, double>
+                    JObject cameraJObject = new JObject()
                     {
-                        ["x"] = mapView.Camera.X,
-                        ["y"] = mapView.Camera.Y,
-                        ["z"] = mapView.Camera.Z
+                        // Get heading.
+                        ["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading,
+                        // Get pitch.
+                        ["pitch"] = mapView.Camera.Pitch + 90,
+                        // Get mapPoint.
+                        ["mapPoint"] = new JObject
+                        {
+                            ["x"] = mapView.Camera.X,
+                            ["y"] = mapView.Camera.Y,
+                            ["z"] = mapView.Camera.Z
+                        }
                     };
-                    // Convert ArcGIS Pro camera to ArcGIS Earth
-                    JObject locationJObject = JObject.Parse(JsonConvert.SerializeObject(location));
-                    // Set json key for ArcGIS Earth.
-                    cameraJObject["mapPoint"] = locationJObject;
-                    cameraJObject["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading;
-                    cameraJObject["pitch"] = mapView.Camera.Pitch + 90;
+
                     // Set camera in ArcGIS Earth.
                     ToolHelper.Utils.SetCamera(cameraJObject.ToString());
                 }

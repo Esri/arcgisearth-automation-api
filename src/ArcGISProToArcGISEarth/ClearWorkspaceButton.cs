@@ -30,12 +30,8 @@ namespace ToArcGISEarth
             if (result == MessageBoxResult.OK)
             {
                 ClearAll();
-                IsChecked = false;
             }
-            else
-            {
-                IsChecked = false;              
-            }
+            IsChecked = false;
         }
 
         protected override void OnUpdate()

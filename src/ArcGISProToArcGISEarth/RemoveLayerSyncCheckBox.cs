@@ -18,12 +18,12 @@ using System.Collections.Generic;
 
 namespace ToArcGISEarth
 {
-    public class RemoveLayerButton : Button
+    public class RemoveLayerSyncCheckBox : Button
     {
         // Static property, to log the button IsChecked status.
         public static bool HasChecked { get; private set; }
 
-        public RemoveLayerButton()
+        public RemoveLayerSyncCheckBox()
         {
             Enabled = false;
             HasChecked = false;
