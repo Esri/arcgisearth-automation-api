@@ -23,7 +23,7 @@ The ArcGIS Earth Automation API requires .NET Framework 3.0 or later.
 * Perform workspace operations, including import, get and clear workspace contents.
 * Take snapshots of the current view.
 
-## Examples
+## Samples
 
 1. [Connect to ArcGIS Earth](../../wiki/Connect-to-ArcGIS-Earth)
 2. [Automation API examples](../../wiki/Automation-API-examples)
