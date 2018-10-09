@@ -25,7 +25,7 @@ The ArcGIS Earth Automation API requires .NET Framework 3.0 or later.
 
 ## Examples
 
-1. [Connect to ArcGIS Earth with the Automation API](../../wiki/Connect-to-ArcGIS-Earth)
+1. [Connect to ArcGIS Earth](../../wiki/Connect-to-ArcGIS-Earth)
 2. [Automation API examples](../../wiki/Automation-API-examples)
 3. [ArcGIS Pro add-in: ToArcGISEarth](../../wiki/ToArcGISEarth)
 
