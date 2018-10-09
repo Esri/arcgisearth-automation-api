@@ -12,19 +12,15 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ArcGISEarth.AutoAPI.Utils;
 
 namespace ArcGISEarth.AutoAPI.Examples
 {
-    public enum FunctionType
+    internal enum FunctionType
     {
+        // UI function type
         GetCamera,
         SetCamera,
         FlyTo,
@@ -41,74 +37,126 @@ namespace ArcGISEarth.AutoAPI.Examples
         ImportWorkspace,
         Removelayer
     }
-    class ViewModel : INotifyPropertyChanged
+
+    internal class FunctionTypeCommand : ICommand
     {
-        public event PropertyChangedEventHandler PropertyChanged;      
-        private EarthNamedpipeAPIUtils _utils = null;
+        // Implement ICommand
+
+        private readonly Action<object> _execute;
+
+        public FunctionTypeCommand(Action<object> action)
+        {
+            _execute = action;
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute?.Invoke(parameter);
+        }
+    }
+
+    internal class ViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private EarthNamedpipeAPIUtils _utils;
+
+        // Input box text.
+        private string inputString;
+        public string InputString
+        {
+            get { return inputString; }
+            set
+            {
+                inputString = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("InputString"));
+            }
+        }
+
+        // Output box text.
+        private string outputString;
+        public string OutputString
+        {
+            get { return outputString; }
+            set
+            {
+                outputString = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OutputString"));
+            }
+        }
+
+        // Function command.
+        public ICommand ConnectEarthCommand { get; private set; }
+        public ICommand GetCameraCommand { get; private set; }
+        public ICommand SetCameraCommand { get; private set; }
+        public ICommand FlyToCommand { get; private set; }
+        public ICommand AddLayerCommand { get; private set; }
+        public ICommand ClearLayersCommand { get; private set; }
+        public ICommand GetSnapshotCommand { get; private set; }
+        public ICommand GetLayerLoadStatusCommand { get; private set; }
+        public ICommand GetWorkspaceCommand { get; private set; }
+        public ICommand ImportWorkspaceCommand { get; private set; }
+        public ICommand RemoveLayerCommand { get; private set; }
+        public ICommand ClearInputBoxCommand { get; private set; }
+        public ICommand ClearOutputBoxCommand { get; private set; }
+        public ICommand HelpCommand { get; private set; }
 
         public ViewModel()
         {
-            this.InputString = "";
-            this.OutputString = "";
-        }
-        
-        private string _inputString ;
-        public string InputString
-        {
-            get { return _inputString; }
-            set
-            {
-                _inputString = value;
-                if (this.PropertyChanged != null)
-                {
-                    this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("InputString"));
-                }
-            }
-        }
-
-        private string _outputString;
-        public string OutputString
-        {
-            get { return _outputString; }
-            set
-            {
-                _outputString = value;
-                if (this.PropertyChanged != null)
-                {
-                    this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs("OutputString"));
-                }
-            }
+            // Initialize variable and property.
+            _utils = new EarthNamedpipeAPIUtils();
+            InputString = "";
+            OutputString = "";
+            ConnectEarthCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Connect));
+            GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
+            SetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetCamera));
+            FlyToCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.FlyTo));
+            AddLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.AddLayer));
+            ClearLayersCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearLayers));
+            GetSnapshotCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetSnapshot));
+            GetLayerLoadStatusCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetLayerLoadStatus));
+            GetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetWorkspace));
+            ImportWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ImportWorkspace));
+            GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
+            RemoveLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Removelayer));
+            ClearInputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearInputputBox));
+            ClearOutputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearOutputBox));
+            HelpCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Help));
         }
 
-        public async void ExecuteFuction(FunctionType functionType)
+        private async void ExecuteFuction(FunctionType functionType)
         {
-            if (_utils == null)
-            {
-                _utils = new EarthNamedpipeAPIUtils();
-            }
-
             switch (functionType)
             {
+                // More about input string syntax, please refer to "examples.txt".
                 case FunctionType.AddLayer:
                     {
-                        // InputString is Json description of layer
+                       
                         OutputString = _utils.AddLayer(InputString);
                         break;
                     }
                 case FunctionType.ClearLayers:
-                    {
-                        // InputString is Json description of target
+                    {                     
                         OutputString = _utils.ClearLayers(InputString);
                         break;
                     }
                 case FunctionType.Connect:
                     {
-                        // InputString is path of arcgis earth
-                        OutputString = await _utils.Connect(InputString);
+                        OutputString = await _utils.Connect();
                         break;
                     }
                 case FunctionType.FlyTo:
-                    {
+                    {                     
                         OutputString = _utils.FlyTo(InputString);
                         break;
                     }
@@ -129,8 +177,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.Help:
                     {
-                        //OutputString = File.ReadAllText("C:\\Projects\\arcgisearth-namedpipe-client\\EarthAPITest\\EarthAPITest\\examples.txt");
-                        OutputString = "Example of parameters:\r\n\r\nConnect (Note, it is not belong to API)\r\nC:\\Projects\\earth\\output\\earth_windesktop_release\\bin\\ArcGISEarth.exe\r\n\r\nSetCamera\r\n{  \r\n   \"mapPoint\":{  \r\n      \"x\":-97.283978521275117,\r\n      \"y\":48.422233665100165,\r\n      \"z\":11000000,\r\n      \"spatialReference\":{  \r\n         \"wkid\":4326\r\n      }\r\n   },\r\n   \"heading\":0.0,\r\n   \"pitch\":0.10000000000019954\r\n}\r\n\r\nFlyTo\r\n{  \r\n   \"camera\":{  \r\n      \"mapPoint\":{  \r\n         \"x\":-92,\r\n         \"y\":41,\r\n         \"z\":11000000,\r\n         \"spatialReference\":{  \r\n            \"wkid\":4326\r\n         }\r\n      },\r\n      \"heading\":0.0,\r\n      \"pitch\":0.099999999996554886\r\n   },\r\n   \"duration\":2\r\n}\r\n\r\nAddLayer\r\n{  \r\n   \"type\":\"MapService\",\r\n   \"URI\":\"https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer\",\r\n   \"target\":\"OperationalLayers\"\r\n}\r\n\r\nClearLayers\r\n{  \r\n   \"target\":\"ElevationLayers\"\r\n}\r\n\r\nGetSnapshot (Note, the input parameters is Bitmap instead of string in API)\r\nD:/earth.jpg";
+                        OutputString = Properties.Resources.examples;
                         break;
                     }
                 case FunctionType.ClearInputputBox:
@@ -147,7 +194,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     {
                         _utils.CloseConnect();
                         break;
-                    }             
+                    }
                 case FunctionType.GetLayerLoadStatus:
                     {
                         OutputString = _utils.GetLayerLoadStatus(InputString);
@@ -170,6 +217,5 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
             }
         }
-
     }
 }

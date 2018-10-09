@@ -88,6 +88,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -99,13 +100,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="examples.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ArcGISEarth.AutoAPI.Utils\ArcGISEarth.AutoAPI.Utils.csproj">
       <Project>{c5d42c1e-7456-416f-81b3-d1462c423c18}</Project>
       <Name>ArcGISEarth.AutoAPI.Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="examples.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
