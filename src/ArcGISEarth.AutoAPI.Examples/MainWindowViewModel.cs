@@ -66,7 +66,7 @@ namespace ArcGISEarth.AutoAPI.Examples
         }
     }
 
-    internal class ViewModel : INotifyPropertyChanged
+    internal class MainWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private EarthNamedpipeAPIUtils _utils;
@@ -111,7 +111,7 @@ namespace ArcGISEarth.AutoAPI.Examples
         public ICommand ClearOutputBoxCommand { get; private set; }
         public ICommand HelpCommand { get; private set; }
 
-        public ViewModel()
+        public MainWindowViewModel()
         {
             // Initialize variable and property.
             _utils = new EarthNamedpipeAPIUtils();

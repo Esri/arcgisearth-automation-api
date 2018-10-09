@@ -4,8 +4,8 @@
         xmlns:local="clr-namespace:ArcGISEarth.AutoAPI.Examples"
         Title="ArcGISEarth.AutoAPI.Examples" Height="600" Width="800" ResizeMode="CanMinimize">
     <Window.DataContext>
-        <!--Use ViewModel as the window data context-->
-        <local:ViewModel/>
+        <!--Use MainWindowViewModel as the window data context-->
+        <local:MainWindowViewModel/>
     </Window.DataContext>
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
