@@ -20,7 +20,8 @@ namespace ToArcGISEarth
     {
         protected override void OnClick()
         {
-            Process.Start("http://doc.arcgis.com/en/arcgis-earth/automation-api/samples.htm");               
+            // Open the help page. 
+            Process.Start("http://doc.arcgis.com/en/arcgis-earth/automation-api/samples.htm");
         }
     }
 }

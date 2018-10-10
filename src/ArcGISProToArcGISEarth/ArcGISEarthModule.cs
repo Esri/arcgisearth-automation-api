@@ -24,7 +24,7 @@ namespace ToArcGISEarth
         {
             get
             {
-                return _this ?? (_this = (ArcGISEarthModule)FrameworkApplication.FindModule("ToArcGISEarth_Module"));
+                return _this ?? (_this = (ArcGISEarthModule)FrameworkApplication.FindModule("ArcGISProToArcGISEarth"));
             }
         }
 

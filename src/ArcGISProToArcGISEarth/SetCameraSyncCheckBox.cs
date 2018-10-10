@@ -11,77 +11,77 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using ArcGIS.Core.CIM;
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace ToArcGISEarth
 {
-    public class RemoveLayerButton : Button
+    public class SetCameraSyncCheckBox : Button
     {
-        public static bool HasChecked { get; set; }
-
-        public RemoveLayerButton()
+        public SetCameraSyncCheckBox()
         {
             Enabled = false;
-            HasChecked = false;
         }
 
         protected override void OnClick()
         {
             if (IsChecked)
             {
-                LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarth);
+                MapViewCameraChangedEvent.Unsubscribe(SetCameraInEarth);
                 IsChecked = false;
-                HasChecked = false;
             }
             else
             {
-                LayersRemovedEvent.Subscribe(RemoveLayerFromEarth, false);
+                MapViewCameraChangedEvent.Subscribe(SetCameraInEarth, false);
                 IsChecked = true;
-                HasChecked = true;
             }
         }
 
         protected override void OnUpdate()
         {
+            // Set button status when status of connecting to ArcGIS Earth changed.
             if (ToolHelper.IsConnectSuccessfully)
             {
                 Enabled = true;
             }
             else
             {
-                LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarth);
+                MapViewCameraChangedEvent.Unsubscribe(SetCameraInEarth);
                 Enabled = false;
                 IsChecked = false;
-                HasChecked = false;
             }
         }
 
-        private void RemoveLayerFromEarth(LayerEventsArgs args)
+        private void SetCameraInEarth(MapViewCameraChangedEventArgs args)
         {
             try
             {
-                List<Layer> layerList = args.Layers as List<Layer>;
-                if (layerList?.Count != 0)
+                // Get current camera of ArcGIS Pro.
+                MapView mapView = args.MapView;
+                if (null != mapView && null != mapView.Camera && mapView.ViewingMode == MapViewingMode.SceneGlobal)
                 {
-                    List<string> idList = new List<string>();
-                    foreach (var layer in layerList)
+                    JObject cameraJObject = new JObject()
                     {
-                        foreach (var item in ToolHelper.IdNameDic)
+                        // Get heading.
+                        ["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading,
+                        // Get pitch.
+                        ["pitch"] = mapView.Camera.Pitch + 90,
+                        // Get mapPoint.
+                        ["mapPoint"] = new JObject
                         {
-                            if (item.Value?.Length == 3 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString() && item.Value[2] == null)
-                            {
-                                idList.Add(item.Key);
-                            }
+                            ["x"] = mapView.Camera.X,
+                            ["y"] = mapView.Camera.Y,
+                            ["z"] = mapView.Camera.Z
                         }
-                    }
-                    foreach (var id in idList)
-                    {
-                        ToolHelper.Utils.RemoveLayer(id);
-                        ToolHelper.IdNameDic.Remove(id);
-                    }
+                    };
+
+                    // Set camera in ArcGIS Earth.
+                    ToolHelper.Utils.SetCamera(cameraJObject.ToString());
                 }
             }
             catch
@@ -90,4 +90,3 @@ namespace ToArcGISEarth
         }
     }
 }
-

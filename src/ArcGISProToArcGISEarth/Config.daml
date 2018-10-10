@@ -9,7 +9,7 @@
     <Subject>Framework</Subject>
   </AddInInfo>
   <modules>
-    <insertModule id="ToArcGISEarth_Module" className="ArcGISEarthModule" autoLoad="false" caption="ArcGISEarthModule">
+    <insertModule id="ArcGISProToArcGISEarth" className="ArcGISEarthModule" autoLoad="false" caption="ArcGISEarthModule">
       <groups>
         <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
           <button refID="ToArcGISEarth_ConnectButton" size="large" />
@@ -22,22 +22,22 @@
       <menus>
         <menu id="ToArcGISEarth_SynchronizationMenu" caption="Synchronization" smallImage="Images\Synchronization16.png" largeImage="Images\Synchronization32.png" keytip="SZ" >
           <tooltip>Synchronization operations between ArcGIS Pro and ArcGIS Earth.</tooltip>
-          <button refID="ToArcGISEarth_SetCameraButton" />
-          <button refID="ToArcGISEarth_AddLayerButton" />
-          <button refID="ToArcGISEarth_RemoveLayerButton" />
+          <button refID="ToArcGISEarth_SetCameraSyncCheckBox" />
+          <button refID="ToArcGISEarth_AddLayerSyncCheckBox" />
+          <button refID="ToArcGISEarth_RemoveLayerSyncCheckBox" />
         </menu>
       </menus>
       <controls>
         <button id="ToArcGISEarth_ConnectButton" caption="Connect" className="ConnectButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CE">
           <tooltip>This add-in demonstrates how to communicate with ArcGIS Earth via the Automation API in ArcGIS Pro 2.2.</tooltip>
         </button>
-        <button id="ToArcGISEarth_SetCameraButton" caption="Camera view" className="SetCameraButton" loadOnClick="false"  keytip="SC">
+        <button id="ToArcGISEarth_SetCameraSyncCheckBox" caption="Camera view" className="SetCameraSyncCheckBox" loadOnClick="false"  keytip="SC">
           <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
         </button>
-        <button id="ToArcGISEarth_AddLayerButton" caption="Add layer" className="AddLayerButton" loadOnClick="false"  keytip="AL">
+        <button id="ToArcGISEarth_AddLayerSyncCheckBox" caption="Add layer" className="AddLayerSyncCheckBox" loadOnClick="false"  keytip="AL">
           <tooltip>Synchronize the operation when adding layer.</tooltip>
         </button>
-        <button id="ToArcGISEarth_RemoveLayerButton" caption="Remove layer" className="RemoveLayerButton" loadOnClick="false"  keytip="RL">
+        <button id="ToArcGISEarth_RemoveLayerSyncCheckBox" caption="Remove layer" className="RemoveLayerSyncCheckBox" loadOnClick="false"  keytip="RL">
           <tooltip>Synchronize the operation when removing layer.</tooltip>
         </button>
         <button id="ToArcGISEarth_ClearWorkspaceButton" caption="Clear workspace" className="ClearWorkspaceButton" loadOnClick="false" smallImage="Images\ClearWorkspace16.png" largeImage="Images\ClearWorkspace32.png" keytip="CW">
