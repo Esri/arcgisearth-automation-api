@@ -1,7 +1,11 @@
 Example of parameters:
 
-Connect (Note, it is not belong to API)
-C:\Projects\earth\output\earth_windesktop_release\bin\ArcGISEarth.exe
+------------------------------------
+
+Connect
+Please make sure ArcGIS Earth is running and the Automation API is configured as enabled.
+
+------------------------------------
 
 SetCamera
 {  
@@ -16,6 +20,8 @@ SetCamera
    "heading":0.0,
    "pitch":0.10000000000019954
 }
+
+------------------------------------
 
 FlyTo
 {  
@@ -34,6 +40,8 @@ FlyTo
    "duration":2
 }
 
+------------------------------------
+
 AddLayer
 {  
    "type":"MapService",
@@ -41,10 +49,14 @@ AddLayer
    "target":"OperationalLayers"
 }
 
+------------------------------------
+
 ClearLayers
 {  
    "target":"ElevationLayers"
 }
 
-GetSnapshot (Note, the input parameters is Bitmap instead of string in API)
+------------------------------------
+
+GetSnapshot
 D:/earth.jpg

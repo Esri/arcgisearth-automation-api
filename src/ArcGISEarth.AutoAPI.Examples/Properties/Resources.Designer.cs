@@ -59,5 +59,40 @@ namespace ArcGISEarth.AutoAPI.Examples.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Example of parameters:
+        ///
+        ///Connect (Note, it is not belong to API)
+        ///C:\Projects\earth\output\earth_windesktop_release\bin\ArcGISEarth.exe
+        ///
+        ///SetCamera
+        ///{  
+        ///   &quot;mapPoint&quot;:{  
+        ///      &quot;x&quot;:-97.283978521275117,
+        ///      &quot;y&quot;:48.422233665100165,
+        ///      &quot;z&quot;:11000000,
+        ///      &quot;spatialReference&quot;:{  
+        ///         &quot;wkid&quot;:4326
+        ///      }
+        ///   },
+        ///   &quot;heading&quot;:0.0,
+        ///   &quot;pitch&quot;:0.10000000000019954
+        ///}
+        ///
+        ///FlyTo
+        ///{  
+        ///   &quot;camera&quot;:{  
+        ///      &quot;mapPoint&quot;:{  
+        ///         &quot;x&quot;:-92,
+        ///         &quot;y&quot;:41,
+        ///         &quot;z&quot;:11000000,
+        ///         &quot;spatial [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string examples {
+            get {
+                return ResourceManager.GetString("examples", resourceCulture);
+            }
+        }
     }
 }
