@@ -20,13 +20,9 @@ namespace ToArcGISEarth
 {
     public class RemoveLayerSyncCheckBox : Button
     {
-        // Static property, to log the button IsChecked status.
-        public static bool HasChecked { get; private set; }
-
         public RemoveLayerSyncCheckBox()
         {
             Enabled = false;
-            HasChecked = false;
         }
 
         protected override void OnClick()
@@ -36,14 +32,12 @@ namespace ToArcGISEarth
                 // Unsubscribe RemoveLayerFromEarth and set button status.
                 LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarth);
                 IsChecked = false;
-                HasChecked = false;
             }
             else
             {
                 // Subscribe RemoveLayerFromEarth and set button status.
                 LayersRemovedEvent.Subscribe(RemoveLayerFromEarth, false);
                 IsChecked = true;
-                HasChecked = true;
             }
         }
 
@@ -59,7 +53,6 @@ namespace ToArcGISEarth
                 LayersRemovedEvent.Unsubscribe(RemoveLayerFromEarth);
                 Enabled = false;
                 IsChecked = false;
-                HasChecked = false;
             }
         }
 

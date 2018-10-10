@@ -24,13 +24,6 @@ namespace ToArcGISEarth
 {
     public static class ToolHelper
     {
-        public enum ElevationSourcesOperation
-        {
-            None,
-            Add,
-            Remove
-        }
-
         // ArcGIS Earth automation api utils.
         public static EarthNamedpipeAPIUtils Utils { get; } = new EarthNamedpipeAPIUtils();
 
@@ -45,8 +38,6 @@ namespace ToArcGISEarth
 
         // Logging the status of ArcGIS Pro global scene opening.
         public static bool IsArcGISProGlobalSceneOpening { get { return MapView.Active?.Map?.IsScene == true && MapView.Active?.Map.DefaultViewingMode == MapViewingMode.SceneGlobal; } }
-
-        #region Get data source
 
         public static string GetDataSource(CIMDataConnection dataConnection)
         {
@@ -174,115 +165,6 @@ namespace ToArcGISEarth
             }
             return null;
         }
-
-        #endregion  Get data source
-
-        #region Elevation sufaces
-
-        public static List<string[]> AddedOrRemovedElevationSources(CIMMapElevationSurface[] previousElevationSurfaces, CIMMapElevationSurface[] currentElevationSurfaces, ref ElevationSourcesOperation operation)
-        {
-            try
-            {
-                // Set ElevationSourcesOperation to none.
-                operation = ElevationSourcesOperation.None;
-
-                // Get previous and current elevation sources list.
-                List<string[]> previousList = GetAllElevationSources(previousElevationSurfaces, out int previousCount);
-                List<string[]> currentList = GetAllElevationSources(currentElevationSurfaces, out int currentCount);
-
-                // Get added elevation source list.
-                if (previousCount < currentCount)
-                {
-                    operation = ElevationSourcesOperation.Add;
-                    return GetChangedElevationSources(previousList, currentList, operation);
-                }
-
-                // Get removed elevation source list.
-                if (previousCount > currentCount)
-                {
-                    operation = ElevationSourcesOperation.Remove;
-                    return GetChangedElevationSources(previousList, currentList, operation);
-                }
-            }
-            catch
-            {
-            }
-            return null;
-        }
-
-        private static List<string[]> GetAllElevationSources(CIMMapElevationSurface[] elevationSurfaces, out int count)
-        {
-            // Get all count of elevation sources.
-            count = 0;
-            List<string[]> sourcesList = new List<string[]>();
-            if (elevationSurfaces != null)
-            {
-                // Get all elevation surfaces. 
-                for (int i = 0; i < elevationSurfaces.Length; i++)
-                {
-                    // Get all base sources of each elevation surface.
-                    var baseSources = elevationSurfaces[i].BaseSources;
-                    for (int j = 0; j < baseSources?.Length; j++)
-                    {
-                        // Add to list. 
-                        // string[0]:elevation surface name,
-                        // string[1]:elevation source name, 
-                        // string[2]:elevation source url.
-                        sourcesList.Add(new string[3] { elevationSurfaces[i].Name, baseSources[j].Name, ToolHelper.GetDataSource(baseSources[j].DataConnection) });
-                        count++;
-                    }
-                }
-            }
-            return sourcesList;
-        }
-
-        private static List<string[]> GetChangedElevationSources(List<string[]> previousList, List<string[]> currentList, ElevationSourcesOperation operation)
-        {
-            if (operation == ElevationSourcesOperation.Add)
-            {
-                // When added a elevation source, return the source.
-                return currentList?.Except(previousList, new ListStringArrComparer<string[]>())?.ToList();
-            }
-            if (operation == ElevationSourcesOperation.Remove)
-            {
-                // When removed elevation source, return the sources.
-                return previousList?.Except(currentList, new ListStringArrComparer<string[]>())?.ToList();
-            }
-            return null;
-        }
-
-        private class ListStringArrComparer<T> : IEqualityComparer<T>
-        {
-            public bool Equals(T x, T y)
-            {
-                if (x is string[] && y is string[])
-                {
-                    string[] xArr = x as string[];
-                    string[] yArr = y as string[];
-                    // Determine whether two string[3] are equal, compare each item of them.
-                    if (xArr?.Length == 3 && yArr?.Length == 3)
-                    {
-                        for (int i = 0; i < xArr.Length; i++)
-                        {
-                            if (xArr[i] != yArr[i])
-                            {
-                                return false;
-                            }
-                        }
-                        return true;
-                    }
-                    return false;
-                }
-                return false;
-            }
-
-            public int GetHashCode(T obj)
-            {
-                return obj.ToString().GetHashCode();
-            }
-        }
-
-        #endregion Elevation sufaces
     }
 }
 
