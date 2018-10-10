@@ -75,7 +75,7 @@ namespace ToArcGISEarth
                     List<string> idList = new List<string>();
                     foreach (var layer in layerList)
                     {
-                        foreach (var item in ToolHelper.IDandInfoDic)
+                        foreach (var item in ToolHelper.IdInfoDictionary)
                         {
                             // Find and save removed id.
                             if (item.Value?.Length == 3 && item.Value[0] == layer.Name && item.Value[1] == layer.MapLayerType.ToString() && item.Value[2] == null)
@@ -88,7 +88,7 @@ namespace ToArcGISEarth
                     foreach (var id in idList)
                     {
                         ToolHelper.Utils.RemoveLayer(id);
-                        ToolHelper.IDandInfoDic.Remove(id);
+                        ToolHelper.IdInfoDictionary.Remove(id);
                     }
                 }
             }

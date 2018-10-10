@@ -31,8 +31,8 @@ namespace ToArcGISEarth
         #region  ElevationSource variable and property
 
         private Timer _timer;
-        private event PropertyChangedEventHandler _elevationSourceAddedChanged;
-        private event PropertyChangedEventHandler _elevationSourceRemovedChanged;
+        private event PropertyChangedEventHandler _elevationSourceAdded;
+        private event PropertyChangedEventHandler _elevationSourceRemoved;
         private List<string[]> _elevationSources = new List<string[]>();
         private ElevationSourcesOperation _sourcesOperation = ElevationSourcesOperation.None;
         private CIMMap currentCIMMap = new CIMMap();
@@ -43,17 +43,17 @@ namespace ToArcGISEarth
             {
                 // If elevation sources changed, get changed source list.
                 _elevationSources = ToolHelper.AddedOrRemovedElevationSources(currentCIMMap.ElevationSurfaces, value?.ElevationSurfaces, ref _sourcesOperation);
-                // If added source, trigger _elevationSourceAddedChanged.
+                // If elevation source added, trigger _elevationSourceAddedChanged.
                 if (Is_elevationSourceAddedChanged() && IsChecked)
                 {
                     currentCIMMap = value;
-                    _elevationSourceAddedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
+                    _elevationSourceAdded?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
                 }
-                // If removed source, trigger _elevationSourceRemovedChanged.
+                // If elevation source removed, trigger _elevationSourceRemovedChanged.
                 if (Is_elevationSourceRemovedChanged() && RemoveLayerSyncCheckBox.HasChecked)
                 {
                     currentCIMMap = value;
-                    _elevationSourceRemovedChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
+                    _elevationSourceRemoved?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCIMMap)));
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace ToArcGISEarth
             // Update CurrentCIMMap every 1 second to get the lasted elevation source list.
             _timer.Elapsed += (s, e) =>
             {
-                // Must use QueuedTask to get avtive map definition. Then you can get elevation sources.
+                // Use QueuedTask to get avtive map definition and then get the elevation source.
                 QueuedTask.Run(() =>
                 {
                     CurrentCIMMap = MapView.Active?.Map?.GetDefinition();
@@ -86,14 +86,14 @@ namespace ToArcGISEarth
             {
                 // Unsubscribe events of adding layer and elevation source.
                 LayersAddedEvent.Unsubscribe(AddLayerToEarth);
-                _elevationSourceAddedChanged -= AddElevationSource;
+                _elevationSourceAdded -= AddElevationSource;
                 IsChecked = false;
             }
             else
             {
                 // Subscribe events of adding layer and elevation source.
                 LayersAddedEvent.Subscribe(AddLayerToEarth, false);
-                _elevationSourceAddedChanged += AddElevationSource;
+                _elevationSourceAdded += AddElevationSource;
                 _timer.Enabled = true;
                 _timer.Start();
                 IsChecked = true;
@@ -122,7 +122,7 @@ namespace ToArcGISEarth
         {
             try
             {
-                // Get added layer list.
+                // Get list of added layer.
                 List<Layer> layerList = args.Layers as List<Layer>;
                 if (layerList?.Count != 0 && !IsCreateNewGroupLayer(layerList))
                 {
@@ -142,7 +142,7 @@ namespace ToArcGISEarth
                                 };
                                 if (dataConnection is CIMWMSServiceConnection)
                                 {
-                                    // ArcGIS Earth Auotmation API can't autoatic recognize wms service.
+                                    // Specify layer type for wms service. API is limited to automatically recognized wms service.
                                     addLayerJson["type"] = "OGCWMS";
                                 }
                                 if (layer.MapLayerType == MapLayerType.Operational)
@@ -160,13 +160,13 @@ namespace ToArcGISEarth
                                     layer.MapLayerType.ToString(),
                                     null
                                 };
-                                // Add layer to Earth.
-                                // When using ArcGIS Earth Automation API adding layer, whether success or failure, there will return layer id.
+                                // Add layer to ArcGIS Earth.
+                                // Return layer id when use adding layer, whether it's succeed or failed.
                                 string id = ToolHelper.Utils.AddLayer(currentJson);
-                                if (!ToolHelper.IDandInfoDic.Keys.Contains(id))
+                                if (!ToolHelper.IdInfoDictionary.Keys.Contains(id))
                                 {
-                                    // Use IDandInfoDic to save id and layer information.
-                                    ToolHelper.IDandInfoDic.Add(id, nameAndType);
+                                    // Use IdInfoDictionary to save layer id and layer information.
+                                    ToolHelper.IdInfoDictionary.Add(id, nameAndType);
                                 }
                             }
                             else
@@ -185,19 +185,19 @@ namespace ToArcGISEarth
 
         private bool IsCreateNewGroupLayer(List<Layer> layerList)
         {
-            // Determine whether created new group layer. 
+            // Determine if group layer is created. 
             return layerList?.Count == 1 && layerList[0]?.Name == "New Group Layer" && (layerList[0].GetType()?.GetProperty("Layers")?.GetValue(layerList[0]) as List<Layer>) == null;
         }
 
         private bool Is_elevationSourceAddedChanged()
         {
-            // Determine whether added layer. 
+            // Determine if layer is added. 
             return _elevationSources != null && _elevationSources?.Count > 0 && _sourcesOperation == ElevationSourcesOperation.Add;
         }
 
         private bool Is_elevationSourceRemovedChanged()
         {
-            // Determine whether removed layer. 
+            // Determine if layer is removed. 
             return _elevationSources != null && _elevationSources?.Count > 0 && _sourcesOperation == ElevationSourcesOperation.Remove;
         }
 
@@ -206,11 +206,11 @@ namespace ToArcGISEarth
             // When RemoveLayerButton is checked, _elevationSourceRemovedChanged event subscribe RemoveElevationSource; Otherwise, unsubscribe RemoveElevationSource.
             if (RemoveLayerSyncCheckBox.HasChecked)
             {
-                _elevationSourceRemovedChanged += RemoveElevationSource;
+                _elevationSourceRemoved += RemoveElevationSource;
             }
             else
             {
-                _elevationSourceRemovedChanged -= RemoveElevationSource;
+                _elevationSourceRemoved -= RemoveElevationSource;
             }
         }
 
@@ -223,7 +223,7 @@ namespace ToArcGISEarth
                     if (_elevationSources.FirstOrDefault()?.Length >= 3)
                     {
                         // Elevation source information.
-                        // In fact, only can add one elevation source every time in ArcGIS Pro, so the added source is the first one.
+                        // Add one elevation source per time to ArcGIS Pro.
                         string surfaceName = _elevationSources.FirstOrDefault()[0];
                         string sourceName = _elevationSources.FirstOrDefault()[1];
                         string sourceUrl = _elevationSources.FirstOrDefault()[2];
@@ -241,10 +241,10 @@ namespace ToArcGISEarth
                         };
                         // Add elevation source to ArcGIS Earth.
                         string id = ToolHelper.Utils.AddLayer(currentJson);
-                        if (!ToolHelper.IDandInfoDic.Keys.Contains(id))
+                        if (!ToolHelper.IdInfoDictionary.Keys.Contains(id))
                         {
-                            // Use IDandInfoDic to save id and elevation source information.
-                            ToolHelper.IDandInfoDic.Add(id, nameAndType);
+                            // Use IDandInfoDic to save layer id and elevation source information.
+                            ToolHelper.IdInfoDictionary.Add(id, nameAndType);
                         }
                     }
                 }
@@ -261,25 +261,25 @@ namespace ToArcGISEarth
             {
                 try
                 {
-                    // Use temp list to log the id of removed elevation sources in ArcGIS Pro. 
+                    // Use temp list to log the layer id of removed elevation sources in ArcGIS Pro. 
                     List<string> idList = new List<string>();
                     foreach (var source in _elevationSources)
                     {
-                        foreach (var item in ToolHelper.IDandInfoDic)
+                        foreach (var item in ToolHelper.IdInfoDictionary)
                         {
-                            // Find and save removed id.
+                            // Find and save removed layer id.
                             if (item.Value?.Length == 3 && source?.Length >= 3 && item.Value[0] == source[0] && item.Value[1] == source[1] && item.Value[2] == source[2])
                             {
                                 idList.Add(item.Key);
                             }
                         }
                     }
-                    // Remove elevation sources in ArcGIS Earth and removed id of these sources.
-                    // Can remove several elevation sources at one time in ArcGIS Pro.
+                    // Remove elevation sources in ArcGIS Earth and remove layer id of these sources.
+                    // Remove multiple elevation sources per time in ArcGIS Pro.
                     foreach (var id in idList)
                     {
                         ToolHelper.Utils.RemoveLayer(id);
-                        ToolHelper.IDandInfoDic.Remove(id);
+                        ToolHelper.IdInfoDictionary.Remove(id);
                     }
                 }
                 catch

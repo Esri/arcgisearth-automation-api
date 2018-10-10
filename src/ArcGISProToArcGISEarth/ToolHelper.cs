@@ -38,7 +38,7 @@ namespace ToArcGISEarth
         public static bool IsConnectSuccessfully { get; set; } = false;
 
         // Logging id and it's infomation when adding layer or elevation source. 
-        public static Dictionary<string, string[]> IDandInfoDic { get; set; } = new Dictionary<string, string[]>();
+        public static Dictionary<string, string[]> IdInfoDictionary { get; set; } = new Dictionary<string, string[]>();
 
         // Logging the status of ArcGIS Earth running.
         public static bool IsArcGISEarthRunning { get { return Process.GetProcessesByName("ArcGISEarth").Length > 0; } }
