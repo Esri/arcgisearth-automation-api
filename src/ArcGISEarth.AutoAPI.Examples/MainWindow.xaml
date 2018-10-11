@@ -21,7 +21,7 @@
             <Button Margin="0,10,0,0" Command="{Binding AddLayerCommand}" Content="AddLayer"/>
             <Button Margin="0,10,0,0" Command="{Binding GetLayerLoadStatusCommand}" Content="GetLayerLoadStatus"/>
             <Button Margin="0,10,0,0" Command="{Binding RemoveLayerCommand}" Content="RemoveLayer"/>
-            <Button Margin="0,10,0,0" Command="{Binding ClearLayerButton}" Content="ClearLayers"/>
+            <Button Margin="0,10,0,0" Command="{Binding ClearLayersCommand}" Content="ClearLayers"/>
             <Button Margin="0,10,0,0" Command="{Binding GetSnapshotCommand}" Content="GetSnapshot"/>
             <Button Margin="0,10,0,0" Command="{Binding GetWorkspaceCommand}" Content="GetWorkspace"/>
             <Button Margin="0,10,0,0" Command="{Binding ImportWorkspaceCommand}" Content="ImportWorkspace"/>
