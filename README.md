@@ -1,16 +1,16 @@
 # ArcGIS Earth Automation API
-The ArcGIS Earth Automation API provides a standard interface for 3rd party applications that support .NET to automate and communicate with ArcGIS Earth. The Automation API is based on [.NET WCF NamedPipe](https://msdn.microsoft.com/en-us/library/system.servicemodel.netnamedpipebinding(v=vs.110).aspx). It provides a fast and reliable way for on-machine communications. 
+ArcGIS Earth Automation API provides a standard interface for 3rd party applications that support .NET to automate and communicate with ArcGIS Earth. The Automation API is based on [.NET WCF NamedPipe](https://msdn.microsoft.com/en-us/library/system.servicemodel.netnamedpipebinding(v=vs.110).aspx). It provides a fast and reliable way for on-machine communications. 
 
 <div  align="center">
    
-[![Introduction](images/1_Intro.png "Introduction")](http://doc.arcgis.com/en/arcgis-earth/automation-api/get-started.htm) 
-[![How To Use](images/2_Use.png "How To Use")](http://doc.arcgis.com/en/arcgis-earth/automation-api/use-api.htm)
+![Introduction](https://user-images.githubusercontent.com/18433455/46694946-08b5e600-cbc3-11e8-90bd-ae1fb3b1dea5.png "Introduction")
+![How To Use](https://user-images.githubusercontent.com/18433455/46694969-18cdc580-cbc3-11e8-936a-ae7d0685f802.png "How To Use")
 
 </div> 
 <div  align="center">
-   
-[![API Reference](images/3_Reference.png "API Reference")](http://doc.arcgis.com/en/arcgis-earth/automation-api/wcfnamedpipeipc-namespace.htm)
-[![Samples](images/4_Samples.png "API Samples")](../../wiki)
+
+![API Reference](https://user-images.githubusercontent.com/18433455/46695005-3438d080-cbc3-11e8-99a5-f00873c7ff36.png "API Reference")
+[![API Samples](https://user-images.githubusercontent.com/18433455/46695023-3e5acf00-cbc3-11e8-92bf-73d9d31b28e5.png "API Samples")](../../wiki)
 
 </div>
 
@@ -18,38 +18,25 @@ The ArcGIS Earth Automation API provides a standard interface for 3rd party appl
 The ArcGIS Earth Automation API requires .NET Framework 3.0 or later.
 
 ## Features
-* Get or set camera positions and flying animations. 
-* Add layers to the ArcGIS Earth workspace from online or local folders. See table below.
-* Delete layers from the ArcGIS Earth workspace.
-* Take snapshot of the scene view and share.
+* Control camera navigation and fly behaviors, including get camera information and set camera position.
+* Perform data operations, including add data from online or local files, get loading status of the layer, and delete layers from the workspace.
+* Perform workspace operations, including import, get and clear workspace contents.
+* Take snapshots of the current view.
 
-Value | OperationalLayers | BasemapLayers |ElevationLayers
-----| ---- | ---- | ----
-FeatureService | Yes | Yes |
-MapService | Yes | Yes |
-ImageService | Yes | Yes |
-Shapefile | Yes | Yes |
-OGCWMS | Yes | Yes |
-KML | Yes | Yes |
-SceneLayerPackage | Yes | Yes |
-SceneService | Yes | Yes |
-Raster | Yes | Yes | Yes
-TileLayerPackage | Yes | Yes |
-ElevationService | | | Yes
+## Samples
+
+1. [Automation API examples](../../wiki/Automation-API-examples)
+2. [ArcGIS Pro add-in: ToArcGISEarth](../../wiki/ToArcGISEarth)
 
 ## Resources
 
-* [ArcGIS Earth Documentation](http://doc.arcgis.com/en/arcgis-earth/)
+* [ArcGIS Earth Online Help](http://doc.arcgis.com/en/arcgis-earth/)
+* [API Reference](http://doc.arcgis.com/en/arcgis-earth/automation-api/get-started.htm)
 * [ArcGIS for Developers](https://developers.arcgis.com/documentation/#extend)
 * Share your ideas or post questions via [GeoNet](https://geonet.esri.com/groups/arcgis-earth)
 * [Twitter@ArcGISEarth](https://twitter.com/arcgisearth?lang=en)
 * For assistance, please refer to [Support](http://support.esri.com/en/)
 
-## Examples
-
-1. [Connect to ArcGIS Earth with the Automation API](../../wiki/Connect-to-ArcGIS-Earth)
-2. [Usage example of the Automation API](../../wiki/Usage-example-of-the-Automation-API)
-3. [View synchrinzation: build a simple add-in for ArcGIS Pro 2.0](../../wiki/View-synchronization)
 
 ## Issues
 Find a bug or want to request a new feature? Please let us know by submitting an issue.

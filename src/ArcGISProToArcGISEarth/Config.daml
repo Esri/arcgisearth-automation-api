@@ -1,0 +1,59 @@
+﻿<ArcGIS defaultAssembly="ToArcGISEarth.dll" defaultNamespace="ToArcGISEarth" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
+  <AddInInfo id="{94776263-9f12-4574-927e-c3c2de42bcaf}" version="1.1" desktopVersion="2.2">
+    <Name>ToArcGISEarth</Name>
+    <Description>ArcGIS Pro to ArcGIS Earth</Description>
+    <Image>Images\ArcGISEarth32.png</Image>
+    <Author>ArcGIS Earth Tutorials</Author>
+    <Company>esri, http://www.esri.com</Company>
+    <Date>8/20/2018 11:00:00 AM, 2018</Date>
+    <Subject>Framework</Subject>
+  </AddInInfo>
+  <modules>
+    <insertModule id="ArcGISProToArcGISEarth" className="ArcGISEarthModule" autoLoad="false" caption="ArcGISEarthModule">
+      <groups>
+        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
+          <button refID="ToArcGISEarth_ConnectButton" size="large" />
+          <menu refID="ToArcGISEarth_SynchronizationMenu" size="middle"/>
+          <button refID="ToArcGISEarth_ClearWorkspaceButton" size="middle" />
+          <button refID="ToArcGISEarth_SaveImageButton" size="middle" />
+          <button refID="ToArcGISEarth_HelpButton" size="middle" />
+        </group>
+      </groups>
+      <menus>
+        <menu id="ToArcGISEarth_SynchronizationMenu" caption="Synchronization" smallImage="Images\Synchronization16.png" largeImage="Images\Synchronization32.png" keytip="SZ" >
+          <tooltip>Synchronization operations between ArcGIS Pro and ArcGIS Earth.</tooltip>
+          <button refID="ToArcGISEarth_SetCameraSyncCheckBox" />
+          <button refID="ToArcGISEarth_AddLayerSyncCheckBox" />
+          <button refID="ToArcGISEarth_RemoveLayerSyncCheckBox" />
+        </menu>
+      </menus>
+      <controls>
+        <button id="ToArcGISEarth_ConnectButton" caption="Connect" className="ConnectButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CE">
+          <tooltip>This add-in demonstrates how to communicate with ArcGIS Earth via the Automation API in ArcGIS Pro 2.2.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_SetCameraSyncCheckBox" caption="Camera view" className="SetCameraSyncCheckBox" loadOnClick="false"  keytip="SC">
+          <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_AddLayerSyncCheckBox" caption="Add layer" className="AddLayerSyncCheckBox" loadOnClick="false"  keytip="AL">
+          <tooltip>Synchronize the operation when adding layer.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_RemoveLayerSyncCheckBox" caption="Remove layer" className="RemoveLayerSyncCheckBox" loadOnClick="false"  keytip="RL">
+          <tooltip>Synchronize the operation when removing layer.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_ClearWorkspaceButton" caption="Clear workspace" className="ClearWorkspaceButton" loadOnClick="false" smallImage="Images\ClearWorkspace16.png" largeImage="Images\ClearWorkspace32.png" keytip="CW">
+          <tooltip>Clear workspace in ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_SaveImageButton" caption="Save image" className="SaveImageButton" loadOnClick="false" smallImage="Images\SaveImage16.png" largeImage="Images\SaveImage32.png" keytip="SI">
+          <tooltip>Save current view as image in ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ToArcGISEarth_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="Images\Help16.png" largeImage="Images\Help32.png" keytip="HE">
+          <tooltip>See ArcGIS Earth Automation API help document for more details.</tooltip>
+        </button>
+      </controls>
+      <panes></panes>
+    </insertModule>
+  </modules>
+  <dropHandlers>
+    <insertHandler id="ToArcGISEarth_DropHandler1" className="DropHandler1" dataTypes="*" />
+  </dropHandlers>
+</ArcGIS>
