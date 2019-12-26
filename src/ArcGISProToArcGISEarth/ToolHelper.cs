@@ -13,7 +13,6 @@
 
 using ArcGIS.Core.CIM;
 using ArcGIS.Desktop.Mapping;
-using ArcGISEarth.AutoAPI.Utils;
 using ArcGISEarth.WCFNamedPipeIPC;
 using System;
 using System.Collections.Generic;
