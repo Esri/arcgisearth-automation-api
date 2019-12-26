@@ -15,6 +15,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using ArcGISEarth.AutoAPI.Utils;
+using ArcGISEarth.WCFNamedPipeIPC;
 
 namespace ArcGISEarth.AutoAPI.Examples
 {
