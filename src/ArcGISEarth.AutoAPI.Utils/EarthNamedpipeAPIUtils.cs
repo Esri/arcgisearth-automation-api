@@ -11,18 +11,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using ArcGISEarth.WCFNamedPipeIPC;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.Text;
-using System.Threading.Tasks;
+using ArcGISEarth.AutoAPI.Utils;
+using Esri.ArcGISEarth.WCFNamedPipeIPC;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.Threading.Tasks;
 
-namespace ArcGISEarth.AutoAPI.Utils
+namespace ArcGISEarth.WCFNamedPipeIPC
 {
     public class MessageStringEventArgs : EventArgs
     {
@@ -78,13 +76,13 @@ namespace ArcGISEarth.AutoAPI.Utils
             try
             {
                 JObject lyrInfoObj = new JObject();
-                if(uris == null || uris.Length == 0)
+                if (uris == null || uris.Length == 0)
                 {
                     return null;
                 }
 
                 JArray uriArray = new JArray();
-                foreach(string uri in uris)
+                foreach (string uri in uris)
                 {
                     uriArray.Add(uri);
                 }
@@ -152,7 +150,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 JObject mapPointObj = JObject.Parse(mapPointJson);
                 if (mapPointObj["spatialReference"] != null)
                 {
-                    if(mapPointObj["spatialReference"]["wkid"] != null)
+                    if (mapPointObj["spatialReference"]["wkid"] != null)
                     {
                         wkid = (int)mapPointObj["spatialReference"]["wkid"];
                     }
@@ -175,7 +173,7 @@ namespace ArcGISEarth.AutoAPI.Utils
 
         public void CloseConnect()
         {
-            if(_factory != null)
+            if (_factory != null)
             {
                 _factory.Close();
                 _factory = null;
@@ -228,7 +226,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 if (!proc.IsRunning())
                 {
                     await proc.Start((msg) => ProcessStdOutCallBack(msg, ref address));
-                    if(String.IsNullOrEmpty(address))
+                    if (String.IsNullOrEmpty(address))
                     {
                         return cFailed;
                     }
@@ -265,7 +263,7 @@ namespace ArcGISEarth.AutoAPI.Utils
 
         public string AddLayer(string json)
         {
-            if(_channel == null)
+            if (_channel == null)
             {
                 return cNeedConnect;
             }
@@ -366,7 +364,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
             catch (Exception ex)
             {
-                if(ex is FaultException<EarthNamedpipeFault>)
+                if (ex is FaultException<EarthNamedpipeFault>)
                 {
                     return (ex as FaultException<EarthNamedpipeFault>).Message;
                 }
