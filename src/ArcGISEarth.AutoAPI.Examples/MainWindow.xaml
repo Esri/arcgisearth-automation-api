@@ -13,18 +13,17 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel>
-            <!--Function type-->
-            <Button Margin="0,10,0,0" Command="{Binding ConnectEarthCommand}" Content="ConnectEarth"/>
+            <!--Function type-->            
             <Button Margin="0,10,0,0" Command="{Binding GetCameraCommand}" Content="GetCamera"/>
             <Button Margin="0,10,0,0" Command="{Binding SetCameraCommand}" Content="SetCamera"/>
             <Button Margin="0,10,0,0" Command="{Binding FlyToCommand}" Content="FlyTo"/>
             <Button Margin="0,10,0,0" Command="{Binding AddLayerCommand}" Content="AddLayer"/>
             <Button Margin="0,10,0,0" Command="{Binding GetLayerLoadStatusCommand}" Content="GetLayerLoadStatus"/>
             <Button Margin="0,10,0,0" Command="{Binding RemoveLayerCommand}" Content="RemoveLayer"/>
-            <Button Margin="0,10,0,0" Command="{Binding ClearLayersCommand}" Content="ClearLayers"/>
             <Button Margin="0,10,0,0" Command="{Binding GetSnapshotCommand}" Content="GetSnapshot"/>
             <Button Margin="0,10,0,0" Command="{Binding GetWorkspaceCommand}" Content="GetWorkspace"/>
             <Button Margin="0,10,0,0" Command="{Binding ImportWorkspaceCommand}" Content="ImportWorkspace"/>
+            <Button Margin="0,10,0,0" Command="{Binding DeleteWorkspaceCommand}" Content="DeleteWorkspace"/>
             <Button Margin="0,50,0,0" Command="{Binding ClearInputBoxCommand}" Content="ClearInputBox"/>
             <Button Margin="0,10,0,0" Command="{Binding ClearOutputBoxCommand}" Content="ClearOutputBox"/>
             <Button Margin="0,10,0,0" Command="{Binding HelpCommand}" Content="Help"/>

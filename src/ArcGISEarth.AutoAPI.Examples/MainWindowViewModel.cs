@@ -14,7 +14,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
-using ArcGISEarth.WCFNamedPipeIPC;
+using ArcGISEarth.AutoAPI.Utils;
 
 namespace ArcGISEarth.AutoAPI.Examples
 {
@@ -25,17 +25,15 @@ namespace ArcGISEarth.AutoAPI.Examples
         SetCamera,
         FlyTo,
         AddLayer,
-        ClearLayers,
+        Removelayer,
         GetSnapshot,
-        Connect,
-        ClearInputputBox,
-        ClearOutputBox,
-        CloseConnect,
-        Help,
         GetLayerLoadStatus,
         GetWorkspace,
         ImportWorkspace,
-        Removelayer
+        DeleteWorkspace,
+        Help,
+        ClearInputputBox,
+        ClearOutputBox
     }
 
     internal class FunctionTypeCommand : ICommand
@@ -68,10 +66,10 @@ namespace ArcGISEarth.AutoAPI.Examples
 
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private EarthNamedpipeAPIUtils _utils;
+        public event PropertyChangedEventHandler PropertyChanged;        
+        private AutomationAPIHelper _helper;
 
-        // Input box text.
+        // InputBox text.
         private string inputString;
         public string InputString
         {
@@ -83,7 +81,7 @@ namespace ArcGISEarth.AutoAPI.Examples
             }
         }
 
-        // Output box text.
+        // OutputBox text.
         private string outputString;
         public string OutputString
         {
@@ -100,86 +98,96 @@ namespace ArcGISEarth.AutoAPI.Examples
         public ICommand GetCameraCommand { get; private set; }
         public ICommand SetCameraCommand { get; private set; }
         public ICommand FlyToCommand { get; private set; }
-        public ICommand AddLayerCommand { get; private set; }
-        public ICommand ClearLayersCommand { get; private set; }
-        public ICommand GetSnapshotCommand { get; private set; }
         public ICommand GetLayerLoadStatusCommand { get; private set; }
+        public ICommand AddLayerCommand { get; private set; }
+        public ICommand RemoveLayerCommand { get; private set; }
+        public ICommand GetSnapshotCommand { get; private set; }
         public ICommand GetWorkspaceCommand { get; private set; }
         public ICommand ImportWorkspaceCommand { get; private set; }
-        public ICommand RemoveLayerCommand { get; private set; }
+        public ICommand DeleteWorkspaceCommand { get; private set; }
         public ICommand ClearInputBoxCommand { get; private set; }
         public ICommand ClearOutputBoxCommand { get; private set; }
         public ICommand HelpCommand { get; private set; }
 
         public MainWindowViewModel()
         {
-            // Initialize variable and property.
-            _utils = new EarthNamedpipeAPIUtils();
+            // Initialize variable and property.            
+            _helper = new AutomationAPIHelper();
             InputString = "";
             OutputString = "";
-            ConnectEarthCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Connect));
             GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
             SetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetCamera));
             FlyToCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.FlyTo));
-            AddLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.AddLayer));
-            ClearLayersCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearLayers));
-            GetSnapshotCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetSnapshot));
             GetLayerLoadStatusCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetLayerLoadStatus));
+            AddLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.AddLayer));
+            RemoveLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Removelayer));
+            GetSnapshotCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetSnapshot));
             GetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetWorkspace));
             ImportWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ImportWorkspace));
-            GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
-            RemoveLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Removelayer));
+            DeleteWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.DeleteWorkspace));
+            HelpCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Help));
             ClearInputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearInputputBox));
             ClearOutputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearOutputBox));
-            HelpCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Help));
         }
 
-        private async void ExecuteFuction(FunctionType functionType)
+        private void ExecuteFuction(FunctionType functionType)
         {
             switch (functionType)
             {
                 // More about input string syntax, please refer to "examples.txt".
-                case FunctionType.AddLayer:
+
+                case FunctionType.SetCamera:
                     {
-                       
-                        OutputString = _utils.AddLayer(InputString);
-                        break;
-                    }
-                case FunctionType.ClearLayers:
-                    {                     
-                        OutputString = _utils.ClearLayers(InputString);
-                        break;
-                    }
-                case FunctionType.Connect:
-                    {
-                        OutputString = await _utils.Connect();
-                        break;
-                    }
-                case FunctionType.FlyTo:
-                    {                     
-                        OutputString = _utils.FlyTo(InputString);
+                        OutputString = _helper.SetCamera(InputString);
                         break;
                     }
                 case FunctionType.GetCamera:
                     {
-                        OutputString = _utils.GetCamera();
+                        OutputString = _helper.GetCamera();
+                        break;
+                    }
+                case FunctionType.FlyTo:
+                    {
+                        OutputString = _helper.FlyTo(InputString);
+                        break;
+                    }
+                case FunctionType.GetLayerLoadStatus:
+                    {
+                        // OutputString = _utils.GetLayerLoadStatus(InputString);
+                        break;
+                    }
+                case FunctionType.AddLayer:
+                    {
+
+                        // OutputString = _utils.AddLayer(InputString);
+                        break;
+                    }
+                case FunctionType.Removelayer:
+                    {
+                        // OutputString = _utils.RemoveLayer(InputString);
                         break;
                     }
                 case FunctionType.GetSnapshot:
                     {
-                        OutputString = await _utils.GetSnapshot(InputString);
+                        OutputString = _helper.GetSnapshot(InputString);
                         break;
                     }
-                case FunctionType.SetCamera:
+                case FunctionType.GetWorkspace:
                     {
-                        OutputString = _utils.SetCamera(InputString);
+                        OutputString = _helper.GetWorkspace();
                         break;
                     }
-                case FunctionType.Help:
+                case FunctionType.ImportWorkspace:
                     {
-                        OutputString = Properties.Resources.examples;
+                        OutputString = _helper.ImportWorkspace(InputString);
                         break;
                     }
+                case FunctionType.DeleteWorkspace:
+                    {
+                        OutputString = _helper.DeleteWorkspace();
+                        break;
+                    }
+
                 case FunctionType.ClearInputputBox:
                     {
                         InputString = "";
@@ -190,29 +198,9 @@ namespace ArcGISEarth.AutoAPI.Examples
                         OutputString = "";
                         break;
                     }
-                case FunctionType.CloseConnect:
+                case FunctionType.Help:
                     {
-                        _utils.CloseConnect();
-                        break;
-                    }
-                case FunctionType.GetLayerLoadStatus:
-                    {
-                        OutputString = _utils.GetLayerLoadStatus(InputString);
-                        break;
-                    }
-                case FunctionType.GetWorkspace:
-                    {
-                        OutputString = _utils.GetWorkspace();
-                        break;
-                    }
-                case FunctionType.ImportWorkspace:
-                    {
-                        OutputString = _utils.ImportWorkspace(InputString);
-                        break;
-                    }
-                case FunctionType.Removelayer:
-                    {
-                        OutputString = _utils.RemoveLayer(InputString);
+                        OutputString = Properties.Resources.examples;
                         break;
                     }
             }
