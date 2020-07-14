@@ -36,8 +36,8 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -51,7 +51,7 @@ namespace ToArcGISEarth
         private void ClearAll()
         {
             // Clear ArcGIS Earth workspace.
-            ToolHelper.Utils.ClearLayers("{\"target\":\"AllLayers\"}");
+            ToolHelper.Utils.ClearWorkspace();
         }
     }
 }

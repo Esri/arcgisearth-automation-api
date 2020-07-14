@@ -197,9 +197,8 @@ namespace ArcGISEarth.AutoAPI.Utils
                 request.AddHeader("accept", "*/*");
                 request.AddHeader("Content-Type", "image/jpeg");
                 IRestResponse response = _client.Execute(request);
-                var ext = Path.GetExtension(imagePath);
-                if (File.Exists(imagePath) && ext.Equals("jpg", StringComparison.OrdinalIgnoreCase) ||
-                    ext.Equals("jpeg", StringComparison.OrdinalIgnoreCase))
+                Uri uri = new Uri(imagePath);
+                if (uri.IsAbsoluteUri && uri.IsFile)
                 {
                     using (var imageFile = new FileStream(imagePath, FileMode.Create))
                     {
@@ -267,6 +266,6 @@ namespace ArcGISEarth.AutoAPI.Utils
             {
                 return ex.Message;
             }
-        }       
+        }
     }
 }

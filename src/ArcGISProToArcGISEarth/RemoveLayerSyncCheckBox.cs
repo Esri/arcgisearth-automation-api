@@ -14,6 +14,7 @@
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace ToArcGISEarth
@@ -43,8 +44,8 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -80,7 +81,9 @@ namespace ToArcGISEarth
                     // Remove elevation sources in ArcGIS Earth and removed id of these sources.
                     foreach (var id in idList)
                     {
-                        ToolHelper.Utils.RemoveLayer(id);
+                        JObject idJson = JObject.Parse(id);
+                        string idString = idJson["id"].ToString();
+                        ToolHelper.Utils.RemoveLayer(idString);
                         ToolHelper.IdInfoDictionary.Remove(id);
                     }
                 }

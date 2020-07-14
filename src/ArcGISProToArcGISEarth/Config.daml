@@ -11,8 +11,7 @@
   <modules>
     <insertModule id="ArcGISProToArcGISEarth" className="ArcGISEarthModule" autoLoad="false" caption="ArcGISEarthModule">
       <groups>
-        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
-          <button refID="ToArcGISEarth_ConnectButton" size="large" />
+        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">          
           <menu refID="ToArcGISEarth_SynchronizationMenu" size="middle"/>
           <button refID="ToArcGISEarth_ClearWorkspaceButton" size="middle" />
           <button refID="ToArcGISEarth_SaveImageButton" size="middle" />
@@ -27,10 +26,7 @@
           <button refID="ToArcGISEarth_RemoveLayerSyncCheckBox" />
         </menu>
       </menus>
-      <controls>
-        <button id="ToArcGISEarth_ConnectButton" caption="Connect" className="ConnectButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CE">
-          <tooltip>This add-in demonstrates how to communicate with ArcGIS Earth via the Automation API in ArcGIS Pro 2.2.</tooltip>
-        </button>
+      <controls>       
         <button id="ToArcGISEarth_SetCameraSyncCheckBox" caption="Camera view" className="SetCameraSyncCheckBox" loadOnClick="false"  keytip="SC">
           <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
         </button>

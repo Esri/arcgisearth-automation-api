@@ -24,10 +24,10 @@ using System.Linq;
 namespace ToArcGISEarth
 {
     public class AddLayerSyncCheckBox : Button
-    {    
+    {
         public AddLayerSyncCheckBox()
         {
-            Enabled = false;          
+            Enabled = false;
         }
 
         protected override void OnClick()
@@ -35,21 +35,21 @@ namespace ToArcGISEarth
             if (IsChecked)
             {
                 // Unsubscribe events of adding layer and elevation source.
-                LayersAddedEvent.Unsubscribe(AddLayerToEarth);               
+                LayersAddedEvent.Unsubscribe(AddLayerToEarth);
                 IsChecked = false;
             }
             else
             {
                 // Subscribe events of adding layer and elevation source.
-                LayersAddedEvent.Subscribe(AddLayerToEarth, false);            
+                LayersAddedEvent.Subscribe(AddLayerToEarth, false);
                 IsChecked = true;
             }
         }
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -59,7 +59,7 @@ namespace ToArcGISEarth
                 LayersAddedEvent.Unsubscribe(AddLayerToEarth);
                 Enabled = false;
                 IsChecked = false;
-            }          
+            }
         }
 
         private void AddLayerToEarth(LayerEventsArgs args)
@@ -131,6 +131,6 @@ namespace ToArcGISEarth
         {
             // Determine if group layer is created. 
             return layerList?.Count == 1 && layerList[0]?.Name == "New Group Layer" && (layerList[0].GetType()?.GetProperty("Layers")?.GetValue(layerList[0]) as List<Layer>) == null;
-        }      
+        }
     }
 }

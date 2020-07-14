@@ -24,18 +24,18 @@ namespace ToArcGISEarth
             Enabled = false;
         }
 
-        protected override async void OnClick()
+        protected override void OnClick()
         {
             IsChecked = true;
-            await SaveImage();
+            SaveImage();
             IsChecked = false;
             return;
         }
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -46,12 +46,12 @@ namespace ToArcGISEarth
             }
         }
 
-        private async Task SaveImage()
+        private void SaveImage()
         {
             // Set save file options.
             SaveFileDialog dialog = new SaveFileDialog
             {
-                Filter = "Jpeg Files|*.jpg|Png Files|*.png|Tiff Files|*.tif",
+                Filter = "Jpeg Files|*.jpg",
                 FileName = "ArcGIS Earth.jpg",
                 DefaultExt = "jpg",
                 OverwritePrompt = true,
@@ -60,7 +60,7 @@ namespace ToArcGISEarth
             if (dialog.ShowDialog() == true)
             {
                 // Get screenshot from ArcGIS Earth.
-                await ToolHelper.Utils.GetSnapshot(dialog.FileName);
+                ToolHelper.Utils.GetSnapshot(dialog.FileName);
             }
         }
     }

@@ -13,7 +13,7 @@
 
 using ArcGIS.Core.CIM;
 using ArcGIS.Desktop.Mapping;
-using ArcGISEarth.WCFNamedPipeIPC;
+using ArcGISEarth.AutoAPI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,11 +25,8 @@ namespace ToArcGISEarth
     public static class ToolHelper
     {
         // ArcGIS Earth automation api utils.
-        public static EarthNamedpipeAPIUtils Utils { get; } = new EarthNamedpipeAPIUtils();
-
-        // Logging the status of connecting to ArcGIS Earth.
-        public static bool IsConnectSuccessfully { get; set; } = false;
-
+        public static AutomationAPIHelper Utils { get; } = new AutomationAPIHelper();
+      
         // Logging id and it's infomation when adding layer or elevation source. 
         public static Dictionary<string, string[]> IdInfoDictionary { get; set; } = new Dictionary<string, string[]>();
 

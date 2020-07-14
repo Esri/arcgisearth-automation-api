@@ -44,8 +44,8 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -67,19 +67,23 @@ namespace ToArcGISEarth
                 {
                     JObject cameraJObject = new JObject()
                     {
-                        // Get heading.
-                        ["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading,
-                        // Get pitch.
-                        ["pitch"] = mapView.Camera.Pitch + 90,
-                        // Get mapPoint.
-                        ["mapPoint"] = new JObject
+                        // Get position.
+                        ["position"] = new JObject
                         {
                             ["x"] = mapView.Camera.X,
                             ["y"] = mapView.Camera.Y,
-                            ["z"] = mapView.Camera.Z
-                        }
+                            ["z"] = mapView.Camera.Z,
+                            ["spatialReference"] = new JObject
+                            {
+                                ["wkid"] = mapView.Camera.SpatialReference?.Wkid
+                            }
+                        },
+                        // Get heading.
+                        ["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading,
+                        // Get pitch.
+                        ["tilt"] = mapView.Camera.Pitch + 90,
+                        ["roll"] = mapView.Camera.Roll
                     };
-
                     // Set camera in ArcGIS Earth.
                     ToolHelper.Utils.SetCamera(cameraJObject.ToString());
                 }
