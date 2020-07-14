@@ -14,6 +14,7 @@
 //
 // email: contracts@esri.com
 
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.IO;
@@ -22,12 +23,9 @@ namespace ArcGISEarth.AutoAPI.Utils
 {
     public class AutomationAPIHelper
     {
-        // To do:
-        // 1. Layer and Layers
-        // 2. Import workspace
         private const string TARGET_OPERATIONALLAYERS = "OperationalLayers";
 
-        private const string TARGET_BASEMAPS = "Basemaps";
+        private const string TARGET_BASEMAPS = "BasemapLayers";
 
         private const string TARGET_ELEVATIONLAYERS = "ElevationLayers";
 
@@ -143,10 +141,10 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var request = new RestRequest(_layerRequestUrl, Method.DELETE);
-                request.AddParameter("undefind", _layerRequestUrl);
+                string layerIdUrl = $"{_layerRequestUrl}/{layerId}";
+                var request = new RestRequest(layerIdUrl, Method.DELETE);
+                request.AddParameter("undefind", layerIdUrl);
                 request.AddHeader("accept", "*/*");
-                request.AddParameter("undefind", layerId, ParameterType.RequestBody);
                 IRestResponse response = _client.Execute(request);
                 return response.Content;
             }
@@ -156,10 +154,12 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public string ClearLayers(string tartget)
+        public string ClearLayers(string inputJsonStr)
         {
             try
             {
+                JObject jobject = JObject.Parse(inputJsonStr);
+                string tartget = jobject["target"].ToString();
                 RestRequest request = null;
                 if (tartget.Equals(TARGET_OPERATIONALLAYERS, StringComparison.OrdinalIgnoreCase))
                 {
@@ -175,7 +175,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 }
                 if (request == null)
                 {
-                    throw new Exception("Please type correct target string: such as OperationalLayers,Basemaps or ElevationLayers");
+                    throw new Exception("Please type correct string");
                 }
                 request.AddParameter("undefind", _snapshotRequestUrl);
                 request.AddHeader("accept", "*/*");
@@ -197,14 +197,21 @@ namespace ArcGISEarth.AutoAPI.Utils
                 request.AddHeader("accept", "*/*");
                 request.AddHeader("Content-Type", "image/jpeg");
                 IRestResponse response = _client.Execute(request);
-                BytesToImage(response.RawBytes, imagePath);
-                if (File.Exists(imagePath))
+                var ext = Path.GetExtension(imagePath);
+                if (File.Exists(imagePath) && ext.Equals("jpg", StringComparison.OrdinalIgnoreCase) ||
+                    ext.Equals("jpeg", StringComparison.OrdinalIgnoreCase))
                 {
+                    using (var imageFile = new FileStream(imagePath, FileMode.Create))
+                    {
+                        byte[] bytes = response.RawBytes;
+                        imageFile.Write(bytes, 0, bytes.Length);
+                        imageFile.Flush();
+                    }
                     return "Save snapshot successful!";
                 }
                 else
                 {
-                    return "Save snapshot Failed!";
+                    return "Save snapshot Failed, Please type correct file path!";
                 }
             }
             catch (Exception ex)
@@ -260,15 +267,6 @@ namespace ArcGISEarth.AutoAPI.Utils
             {
                 return ex.Message;
             }
-        }
-
-        private void BytesToImage(byte[] bytes, string imagePath)
-        {
-            using (var imageFile = new FileStream(imagePath, FileMode.Create))
-            {
-                imageFile.Write(bytes, 0, bytes.Length);
-                imageFile.Flush();
-            }
-        }
+        }       
     }
 }

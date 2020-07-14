@@ -20,7 +20,7 @@ SetCamera
 
 ------------------------------------
 
-Set
+SetFlight
 {
   "camera": {
     "position": {
@@ -35,7 +35,7 @@ Set
     "tilt": 0,
     "roll": 0
   },
-  "duration": 0
+  "duration": 2
 }
 
 ------------------------------------
