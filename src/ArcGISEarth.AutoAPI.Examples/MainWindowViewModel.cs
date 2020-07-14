@@ -23,17 +23,18 @@ namespace ArcGISEarth.AutoAPI.Examples
         // UI function type
         GetCamera,
         SetCamera,
-        FlyTo,
+        SetFlight,
         AddLayer,
-        Removelayer,
-        GetSnapshot,
-        GetLayerLoadStatus,
+        GetLayer,
+        RemoveLayer,
+        ClearLayers,
         GetWorkspace,
-        ImportWorkspace,
-        DeleteWorkspace,
-        Help,
+        SetWorkspace,
+        ClearWorkspace,
+        GetSnapshot,
         ClearInputputBox,
-        ClearOutputBox
+        ClearOutputBox,
+        Help
     }
 
     internal class FunctionTypeCommand : ICommand
@@ -66,7 +67,7 @@ namespace ArcGISEarth.AutoAPI.Examples
 
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;        
+        public event PropertyChangedEventHandler PropertyChanged;
         private AutomationAPIHelper _helper;
 
         // InputBox text.
@@ -93,18 +94,18 @@ namespace ArcGISEarth.AutoAPI.Examples
             }
         }
 
-        // Function command.
-        public ICommand ConnectEarthCommand { get; private set; }
+        // Function command.        
         public ICommand GetCameraCommand { get; private set; }
         public ICommand SetCameraCommand { get; private set; }
-        public ICommand FlyToCommand { get; private set; }
-        public ICommand GetLayerLoadStatusCommand { get; private set; }
+        public ICommand SetFlightCommand { get; private set; }
         public ICommand AddLayerCommand { get; private set; }
+        public ICommand GetLayerCommand { get; private set; }
         public ICommand RemoveLayerCommand { get; private set; }
-        public ICommand GetSnapshotCommand { get; private set; }
+        public ICommand ClearLayersCommand { get; private set; }
         public ICommand GetWorkspaceCommand { get; private set; }
-        public ICommand ImportWorkspaceCommand { get; private set; }
-        public ICommand DeleteWorkspaceCommand { get; private set; }
+        public ICommand SetWorkspaceCommand { get; private set; }
+        public ICommand ClearWorkspaceCommand { get; private set; }
+        public ICommand GetSnapshotCommand { get; private set; }
         public ICommand ClearInputBoxCommand { get; private set; }
         public ICommand ClearOutputBoxCommand { get; private set; }
         public ICommand HelpCommand { get; private set; }
@@ -117,17 +118,18 @@ namespace ArcGISEarth.AutoAPI.Examples
             OutputString = "";
             GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
             SetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetCamera));
-            FlyToCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.FlyTo));
-            GetLayerLoadStatusCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetLayerLoadStatus));
+            SetFlightCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetFlight));
             AddLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.AddLayer));
-            RemoveLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Removelayer));
-            GetSnapshotCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetSnapshot));
+            GetLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetLayer));
+            RemoveLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.RemoveLayer));
+            ClearLayersCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearLayers));
             GetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetWorkspace));
-            ImportWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ImportWorkspace));
-            DeleteWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.DeleteWorkspace));
-            HelpCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Help));
+            SetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetWorkspace));
+            ClearWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearWorkspace));
+            GetSnapshotCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetSnapshot));
             ClearInputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearInputputBox));
             ClearOutputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearOutputBox));
+            HelpCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Help));
         }
 
         private void ExecuteFuction(FunctionType functionType)
@@ -146,30 +148,30 @@ namespace ArcGISEarth.AutoAPI.Examples
                         OutputString = _helper.GetCamera();
                         break;
                     }
-                case FunctionType.FlyTo:
+                case FunctionType.SetFlight:
                     {
-                        OutputString = _helper.FlyTo(InputString);
-                        break;
-                    }
-                case FunctionType.GetLayerLoadStatus:
-                    {
-                        // OutputString = _utils.GetLayerLoadStatus(InputString);
+                        OutputString = _helper.SetFlight(InputString);
                         break;
                     }
                 case FunctionType.AddLayer:
                     {
+                        OutputString = _helper.AddLayer(InputString);
+                        break;
+                    }
+                case FunctionType.GetLayer:
+                    {
 
-                        // OutputString = _utils.AddLayer(InputString);
+                        OutputString = _helper.GetLayer(InputString);
                         break;
                     }
-                case FunctionType.Removelayer:
+                case FunctionType.RemoveLayer:
                     {
-                        // OutputString = _utils.RemoveLayer(InputString);
+                        OutputString = _helper.RemoveLayer(InputString);
                         break;
                     }
-                case FunctionType.GetSnapshot:
+                case FunctionType.ClearLayers:
                     {
-                        OutputString = _helper.GetSnapshot(InputString);
+                        OutputString = _helper.ClearLayers(InputString);
                         break;
                     }
                 case FunctionType.GetWorkspace:
@@ -177,14 +179,19 @@ namespace ArcGISEarth.AutoAPI.Examples
                         OutputString = _helper.GetWorkspace();
                         break;
                     }
-                case FunctionType.ImportWorkspace:
+                case FunctionType.SetWorkspace:
                     {
-                        OutputString = _helper.ImportWorkspace(InputString);
+                        OutputString = _helper.SetWorkspace(InputString);
                         break;
                     }
-                case FunctionType.DeleteWorkspace:
+                case FunctionType.ClearWorkspace:
                     {
-                        OutputString = _helper.DeleteWorkspace();
+                        OutputString = _helper.ClearWorkspace();
+                        break;
+                    }
+                case FunctionType.GetSnapshot:
+                    {
+                        OutputString = _helper.GetSnapshot(InputString);
                         break;
                     }
 

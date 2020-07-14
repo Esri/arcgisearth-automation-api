@@ -1,25 +1,51 @@
-﻿using Newtonsoft.Json.Linq;
+﻿// COPYRIGHT © 2019 ESRI
+//
+// TRADE SECRETS: ESRI PROPRIETARY AND CONFIDENTIAL
+// Unpublished material - all rights reserved under the
+// Copyright Laws of the United States and applicable international
+// laws, treaties, and conventions.
+//
+// For additional information, contact:
+// Environmental Systems Research Institute, Inc.
+// Attn: Contracts and Legal Services Department
+// 380 New York Street
+// Redlands, California, 92373
+// USA
+//
+// email: contracts@esri.com
+
 using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArcGISEarth.AutoAPI.Utils
 {
     public class AutomationAPIHelper
     {
-        private RestClient _client = null;
+        // To do:
+        // 1. Layer and Layers
+        // 2. Import workspace
+        private const string TARGET_OPERATIONALLAYERS = "OperationalLayers";
+
+        private const string TARGET_BASEMAPS = "Basemaps";
+
+        private const string TARGET_ELEVATIONLAYERS = "ElevationLayers";
 
         private const string API_URL = "http://localhost:8000/api";
-        private string _camera_request_url = $"{API_URL}/Camera";
-        private string _flight_request_url = $"{API_URL}/Flight";
-        private string _snapshot_request_url = $"{API_URL}/Snapshot";
-        private string _workspace_request_url = $"{API_URL}/Workspace";
+
+        private string _cameraRequestUrl = $"{API_URL}/Camera";
+
+        private string _flightRequestUrl = $"{API_URL}/Flight";
+
+        private string _layerRequestUrl = $"{API_URL}/Layer";
+
+        private string _layersRequestUrl = $"{API_URL}/Layers";
+
+        private string _workspaceRequestUrl = $"{API_URL}/Workspace";
+
+        private string _snapshotRequestUrl = $"{API_URL}/Snapshot";
+
+        private RestClient _client = null;
 
         public AutomationAPIHelper()
         {
@@ -28,88 +54,216 @@ namespace ArcGISEarth.AutoAPI.Utils
 
         public string GetCamera()
         {
-            var request = new RestRequest(_camera_request_url, Method.GET);
-            request.AddParameter("undefind", _camera_request_url);
-            request.AddHeader("accept", "*/*");
-            IRestResponse response = _client.Execute(request);
-            return response.Content;
+            try
+            {
+                var request = new RestRequest(_cameraRequestUrl, Method.GET);
+                request.AddParameter("undefind", _cameraRequestUrl);
+                request.AddHeader("accept", "*/*");
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public string SetCamera(string inputJsonStr)
         {
-            var request = new RestRequest(_camera_request_url, Method.PUT);
-            request.AddParameter("undefind", _camera_request_url);
-            request.AddHeader("accept", "*/*");
-            request.AddHeader("Content-Type", "application/json");
-            request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
-            IRestResponse response = _client.Execute(request);
-            return response.Content;
+            try
+            {
+                var request = new RestRequest(_cameraRequestUrl, Method.PUT);
+                request.AddParameter("undefind", _cameraRequestUrl);
+                request.AddHeader("accept", "*/*");
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
-        public string FlyTo(string inputJsonStr)
+        public string SetFlight(string inputJsonStr)
         {
-            var request = new RestRequest(_flight_request_url, Method.POST);
-            request.AddParameter("undefind", _flight_request_url);
-            request.AddHeader("accept", "*/*");
-            request.AddHeader("Content-Type", "application/json");
-            request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
-            IRestResponse response = _client.Execute(request);
-            return response.Content;
+            try
+            {
+                var request = new RestRequest(_flightRequestUrl, Method.POST);
+                request.AddParameter("undefind", _flightRequestUrl);
+                request.AddHeader("accept", "*/*");
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
-        // 1. To Do : Layer
-        // 2. Save image
+        public string AddLayer(string inputJsonStr)
+        {
+            try
+            {
+                var request = new RestRequest(_layerRequestUrl, Method.POST);
+                request.AddParameter("undefind", _layerRequestUrl);
+                request.AddHeader("accept", "*/*");
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
 
+        public string GetLayer(string layerId)
+        {
+            try
+            {
+                var layerIdUrl = $"{_layerRequestUrl}/{layerId}";
+                var request = new RestRequest(layerIdUrl, Method.GET);
+                request.AddParameter("undefind", layerIdUrl);
+                request.AddHeader("accept", "*/*");
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string RemoveLayer(string layerId)
+        {
+            try
+            {
+                var request = new RestRequest(_layerRequestUrl, Method.DELETE);
+                request.AddParameter("undefind", _layerRequestUrl);
+                request.AddHeader("accept", "*/*");
+                request.AddParameter("undefind", layerId, ParameterType.RequestBody);
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string ClearLayers(string tartget)
+        {
+            try
+            {
+                RestRequest request = null;
+                if (tartget.Equals(TARGET_OPERATIONALLAYERS, StringComparison.OrdinalIgnoreCase))
+                {
+                    request = new RestRequest($"{_layersRequestUrl}/{TARGET_OPERATIONALLAYERS}", Method.DELETE);
+                }
+                if (tartget.Equals(TARGET_BASEMAPS, StringComparison.OrdinalIgnoreCase))
+                {
+                    request = new RestRequest($"{_layersRequestUrl}/{TARGET_BASEMAPS}", Method.DELETE);
+                }
+                if (tartget.Equals(TARGET_ELEVATIONLAYERS, StringComparison.OrdinalIgnoreCase))
+                {
+                    request = new RestRequest($"{_layersRequestUrl}/{TARGET_ELEVATIONLAYERS}", Method.DELETE);
+                }
+                if (request == null)
+                {
+                    throw new Exception("Please type correct target string: such as OperationalLayers,Basemaps or ElevationLayers");
+                }
+                request.AddParameter("undefind", _snapshotRequestUrl);
+                request.AddHeader("accept", "*/*");
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
 
         public string GetSnapshot(string imagePath)
         {
-            var request = new RestRequest(_snapshot_request_url, Method.GET);
-            request.AddParameter("undefind", _snapshot_request_url);
-            request.AddHeader("accept", "*/*");
-            request.AddHeader("Content-Type", "image/jpeg");
-            IRestResponse response = _client.Execute(request);
-            StringToImage(response.Content, imagePath);           
-            if (File.Exists(imagePath))
+            try
             {
-                return "Save snapshot successful!";
+                var request = new RestRequest(_snapshotRequestUrl, Method.GET);
+                request.AddParameter("undefind", _snapshotRequestUrl);
+                request.AddHeader("accept", "*/*");
+                request.AddHeader("Content-Type", "image/jpeg");
+                IRestResponse response = _client.Execute(request);
+                BytesToImage(response.RawBytes, imagePath);
+                if (File.Exists(imagePath))
+                {
+                    return "Save snapshot successful!";
+                }
+                else
+                {
+                    return "Save snapshot Failed!";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return "Save snapshot Failed!";
+                return ex.Message;
             }
         }
 
         public string GetWorkspace()
         {
-            var request = new RestRequest(_workspace_request_url, Method.GET);
-            request.AddParameter("undefind", _workspace_request_url);
-            request.AddHeader("accept", "*/*");
-            request.AddHeader("Content-Type", "image/jpeg");
-            IRestResponse response = _client.Execute(request);
-            return response.Content;
+            try
+            {
+                var request = new RestRequest(_workspaceRequestUrl, Method.GET);
+                request.AddParameter("undefind", _workspaceRequestUrl);
+                request.AddHeader("accept", "*/*");
+                request.AddHeader("Content-Type", "image/jpeg");
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
-        public string ImportWorkspace(string inputJsonStr)
+        public string SetWorkspace(string inputJsonStr)
         {
-            var request = new RestRequest(_workspace_request_url, Method.PUT);
-            request.AddParameter("undefind", _workspace_request_url);
-            request.AddHeader("accept", "*/*");
-            request.AddHeader("Content-Type", "application/json");
-            request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
-            IRestResponse response = _client.Execute(request);
-            return response.Content;
+            try
+            {
+                var request = new RestRequest(_workspaceRequestUrl, Method.PUT);
+                request.AddParameter("undefind", _workspaceRequestUrl);
+                request.AddHeader("accept", "*/*");
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
-        public string DeleteWorkspace()
+        public string ClearWorkspace()
         {
-            var request = new RestRequest(_workspace_request_url, Method.DELETE);
-            IRestResponse response = _client.Execute(request);
-            return response.Content;
+            try
+            {
+                var request = new RestRequest(_workspaceRequestUrl, Method.DELETE);
+                IRestResponse response = _client.Execute(request);
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
-        private void StringToImage(string inputString, string imagePath)
+        private void BytesToImage(byte[] bytes, string imagePath)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(inputString);
             using (var imageFile = new FileStream(imagePath, FileMode.Create))
             {
                 imageFile.Write(bytes, 0, bytes.Length);
