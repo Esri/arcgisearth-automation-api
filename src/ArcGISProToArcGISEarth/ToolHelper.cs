@@ -26,15 +26,21 @@ namespace ToArcGISEarth
     {
         // ArcGIS Earth automation api utils.
         public static AutomationAPIHelper Utils { get; } = new AutomationAPIHelper();
-      
-        // Logging id and it's infomation when adding layer or elevation source. 
+
+        // Logging id and it's infomation when adding layer or elevation source.
         public static Dictionary<string, string[]> IdInfoDictionary { get; set; } = new Dictionary<string, string[]>();
 
         // Logging the status of ArcGIS Earth running.
-        public static bool IsArcGISEarthRunning { get { return Process.GetProcessesByName("ArcGISEarth").Length > 0; } }
+        public static bool IsArcGISEarthRunning
+        {
+            get { return Process.GetProcessesByName("ArcGISEarth").Length > 0; }
+        }
 
         // Logging the status of ArcGIS Pro global scene opening.
-        public static bool IsArcGISProGlobalSceneOpening { get { return MapView.Active?.Map?.IsScene == true && MapView.Active?.Map.DefaultViewingMode == MapViewingMode.SceneGlobal; } }
+        public static bool IsArcGISProGlobalSceneOpening
+        {
+            get { return MapView.Active?.Map?.IsScene == true && MapView.Active?.Map.DefaultViewingMode == MapViewingMode.SceneGlobal; }
+        }
 
         public static string GetDataSource(CIMDataConnection dataConnection)
         {
@@ -164,5 +170,3 @@ namespace ToArcGISEarth
         }
     }
 }
-
-

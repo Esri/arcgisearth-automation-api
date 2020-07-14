@@ -11,7 +11,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Threading.Tasks;
 using ArcGIS.Desktop.Framework.Contracts;
 using Microsoft.Win32;
 

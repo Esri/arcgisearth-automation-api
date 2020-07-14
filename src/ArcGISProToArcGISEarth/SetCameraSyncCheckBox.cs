@@ -15,9 +15,7 @@ using ArcGIS.Core.CIM;
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 
 namespace ToArcGISEarth
 {

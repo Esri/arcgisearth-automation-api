@@ -19,7 +19,7 @@ namespace ArcGISEarth.AutoAPI.Examples
     {
         public MainWindow()
         {
-            InitializeComponent();           
+            InitializeComponent();
         }
     }
 }

@@ -11,10 +11,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using ArcGISEarth.AutoAPI.Utils;
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
-using ArcGISEarth.AutoAPI.Utils;
 
 namespace ArcGISEarth.AutoAPI.Examples
 {
@@ -36,6 +36,7 @@ namespace ArcGISEarth.AutoAPI.Examples
         ClearOutputBox,
         Help
     }
+
 
     internal class FunctionTypeCommand : ICommand
     {
@@ -64,14 +65,15 @@ namespace ArcGISEarth.AutoAPI.Examples
             _execute?.Invoke(parameter);
         }
     }
-
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         private AutomationAPIHelper _helper;
 
         // InputBox text.
         private string inputString;
+
         public string InputString
         {
             get { return inputString; }
@@ -84,6 +86,7 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         // OutputBox text.
         private string outputString;
+
         public string OutputString
         {
             get { return outputString; }
@@ -94,20 +97,33 @@ namespace ArcGISEarth.AutoAPI.Examples
             }
         }
 
-        // Function command.        
+        // Function command.
         public ICommand GetCameraCommand { get; private set; }
+
         public ICommand SetCameraCommand { get; private set; }
+
         public ICommand SetFlightCommand { get; private set; }
+
         public ICommand AddLayerCommand { get; private set; }
+
         public ICommand GetLayerCommand { get; private set; }
+
         public ICommand RemoveLayerCommand { get; private set; }
+
         public ICommand ClearLayersCommand { get; private set; }
+
         public ICommand GetWorkspaceCommand { get; private set; }
+
         public ICommand SetWorkspaceCommand { get; private set; }
+
         public ICommand ClearWorkspaceCommand { get; private set; }
+
         public ICommand GetSnapshotCommand { get; private set; }
+
         public ICommand ClearInputBoxCommand { get; private set; }
+
         public ICommand ClearOutputBoxCommand { get; private set; }
+
         public ICommand HelpCommand { get; private set; }
 
         public MainWindowViewModel()
