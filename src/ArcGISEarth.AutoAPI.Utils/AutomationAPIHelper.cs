@@ -42,10 +42,10 @@ namespace ArcGISEarth.AutoAPI.Utils
 
         private string _workspaceRequestUrl = $"{API_URL}/Workspace";
 
-        private string _snapshotRequestUrl = $"{API_URL}/Snapshot";        
+        private string _snapshotRequestUrl = $"{API_URL}/Snapshot";
 
         public AutomationAPIHelper()
-        {            
+        {
         }
 
         public string GetCamera()
@@ -193,22 +193,32 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                Uri uri = new Uri(imagePath);
+                var uri = new Uri(imagePath);
                 if (uri.IsAbsoluteUri && uri.IsFile)
                 {
-                    HttpWebRequest request = WebRequest.CreateHttp(_workspaceRequestUrl);
-                    request.Method = "GET";
-                    request.Accept = "*/*";
-                    var httpResponse = (HttpWebResponse)request.GetResponse();                    
-                    Stream st = httpResponse.GetResponseStream();
-                    using (FileStream file = new FileStream("file.bin", FileMode.Create, System.IO.FileAccess.Write))
+                    var ext = Path.GetExtension(imagePath);
+                    if (string.IsNullOrEmpty(ext))
                     {
-                        byte[] bytes = new byte[st.Length];
-                        st.Read(bytes, 0, (int)st.Length);
-                        file.Write(bytes, 0, bytes.Length);
-                        st.Close();
+                        imagePath += ".jpg";
                     }
-                    return "Save snapshot successful!";
+                    ext = Path.GetExtension(imagePath).ToLower();
+                    if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".tif" || ext == ".tiff")
+                    {
+                        HttpWebRequest request = WebRequest.CreateHttp(_snapshotRequestUrl);
+                        request.Method = "GET";
+                        request.Accept = "*/*";
+                        var httpResponse = (HttpWebResponse)request.GetResponse();
+                        using (Stream stream = httpResponse.GetResponseStream())
+                        {
+                            var image = Image.FromStream(stream);
+                            image.Save(imagePath);
+                            return "Save snapshot successful!";
+                        }
+                    }
+                    else
+                    {
+                        return "Save snapshot Failed, Please type correct image format!";
+                    }
                 }
                 else
                 {

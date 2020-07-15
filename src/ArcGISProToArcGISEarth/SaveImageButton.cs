@@ -50,7 +50,7 @@ namespace ToArcGISEarth
             // Set save file options.
             SaveFileDialog dialog = new SaveFileDialog
             {
-                Filter = "Jpeg Files|*.jpg",
+                Filter = "Jpeg Files|*.jpg|Png Files|*.png|Tiff Files|*.tif",
                 FileName = "ArcGIS Earth.jpg",
                 DefaultExt = "jpg",
                 OverwritePrompt = true,
