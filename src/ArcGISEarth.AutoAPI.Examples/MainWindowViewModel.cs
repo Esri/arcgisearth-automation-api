@@ -40,6 +40,7 @@ namespace ArcGISEarth.AutoAPI.Examples
     }
 
 
+
     internal class FunctionTypeCommand : ICommand
     {
         // Implement ICommand
@@ -74,7 +75,6 @@ namespace ArcGISEarth.AutoAPI.Examples
         private AutomationAPIHelper _helper;
 
         // API Url text
-
         private string apiUrl;
 
         public string APIUrl
@@ -86,7 +86,6 @@ namespace ArcGISEarth.AutoAPI.Examples
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(APIUrl)));
             }
         }
-
 
         // InputBox text.
         private string inputString;
@@ -116,7 +115,9 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         // Function command.
         public ICommand OKCommand { get; private set; }
+
         public ICommand ResetCommand { get; private set; }
+
         public ICommand GetCameraCommand { get; private set; }
 
         public ICommand SetCameraCommand { get; private set; }

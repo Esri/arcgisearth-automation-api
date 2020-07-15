@@ -15,7 +15,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +22,7 @@ using System.Threading.Tasks;
 namespace ArcGISEarth.AutoAPI.Utils
 {
     public class AutomationAPIHelper
-    {        
+    {
         private const string TARGET_OPERATIONALLAYERS = "operationalLayers";
 
         private const string TARGET_BASEMAPS = "baseMaps";
@@ -55,9 +54,10 @@ namespace ArcGISEarth.AutoAPI.Utils
                     UpdateRequestUrl(apiUrl);
                 }
             }
-        }       
+        }
 
-        HttpClient _httpClient = null;
+        private HttpClient _httpClient = null;
+
         public AutomationAPIHelper()
         {
             _httpClient = new HttpClient();
