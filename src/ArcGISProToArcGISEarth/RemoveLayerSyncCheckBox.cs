@@ -57,7 +57,7 @@ namespace ToArcGISEarth
             }
         }
 
-        private void RemoveLayerFromEarth(LayerEventsArgs args)
+        private async void RemoveLayerFromEarth(LayerEventsArgs args)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace ToArcGISEarth
                     {
                         JObject idJson = JObject.Parse(id);
                         string idString = idJson["id"].ToString();
-                        ToolHelper.Utils.RemoveLayer(idString);
+                        await ToolHelper.Utils.RemoveLayer(idString);
                         ToolHelper.IdInfoDictionary.Remove(id);
                     }
                 }

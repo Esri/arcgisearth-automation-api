@@ -45,7 +45,7 @@ namespace ToArcGISEarth
             }
         }
 
-        private void SaveImage()
+        private async void SaveImage()
         {
             // Set save file options.
             SaveFileDialog dialog = new SaveFileDialog
@@ -59,7 +59,7 @@ namespace ToArcGISEarth
             if (dialog.ShowDialog() == true)
             {
                 // Get screenshot from ArcGIS Earth.
-                ToolHelper.Utils.GetSnapshot(dialog.FileName);
+                await ToolHelper.Utils.GetSnapshot(dialog.FileName);
             }
         }
     }

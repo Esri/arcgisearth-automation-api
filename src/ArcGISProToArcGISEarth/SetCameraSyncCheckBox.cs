@@ -55,7 +55,7 @@ namespace ToArcGISEarth
             }
         }
 
-        private void SetCameraInEarth(MapViewCameraChangedEventArgs args)
+        private async void SetCameraInEarth(MapViewCameraChangedEventArgs args)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace ToArcGISEarth
                         ["roll"] = mapView.Camera.Roll
                     };
                     // Set camera in ArcGIS Earth.
-                    ToolHelper.Utils.SetCamera(cameraJObject.ToString());
+                    await ToolHelper.Utils.SetCamera(cameraJObject.ToString());
                 }
             }
             catch

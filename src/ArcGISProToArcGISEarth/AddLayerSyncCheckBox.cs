@@ -72,7 +72,7 @@ namespace ToArcGISEarth
                 {
                     foreach (var layer in layerList)
                     {
-                        QueuedTask.Run(() =>
+                        QueuedTask.Run(async () =>
                         {
                             // GetDataConnection method must be called within the lambda passed to QueuedTask.Run. 
                             CIMDataConnection dataConnection = layer.GetDataConnection();
@@ -106,7 +106,7 @@ namespace ToArcGISEarth
                                 };
                                 // Add layer to ArcGIS Earth.
                                 // Return layer id when use adding layer, whether it's succeed or failed.
-                                string id = ToolHelper.Utils.AddLayer(currentJson);
+                                string id = await ToolHelper.Utils.AddLayer(currentJson);
                                 if (!ToolHelper.IdInfoDictionary.Keys.Contains(id))
                                 {
                                     // Use IdInfoDictionary to save layer id and layer information.

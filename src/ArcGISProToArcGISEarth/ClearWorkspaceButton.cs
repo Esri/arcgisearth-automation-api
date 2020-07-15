@@ -48,10 +48,10 @@ namespace ToArcGISEarth
             }
         }
 
-        private void ClearAll()
+        private async void ClearAll()
         {
             // Clear ArcGIS Earth workspace.
-            ToolHelper.Utils.ClearWorkspace();
+            await ToolHelper.Utils.ClearWorkspace();
         }
     }
 }
