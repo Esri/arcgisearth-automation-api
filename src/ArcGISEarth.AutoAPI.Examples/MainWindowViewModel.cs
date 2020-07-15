@@ -39,8 +39,6 @@ namespace ArcGISEarth.AutoAPI.Examples
         Help
     }
 
-
-
     internal class FunctionTypeCommand : ICommand
     {
         // Implement ICommand

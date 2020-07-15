@@ -81,7 +81,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpContent putContent = ConverteToHttpContent(inputJsonStr);
+                HttpContent putContent = ConvertToHttpContent(inputJsonStr);
                 HttpResponseMessage responseMessage = await _httpClient.PutAsync(_cameraRequestUrl, putContent);
                 return await GetResponseContent(responseMessage);
             }
@@ -95,8 +95,8 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpContent putContent = ConverteToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await _httpClient.PostAsync(_flightRequestUrl, putContent);
+                HttpContent postContent = ConvertToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await _httpClient.PostAsync(_flightRequestUrl, postContent);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -109,8 +109,8 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpContent putContent = ConverteToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await _httpClient.PostAsync(_layerRequestUrl, putContent);
+                HttpContent postContent = ConvertToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await _httpClient.PostAsync(_layerRequestUrl, postContent);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -196,7 +196,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpContent putContent = ConverteToHttpContent(inputJsonStr);
+                HttpContent putContent = ConvertToHttpContent(inputJsonStr);
                 HttpResponseMessage responseMessage = await _httpClient.PutAsync(_workspaceRequestUrl, putContent);
                 return await GetResponseContent(responseMessage);
             }
@@ -259,7 +259,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        private HttpContent ConverteToHttpContent(string str)
+        private HttpContent ConvertToHttpContent(string str)
         {
             byte[] data = Encoding.UTF8.GetBytes(str);
             var byteArrayContent = new ByteArrayContent(data);
