@@ -16,7 +16,9 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ArcGISEarth.AutoAPI.Utils
 {
@@ -42,18 +44,19 @@ namespace ArcGISEarth.AutoAPI.Utils
 
         private string _snapshotRequestUrl = $"{API_URL}/Snapshot";
 
+        HttpClient _httpClient = null;
         public AutomationAPIHelper()
         {
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
         }
 
-        public string GetCamera()
+        public async Task<string> GetCamera()
         {
             try
             {
-                HttpWebRequest request = WebRequest.CreateHttp(_cameraRequestUrl);
-                request.Method = "GET";
-                request.Accept = "*/*";
-                return GetResponseContent(request);
+                HttpResponseMessage responseMessage = await _httpClient.GetAsync(_cameraRequestUrl);
+                return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
             {
@@ -61,19 +64,13 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public string SetCamera(string inputJsonStr)
+        public async Task<string> SetCamera(string inputJsonStr)
         {
             try
             {
-                HttpWebRequest request = WebRequest.CreateHttp(_cameraRequestUrl);
-                request.Method = "PUT";
-                request.Accept = "*/*";
-                request.ContentType = "application/json";
-                byte[] data = Encoding.UTF8.GetBytes(inputJsonStr);
-                request.ContentLength = data.Length;
-                request.GetRequestStream().Write(data, 0, data.Length);
-                request.GetRequestStream().Close();
-                return GetResponseContent(request);
+                HttpContent putContent = ConverteToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await _httpClient.PutAsync(_cameraRequestUrl, putContent);
+                return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
             {
@@ -81,19 +78,13 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public string SetFlight(string inputJsonStr)
+        public async Task<string> SetFlight(string inputJsonStr)
         {
             try
             {
-                HttpWebRequest request = WebRequest.CreateHttp(_flightRequestUrl);
-                request.Method = "POST";
-                request.Accept = "*/*";
-                request.ContentType = "application/json";
-                byte[] data = Encoding.UTF8.GetBytes(inputJsonStr);
-                request.ContentLength = data.Length;
-                request.GetRequestStream().Write(data, 0, data.Length);
-                request.GetRequestStream().Close();
-                return GetResponseContent(request);
+                HttpContent putContent = ConverteToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await _httpClient.PostAsync(_flightRequestUrl, putContent);
+                return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
             {
@@ -101,19 +92,13 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public string AddLayer(string inputJsonStr)
+        public async Task<string> AddLayer(string inputJsonStr)
         {
             try
             {
-                HttpWebRequest request = WebRequest.CreateHttp(_layerRequestUrl);
-                request.Method = "POST";
-                request.Accept = "*/*";
-                request.ContentType = "application/json";
-                byte[] data = Encoding.UTF8.GetBytes(inputJsonStr);
-                request.ContentLength = data.Length;
-                request.GetRequestStream().Write(data, 0, data.Length);
-                request.GetRequestStream().Close();
-                return GetResponseContent(request);
+                HttpContent putContent = ConverteToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await _httpClient.PostAsync(_layerRequestUrl, putContent);
+                return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
             {
@@ -121,15 +106,13 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public string GetLayer(string layerId)
+        public async Task<string> GetLayer(string layerId)
         {
             try
             {
                 var layerIdUrl = $"{_layerRequestUrl}/{layerId}";
-                HttpWebRequest request = WebRequest.CreateHttp(layerIdUrl);
-                request.Method = "GET";
-                request.Accept = "*/*";
-                return GetResponseContent(request);
+                HttpResponseMessage responseMessage = await _httpClient.GetAsync(layerIdUrl);
+                return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
             {
@@ -137,15 +120,13 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public string RemoveLayer(string layerId)
+        public async Task<string> RemoveLayer(string layerId)
         {
             try
             {
                 var layerIdUrl = $"{_layerRequestUrl}/{layerId}";
-                HttpWebRequest request = WebRequest.CreateHttp(layerIdUrl);
-                request.Method = "DELETE";
-                request.Accept = "*/*";
-                return GetResponseContent(request);
+                HttpResponseMessage responseMessage = await _httpClient.DeleteAsync(layerIdUrl);
+                return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
             {
@@ -153,7 +134,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public string ClearLayers(string inputJsonStr)
+        public async Task<string> ClearLayers(string inputJsonStr)
         {
             try
             {
@@ -176,10 +157,8 @@ namespace ArcGISEarth.AutoAPI.Utils
                 {
                     throw new Exception("Please type correct string");
                 }
-                HttpWebRequest request = WebRequest.CreateHttp(url);
-                request.Method = "DELETE";
-                request.Accept = "*/*";
-                return GetResponseContent(request);
+                HttpResponseMessage responseMessage = await _httpClient.DeleteAsync(url);
+                return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
             {
@@ -187,7 +166,47 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public string GetSnapshot(string imagePath)
+        public async Task<string> GetWorkspace()
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await _httpClient.GetAsync(_workspaceRequestUrl);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> SetWorkspace(string inputJsonStr)
+        {
+            try
+            {
+                HttpContent putContent = ConverteToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await _httpClient.PutAsync(_workspaceRequestUrl, putContent);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> ClearWorkspace()
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await _httpClient.DeleteAsync(_workspaceRequestUrl);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> GetSnapshot(string imagePath)
         {
             try
             {
@@ -202,16 +221,14 @@ namespace ArcGISEarth.AutoAPI.Utils
                     ext = Path.GetExtension(imagePath).ToLower();
                     if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".tif" || ext == ".tiff")
                     {
-                        HttpWebRequest request = WebRequest.CreateHttp(_snapshotRequestUrl);
-                        request.Method = "GET";
-                        request.Accept = "*/*";
-                        var httpResponse = (HttpWebResponse)request.GetResponse();
-                        using (Stream stream = httpResponse.GetResponseStream())
+                        HttpResponseMessage responseMessage = await _httpClient.GetAsync(_snapshotRequestUrl);
+                        HttpContent content = responseMessage.Content;                        
+                        using (Stream stream = await content.ReadAsStreamAsync())
                         {
                             var image = Image.FromStream(stream);
                             image.Save(imagePath);
-                            return "Save snapshot successful!";
-                        }
+                        }                                             
+                        return "Save snapshot successful!";
                     }
                     else
                     {
@@ -229,64 +246,18 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public string GetWorkspace()
+        private HttpContent ConverteToHttpContent(string str)
         {
-            try
-            {
-                HttpWebRequest request = WebRequest.CreateHttp(_workspaceRequestUrl);
-                request.Method = "GET";
-                request.Accept = "*/*";
-                return GetResponseContent(request);
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            byte[] data = Encoding.UTF8.GetBytes(str);
+            var byteArrayContent = new ByteArrayContent(data);
+            byteArrayContent.Headers.Add("Content-Type", "application/json");
+            return byteArrayContent;
         }
 
-        public string SetWorkspace(string inputJsonStr)
+        private async Task<string> GetResponseContent(HttpResponseMessage responseMessage)
         {
-            try
-            {
-                HttpWebRequest request = WebRequest.CreateHttp(_workspaceRequestUrl);
-                request.Method = "PUT";
-                request.Accept = "*/*";
-                request.ContentType = "application/json";
-                byte[] data = Encoding.UTF8.GetBytes(inputJsonStr);
-                request.ContentLength = data.Length;
-                request.GetRequestStream().Write(data, 0, data.Length);
-                request.GetRequestStream().Close();
-                return GetResponseContent(request);
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-
-        public string ClearWorkspace()
-        {
-            try
-            {
-                HttpWebRequest request = WebRequest.CreateHttp(_workspaceRequestUrl);
-                request.Method = "DELETE";
-                request.Accept = "*/*";
-                return GetResponseContent(request);
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-
-        private string GetResponseContent(HttpWebRequest request)
-        {
-            var httpResponse = (HttpWebResponse)request.GetResponse();
-            using (Stream webStream = httpResponse.GetResponseStream())
-            {
-                var responseReader = new StreamReader(webStream);
-                return responseReader.ReadToEnd();
-            }
+            HttpContent content = responseMessage.Content;
+            return await content.ReadAsStringAsync();
         }
     }
 }

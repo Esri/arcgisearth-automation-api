@@ -148,65 +148,64 @@ namespace ArcGISEarth.AutoAPI.Examples
             HelpCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Help));
         }
 
-        private void ExecuteFuction(FunctionType functionType)
+        private async void ExecuteFuction(FunctionType functionType)
         {
             switch (functionType)
             {
                 // More about input string syntax, please refer to "examples.txt".
-
-                case FunctionType.SetCamera:
-                    {
-                        OutputString = _helper.SetCamera(InputString);
-                        break;
-                    }
                 case FunctionType.GetCamera:
                     {
-                        OutputString = _helper.GetCamera();
+                        OutputString = await _helper.GetCamera();
+                        break;
+                    }
+                case FunctionType.SetCamera:
+                    {
+                        OutputString = await _helper.SetCamera(InputString);
                         break;
                     }
                 case FunctionType.SetFlight:
                     {
-                        OutputString = _helper.SetFlight(InputString);
+                        OutputString = await _helper.SetFlight(InputString);
                         break;
                     }
                 case FunctionType.AddLayer:
                     {
-                        OutputString = _helper.AddLayer(InputString);
+                        OutputString = await _helper.AddLayer(InputString);
                         break;
                     }
                 case FunctionType.GetLayer:
                     {
-                        OutputString = _helper.GetLayer(InputString);
+                        OutputString = await _helper.GetLayer(InputString);
                         break;
                     }
                 case FunctionType.RemoveLayer:
                     {
-                        OutputString = _helper.RemoveLayer(InputString);
+                        OutputString = await _helper.RemoveLayer(InputString);
                         break;
                     }
                 case FunctionType.ClearLayers:
                     {
-                        OutputString = _helper.ClearLayers(InputString);
+                        OutputString = await _helper.ClearLayers(InputString);
                         break;
                     }
                 case FunctionType.GetWorkspace:
                     {
-                        OutputString = _helper.GetWorkspace();
+                        OutputString = await _helper.GetWorkspace();
                         break;
                     }
                 case FunctionType.SetWorkspace:
                     {
-                        OutputString = _helper.SetWorkspace(InputString);
+                        OutputString = await _helper.SetWorkspace(InputString);
                         break;
                     }
                 case FunctionType.ClearWorkspace:
                     {
-                        OutputString = _helper.ClearWorkspace();
+                        OutputString = await _helper.ClearWorkspace();
                         break;
                     }
                 case FunctionType.GetSnapshot:
                     {
-                        OutputString = _helper.GetSnapshot(InputString);
+                        OutputString = await _helper.GetSnapshot(InputString);
                         break;
                     }
                 case FunctionType.ClearInputputBox:
