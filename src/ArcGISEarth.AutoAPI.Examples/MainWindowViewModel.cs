@@ -21,7 +21,6 @@ namespace ArcGISEarth.AutoAPI.Examples
     internal enum FunctionType
     {
         // UI function type
-        OK,
         Reset,
         GetCamera,
         SetCamera,
@@ -72,46 +71,55 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         private AutomationAPIHelper _helper;
 
-        // API Url text
-        private string apiUrl;
+        private string _apiUrl;
 
         public string APIUrl
         {
-            get { return apiUrl; }
+            get { return _apiUrl; }
             set
             {
-                apiUrl = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(APIUrl)));
+                if (_apiUrl != value)
+                {
+                    _apiUrl = value;
+                    if (_helper != null)
+                    {
+                        _helper.APIUrl = value;
+                    }
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(APIUrl)));
+                }
             }
         }
 
-        // InputBox text.
-        private string inputString;
+        private string _inputString;
 
         public string InputString
         {
-            get { return inputString; }
+            get { return _inputString; }
             set
             {
-                inputString = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InputString)));
+                if (_inputString != value)
+                {
+                    _inputString = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InputString)));
+                }
             }
         }
 
-        // OutputBox text.
-        private string outputString;
+        private string _outputString;
 
         public string OutputString
         {
-            get { return outputString; }
+            get { return _outputString; }
             set
             {
-                outputString = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("OutputString"));
+                if (_outputString != value)
+                {
+                    _outputString = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OutputString)));
+                }
             }
         }
 
-        // Function command.
         public ICommand OKCommand { get; private set; }
 
         public ICommand ResetCommand { get; private set; }
@@ -144,18 +152,15 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         public ICommand HelpCommand { get; private set; }
 
-        // Replace with your own api url setting
         private const string DEFAULT_API_URL = "http://localhost:8000/api";
 
         public MainWindowViewModel()
         {
             // Initialize variable and property.            
-            _helper = new AutomationAPIHelper();
-            _helper.APIUrl = DEFAULT_API_URL;
+            _helper = new AutomationAPIHelper();            
             APIUrl = DEFAULT_API_URL;
             InputString = string.Empty;
             OutputString = string.Empty;
-            OKCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.OK));
             ResetCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Reset));
             GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
             SetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetCamera));
@@ -177,15 +182,9 @@ namespace ArcGISEarth.AutoAPI.Examples
         {
             switch (functionType)
             {
-                case FunctionType.OK:
-                    {
-                        _helper.APIUrl = APIUrl;
-                        break;
-                    }
                 case FunctionType.Reset:
                     {
-                        APIUrl = DEFAULT_API_URL;
-                        _helper.APIUrl = DEFAULT_API_URL;
+                        APIUrl = DEFAULT_API_URL;                        
                         break;
                     }
                 // More about input string syntax, please refer to "examples.txt".

@@ -29,46 +29,15 @@ namespace ArcGISEarth.AutoAPI.Utils
 
         private const string TARGET_ELEVATIONLAYERS = "elevationLayers";
 
-        private string _cameraRequestUrl = null;
-
-        private string _flightRequestUrl = null;
-
-        private string _layerRequestUrl = null;
-
-        private string _layersRequestUrl = null;
-
-        private string _workspaceRequestUrl = null;
-
-        private string _snapshotRequestUrl = null;
-
-        private string apiUrl;
-
-        public string APIUrl
-        {
-            get { return apiUrl; }
-            set
-            {
-                if (apiUrl != value)
-                {
-                    apiUrl = value;
-                    UpdateRequestUrl(apiUrl);
-                }
-            }
-        }
-
-        private HttpClient _httpClient = null;
-
-        public AutomationAPIHelper()
-        {
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Add("Accept", "*/*");
-        }
+        public string APIUrl { get; set; }
 
         public async Task<string> GetCamera()
         {
             try
             {
-                HttpResponseMessage responseMessage = await _httpClient.GetAsync(_cameraRequestUrl);
+                string cameraRequestUrl = $"{APIUrl}/Camera";
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(cameraRequestUrl);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -81,8 +50,10 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpContent putContent = ConvertToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await _httpClient.PutAsync(_cameraRequestUrl, putContent);
+                string cameraRequestUrl = $"{APIUrl}/Camera";
+                HttpClient httpClient = new HttpClient();
+                HttpContent putContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PutAsync(cameraRequestUrl, putContent);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -95,8 +66,10 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpContent postContent = ConvertToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await _httpClient.PostAsync(_flightRequestUrl, postContent);
+                string flightRequestUrl = $"{APIUrl}/Flight";
+                HttpClient httpClient = new HttpClient();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(flightRequestUrl, postContent);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -109,8 +82,10 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpContent postContent = ConvertToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await _httpClient.PostAsync(_layerRequestUrl, postContent);
+                string layerRequestUrl = $"{APIUrl}/Layer";
+                HttpClient httpClient = new HttpClient();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(layerRequestUrl, postContent);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -123,8 +98,10 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var layerIdUrl = $"{_layerRequestUrl}/{layerId}";
-                HttpResponseMessage responseMessage = await _httpClient.GetAsync(layerIdUrl);
+                string layerRequestUrl = $"{APIUrl}/Layer";
+                HttpClient httpClient = new HttpClient();
+                var layerIdUrl = $"{layerRequestUrl}/{layerId}";
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(layerIdUrl);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -137,8 +114,10 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var layerIdUrl = $"{_layerRequestUrl}/{layerId}";
-                HttpResponseMessage responseMessage = await _httpClient.DeleteAsync(layerIdUrl);
+                string layerRequestUrl = $"{APIUrl}/Layer";
+                HttpClient httpClient = new HttpClient();
+                var layerIdUrl = $"{layerRequestUrl}/{layerId}";
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(layerIdUrl);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -151,26 +130,28 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
+                string layersRequestUrl = $"{APIUrl}/Layers";
                 JObject jobject = JObject.Parse(inputJsonStr);
                 string tartget = jobject["target"].ToString();
                 string url = null;
                 if (tartget.Equals(TARGET_OPERATIONALLAYERS, StringComparison.OrdinalIgnoreCase))
                 {
-                    url = $"{_layersRequestUrl}/{TARGET_OPERATIONALLAYERS}";
+                    url = $"{layersRequestUrl}/{TARGET_OPERATIONALLAYERS}";
                 }
                 if (tartget.Equals(TARGET_BASEMAPS, StringComparison.OrdinalIgnoreCase))
                 {
-                    url = $"{_layersRequestUrl}/{TARGET_BASEMAPS}";
+                    url = $"{layersRequestUrl}/{TARGET_BASEMAPS}";
                 }
                 if (tartget.Equals(TARGET_ELEVATIONLAYERS, StringComparison.OrdinalIgnoreCase))
                 {
-                    url = $"{_layersRequestUrl}/{TARGET_ELEVATIONLAYERS}";
+                    url = $"{layersRequestUrl}/{TARGET_ELEVATIONLAYERS}";
                 }
                 if (url == null)
                 {
-                    throw new Exception("Please type correct string");
+                    throw new Exception("Please type correct string.");
                 }
-                HttpResponseMessage responseMessage = await _httpClient.DeleteAsync(url);
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(url);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -183,7 +164,9 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpResponseMessage responseMessage = await _httpClient.GetAsync(_workspaceRequestUrl);
+                string workspaceRequestUrl = $"{APIUrl}/Workspace";
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(workspaceRequestUrl);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -196,8 +179,10 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpContent putContent = ConvertToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await _httpClient.PutAsync(_workspaceRequestUrl, putContent);
+                string workspaceRequestUrl = $"{APIUrl}/Workspace";
+                HttpClient httpClient = new HttpClient();
+                HttpContent putContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PutAsync(workspaceRequestUrl, putContent);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -210,7 +195,9 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                HttpResponseMessage responseMessage = await _httpClient.DeleteAsync(_workspaceRequestUrl);
+                string workspaceRequestUrl = $"{APIUrl}/Workspace";
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workspaceRequestUrl);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -223,6 +210,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
+                string snapshotRequestUrl = $"{APIUrl}/Snapshot";
                 var uri = new Uri(imagePath);
                 if (uri.IsAbsoluteUri && uri.IsFile)
                 {
@@ -234,7 +222,8 @@ namespace ArcGISEarth.AutoAPI.Utils
                     ext = Path.GetExtension(imagePath).ToLower();
                     if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".tif" || ext == ".tiff")
                     {
-                        HttpResponseMessage responseMessage = await _httpClient.GetAsync(_snapshotRequestUrl);
+                        HttpClient httpClient = new HttpClient();
+                        HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl);
                         HttpContent content = responseMessage.Content;
                         using (Stream stream = await content.ReadAsStreamAsync())
                         {
@@ -245,12 +234,12 @@ namespace ArcGISEarth.AutoAPI.Utils
                     }
                     else
                     {
-                        return "Save snapshot Failed, Please type correct image format!";
+                        return "Save snapshot failed, please type correct image format!";
                     }
                 }
                 else
                 {
-                    return "Save snapshot Failed, Please type correct file path!";
+                    return "Save snapshot failed, please type correct file path!";
                 }
             }
             catch (Exception ex)
@@ -259,9 +248,9 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        private HttpContent ConvertToHttpContent(string str)
+        private HttpContent ConvertJsonToHttpContent(string json)
         {
-            byte[] data = Encoding.UTF8.GetBytes(str);
+            byte[] data = Encoding.UTF8.GetBytes(json);
             var byteArrayContent = new ByteArrayContent(data);
             byteArrayContent.Headers.Add("Content-Type", "application/json");
             return byteArrayContent;
@@ -271,16 +260,6 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             HttpContent content = responseMessage.Content;
             return await content.ReadAsStringAsync();
-        }
-
-        private void UpdateRequestUrl(string apiUrl)
-        {
-            _cameraRequestUrl = $"{apiUrl}/Camera";
-            _flightRequestUrl = $"{apiUrl}/Flight";
-            _layerRequestUrl = $"{apiUrl}/Layer";
-            _layersRequestUrl = $"{apiUrl}/Layers";
-            _workspaceRequestUrl = $"{apiUrl}/Workspace";
-            _snapshotRequestUrl = $"{apiUrl}/Snapshot";
         }
     }
 }
