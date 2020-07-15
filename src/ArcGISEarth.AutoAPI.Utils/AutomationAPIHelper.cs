@@ -12,10 +12,8 @@
 // limitations under the License.
 
 using Newtonsoft.Json.Linq;
-using RestSharp;
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -24,11 +22,11 @@ namespace ArcGISEarth.AutoAPI.Utils
 {
     public class AutomationAPIHelper
     {
-        private const string TARGET_OPERATIONALLAYERS = "OperationalLayers";
+        private const string TARGET_OPERATIONALLAYERS = "operationalLayers";
 
-        private const string TARGET_BASEMAPS = "BasemapLayers";
+        private const string TARGET_BASEMAPS = "baseMaps";
 
-        private const string TARGET_ELEVATIONLAYERS = "ElevationLayers";
+        private const string TARGET_ELEVATIONLAYERS = "elevationLayers";
 
         private const string API_URL = "http://localhost:8000/api";
 
