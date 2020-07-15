@@ -24,8 +24,14 @@ namespace ToArcGISEarth
 {
     public static class ToolHelper
     {
+        // Replace with your own api url setting
+        private const string DEFAULT_API_URL = "http://localhost:8000/api";
+
         // ArcGIS Earth automation api utils.
-        public static AutomationAPIHelper Utils { get; } = new AutomationAPIHelper();
+        public static AutomationAPIHelper Utils { get; } = new AutomationAPIHelper()
+        {
+            APIUrl = DEFAULT_API_URL
+        };
 
         // Logging id and it's infomation when adding layer or elevation source.
         public static Dictionary<string, string[]> IdInfoDictionary { get; set; } = new Dictionary<string, string[]>();

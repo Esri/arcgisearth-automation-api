@@ -23,26 +23,39 @@ using System.Threading.Tasks;
 namespace ArcGISEarth.AutoAPI.Utils
 {
     public class AutomationAPIHelper
-    {
+    {        
         private const string TARGET_OPERATIONALLAYERS = "operationalLayers";
 
         private const string TARGET_BASEMAPS = "baseMaps";
 
         private const string TARGET_ELEVATIONLAYERS = "elevationLayers";
 
-        private const string API_URL = "http://localhost:8000/api";
+        private string _cameraRequestUrl = null;
 
-        private string _cameraRequestUrl = $"{API_URL}/Camera";
+        private string _flightRequestUrl = null;
 
-        private string _flightRequestUrl = $"{API_URL}/Flight";
+        private string _layerRequestUrl = null;
 
-        private string _layerRequestUrl = $"{API_URL}/Layer";
+        private string _layersRequestUrl = null;
 
-        private string _layersRequestUrl = $"{API_URL}/Layers";
+        private string _workspaceRequestUrl = null;
 
-        private string _workspaceRequestUrl = $"{API_URL}/Workspace";
+        private string _snapshotRequestUrl = null;
 
-        private string _snapshotRequestUrl = $"{API_URL}/Snapshot";
+        private string apiUrl;
+
+        public string APIUrl
+        {
+            get { return apiUrl; }
+            set
+            {
+                if (apiUrl != value)
+                {
+                    apiUrl = value;
+                    UpdateRequestUrl(apiUrl);
+                }
+            }
+        }       
 
         HttpClient _httpClient = null;
         public AutomationAPIHelper()
@@ -222,12 +235,12 @@ namespace ArcGISEarth.AutoAPI.Utils
                     if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".tif" || ext == ".tiff")
                     {
                         HttpResponseMessage responseMessage = await _httpClient.GetAsync(_snapshotRequestUrl);
-                        HttpContent content = responseMessage.Content;                        
+                        HttpContent content = responseMessage.Content;
                         using (Stream stream = await content.ReadAsStreamAsync())
                         {
                             var image = Image.FromStream(stream);
                             image.Save(imagePath);
-                        }                                             
+                        }
                         return "Save snapshot successful!";
                     }
                     else
@@ -258,6 +271,16 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             HttpContent content = responseMessage.Content;
             return await content.ReadAsStringAsync();
+        }
+
+        private void UpdateRequestUrl(string apiUrl)
+        {
+            _cameraRequestUrl = $"{apiUrl}/Camera";
+            _flightRequestUrl = $"{apiUrl}/Flight";
+            _layerRequestUrl = $"{apiUrl}/Layer";
+            _layersRequestUrl = $"{apiUrl}/Layers";
+            _workspaceRequestUrl = $"{apiUrl}/Workspace";
+            _snapshotRequestUrl = $"{apiUrl}/Snapshot";
         }
     }
 }
