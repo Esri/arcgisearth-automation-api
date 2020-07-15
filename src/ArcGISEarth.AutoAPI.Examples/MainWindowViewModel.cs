@@ -176,7 +176,6 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.GetLayer:
                     {
-
                         OutputString = _helper.GetLayer(InputString);
                         break;
                     }
@@ -210,7 +209,6 @@ namespace ArcGISEarth.AutoAPI.Examples
                         OutputString = _helper.GetSnapshot(InputString);
                         break;
                     }
-
                 case FunctionType.ClearInputputBox:
                     {
                         InputString = "";

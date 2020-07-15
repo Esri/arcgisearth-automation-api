@@ -78,8 +78,9 @@ namespace ToArcGISEarth
                         },
                         // Get heading.
                         ["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading,
-                        // Get pitch.
+                        // Get tilt.
                         ["tilt"] = mapView.Camera.Pitch + 90,
+                        // Get roll.
                         ["roll"] = mapView.Camera.Roll
                     };
                     // Set camera in ArcGIS Earth.

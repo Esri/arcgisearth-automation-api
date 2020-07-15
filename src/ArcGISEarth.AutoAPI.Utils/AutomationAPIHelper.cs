@@ -14,7 +14,11 @@
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Net;
+using System.Text;
 
 namespace ArcGISEarth.AutoAPI.Utils
 {
@@ -38,24 +42,20 @@ namespace ArcGISEarth.AutoAPI.Utils
 
         private string _workspaceRequestUrl = $"{API_URL}/Workspace";
 
-        private string _snapshotRequestUrl = $"{API_URL}/Snapshot";
-
-        private RestClient _client = null;
+        private string _snapshotRequestUrl = $"{API_URL}/Snapshot";        
 
         public AutomationAPIHelper()
-        {
-            _client = new RestClient();
+        {            
         }
 
         public string GetCamera()
         {
             try
             {
-                var request = new RestRequest(_cameraRequestUrl, Method.GET);
-                request.AddParameter("undefind", _cameraRequestUrl);
-                request.AddHeader("accept", "*/*");
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                HttpWebRequest request = WebRequest.CreateHttp(_cameraRequestUrl);
+                request.Method = "GET";
+                request.Accept = "*/*";
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
@@ -67,13 +67,15 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var request = new RestRequest(_cameraRequestUrl, Method.PUT);
-                request.AddParameter("undefind", _cameraRequestUrl);
-                request.AddHeader("accept", "*/*");
-                request.AddHeader("Content-Type", "application/json");
-                request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                HttpWebRequest request = WebRequest.CreateHttp(_cameraRequestUrl);
+                request.Method = "PUT";
+                request.Accept = "*/*";
+                request.ContentType = "application/json";
+                byte[] data = Encoding.UTF8.GetBytes(inputJsonStr);
+                request.ContentLength = data.Length;
+                request.GetRequestStream().Write(data, 0, data.Length);
+                request.GetRequestStream().Close();
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
@@ -85,13 +87,15 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var request = new RestRequest(_flightRequestUrl, Method.POST);
-                request.AddParameter("undefind", _flightRequestUrl);
-                request.AddHeader("accept", "*/*");
-                request.AddHeader("Content-Type", "application/json");
-                request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                HttpWebRequest request = WebRequest.CreateHttp(_flightRequestUrl);
+                request.Method = "POST";
+                request.Accept = "*/*";
+                request.ContentType = "application/json";
+                byte[] data = Encoding.UTF8.GetBytes(inputJsonStr);
+                request.ContentLength = data.Length;
+                request.GetRequestStream().Write(data, 0, data.Length);
+                request.GetRequestStream().Close();
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
@@ -103,13 +107,15 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var request = new RestRequest(_layerRequestUrl, Method.POST);
-                request.AddParameter("undefind", _layerRequestUrl);
-                request.AddHeader("accept", "*/*");
-                request.AddHeader("Content-Type", "application/json");
-                request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                HttpWebRequest request = WebRequest.CreateHttp(_layerRequestUrl);
+                request.Method = "POST";
+                request.Accept = "*/*";
+                request.ContentType = "application/json";
+                byte[] data = Encoding.UTF8.GetBytes(inputJsonStr);
+                request.ContentLength = data.Length;
+                request.GetRequestStream().Write(data, 0, data.Length);
+                request.GetRequestStream().Close();
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
@@ -122,11 +128,10 @@ namespace ArcGISEarth.AutoAPI.Utils
             try
             {
                 var layerIdUrl = $"{_layerRequestUrl}/{layerId}";
-                var request = new RestRequest(layerIdUrl, Method.GET);
-                request.AddParameter("undefind", layerIdUrl);
-                request.AddHeader("accept", "*/*");
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                HttpWebRequest request = WebRequest.CreateHttp(layerIdUrl);
+                request.Method = "GET";
+                request.Accept = "*/*";
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
@@ -138,12 +143,11 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string layerIdUrl = $"{_layerRequestUrl}/{layerId}";
-                var request = new RestRequest(layerIdUrl, Method.DELETE);
-                request.AddParameter("undefind", layerIdUrl);
-                request.AddHeader("accept", "*/*");
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                var layerIdUrl = $"{_layerRequestUrl}/{layerId}";
+                HttpWebRequest request = WebRequest.CreateHttp(layerIdUrl);
+                request.Method = "DELETE";
+                request.Accept = "*/*";
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
@@ -157,27 +161,27 @@ namespace ArcGISEarth.AutoAPI.Utils
             {
                 JObject jobject = JObject.Parse(inputJsonStr);
                 string tartget = jobject["target"].ToString();
-                RestRequest request = null;
+                string url = null;
                 if (tartget.Equals(TARGET_OPERATIONALLAYERS, StringComparison.OrdinalIgnoreCase))
                 {
-                    request = new RestRequest($"{_layersRequestUrl}/{TARGET_OPERATIONALLAYERS}", Method.DELETE);
+                    url = $"{_layersRequestUrl}/{TARGET_OPERATIONALLAYERS}";
                 }
                 if (tartget.Equals(TARGET_BASEMAPS, StringComparison.OrdinalIgnoreCase))
                 {
-                    request = new RestRequest($"{_layersRequestUrl}/{TARGET_BASEMAPS}", Method.DELETE);
+                    url = $"{_layersRequestUrl}/{TARGET_BASEMAPS}";
                 }
                 if (tartget.Equals(TARGET_ELEVATIONLAYERS, StringComparison.OrdinalIgnoreCase))
                 {
-                    request = new RestRequest($"{_layersRequestUrl}/{TARGET_ELEVATIONLAYERS}", Method.DELETE);
+                    url = $"{_layersRequestUrl}/{TARGET_ELEVATIONLAYERS}";
                 }
-                if (request == null)
+                if (url == null)
                 {
                     throw new Exception("Please type correct string");
                 }
-                request.AddParameter("undefind", _snapshotRequestUrl);
-                request.AddHeader("accept", "*/*");
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                HttpWebRequest request = WebRequest.CreateHttp(url);
+                request.Method = "DELETE";
+                request.Accept = "*/*";
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
@@ -189,19 +193,20 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var request = new RestRequest(_snapshotRequestUrl, Method.GET);
-                request.AddParameter("undefind", _snapshotRequestUrl);
-                request.AddHeader("accept", "*/*");
-                request.AddHeader("Content-Type", "image/jpeg");
-                IRestResponse response = _client.Execute(request);
                 Uri uri = new Uri(imagePath);
                 if (uri.IsAbsoluteUri && uri.IsFile)
                 {
-                    using (var imageFile = new FileStream(imagePath, FileMode.Create))
+                    HttpWebRequest request = WebRequest.CreateHttp(_workspaceRequestUrl);
+                    request.Method = "GET";
+                    request.Accept = "*/*";
+                    var httpResponse = (HttpWebResponse)request.GetResponse();                    
+                    Stream st = httpResponse.GetResponseStream();
+                    using (FileStream file = new FileStream("file.bin", FileMode.Create, System.IO.FileAccess.Write))
                     {
-                        byte[] bytes = response.RawBytes;
-                        imageFile.Write(bytes, 0, bytes.Length);
-                        imageFile.Flush();
+                        byte[] bytes = new byte[st.Length];
+                        st.Read(bytes, 0, (int)st.Length);
+                        file.Write(bytes, 0, bytes.Length);
+                        st.Close();
                     }
                     return "Save snapshot successful!";
                 }
@@ -220,12 +225,10 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var request = new RestRequest(_workspaceRequestUrl, Method.GET);
-                request.AddParameter("undefind", _workspaceRequestUrl);
-                request.AddHeader("accept", "*/*");
-                request.AddHeader("Content-Type", "image/jpeg");
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                HttpWebRequest request = WebRequest.CreateHttp(_workspaceRequestUrl);
+                request.Method = "GET";
+                request.Accept = "*/*";
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
@@ -237,13 +240,15 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var request = new RestRequest(_workspaceRequestUrl, Method.PUT);
-                request.AddParameter("undefind", _workspaceRequestUrl);
-                request.AddHeader("accept", "*/*");
-                request.AddHeader("Content-Type", "application/json");
-                request.AddParameter("undefind", inputJsonStr, ParameterType.RequestBody);
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                HttpWebRequest request = WebRequest.CreateHttp(_workspaceRequestUrl);
+                request.Method = "PUT";
+                request.Accept = "*/*";
+                request.ContentType = "application/json";
+                byte[] data = Encoding.UTF8.GetBytes(inputJsonStr);
+                request.ContentLength = data.Length;
+                request.GetRequestStream().Write(data, 0, data.Length);
+                request.GetRequestStream().Close();
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
@@ -255,13 +260,24 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                var request = new RestRequest(_workspaceRequestUrl, Method.DELETE);
-                IRestResponse response = _client.Execute(request);
-                return response.Content;
+                HttpWebRequest request = WebRequest.CreateHttp(_workspaceRequestUrl);
+                request.Method = "DELETE";
+                request.Accept = "*/*";
+                return GetResponseContent(request);
             }
             catch (Exception ex)
             {
                 return ex.Message;
+            }
+        }
+
+        private string GetResponseContent(HttpWebRequest request)
+        {
+            var httpResponse = (HttpWebResponse)request.GetResponse();
+            using (Stream webStream = httpResponse.GetResponseStream())
+            {
+                var responseReader = new StreamReader(webStream);
+                return responseReader.ReadToEnd();
             }
         }
     }
