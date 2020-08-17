@@ -15,7 +15,8 @@ ArcGIS Earth Automation API provides a standard interface for 3rd party applicat
 </div>
 
 ## Requirements
-The ArcGIS Earth Automation API requires .NET Framework 4.6.1 or later.
+* `ArcGISEarth.AutoAPI.Examples` project and `ArcGISEarth.AutoAPI.Utils` project require .NET Framework 4.6.1 or later.
+* `ArcGISProToArcGISEarth` project requires .NET Framework 4.8 or later.
 
 ## Features
 * Control camera navigation and fly behaviors, including get camera information and set camera position.
@@ -27,9 +28,6 @@ The ArcGIS Earth Automation API requires .NET Framework 4.6.1 or later.
 
 1. [Automation API examples](../../wiki/Automation-API-examples)
 2. [ArcGIS Pro add-in: ToArcGISEarth](../../wiki/ToArcGISEarth)
-
-## Support ArcGIS Pro 2.5
-If you want to use `ArcGISProToArcGISEarth` Add-In in ArcGIS Pro 2.5, please choose `support_pro_2.5` branch.
 
 ## Resources
 
