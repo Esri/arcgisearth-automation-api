@@ -170,3 +170,5 @@ and its response:
 
 
 Get Snapshot
+
+D:\earth.jpg
