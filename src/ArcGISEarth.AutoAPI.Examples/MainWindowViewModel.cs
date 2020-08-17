@@ -152,7 +152,7 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         public ICommand HelpCommand { get; private set; }
 
-        private const string DEFAULT_API_URL = "http://localhost:8000/api";
+        private const string DEFAULT_API_URL = "http://localhost:8000/arcgisearth";
 
         public MainWindowViewModel()
         {

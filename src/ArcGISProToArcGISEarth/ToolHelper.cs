@@ -25,7 +25,7 @@ namespace ToArcGISEarth
     public static class ToolHelper
     {
         // Replace with your own api url setting
-        private const string DEFAULT_API_URL = "http://localhost:8000/api";
+        private const string DEFAULT_API_URL = "http://localhost:8000/arcgisearth";
 
         // ArcGIS Earth automation api utils.
         public static AutomationAPIHelper Utils { get; } = new AutomationAPIHelper()

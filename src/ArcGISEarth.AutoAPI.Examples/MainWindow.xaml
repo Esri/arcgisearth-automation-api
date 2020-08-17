@@ -26,17 +26,17 @@
             </Grid.ColumnDefinitions>
             <StackPanel Margin="0,26,0,0" >
                 <!-- Function type -->
-                <Button Margin="0,10,0,0" Command="{Binding GetCameraCommand}" Content="GetCamera"/>
-                <Button Margin="0,10,0,0" Command="{Binding SetCameraCommand}" Content="SetCamera"/>
-                <Button Margin="0,10,0,0" Command="{Binding SetFlightCommand}" Content="SetFlight"/>
-                <Button Margin="0,10,0,0" Command="{Binding AddLayerCommand}" Content="AddLayer"/>
-                <Button Margin="0,10,0,0" Command="{Binding GetLayerCommand}" Content="GetLayer"/>
-                <Button Margin="0,10,0,0" Command="{Binding RemoveLayerCommand}" Content="RemoveLayer"/>
-                <Button Margin="0,10,0,0" Command="{Binding ClearLayersCommand}" Content="ClearLayers"/>
-                <Button Margin="0,10,0,0" Command="{Binding GetWorkspaceCommand}" Content="GetWorkspace"/>
-                <Button Margin="0,10,0,0" Command="{Binding SetWorkspaceCommand}" Content="SetWorkspace"/>
-                <Button Margin="0,10,0,0" Command="{Binding ClearWorkspaceCommand}" Content="ClearWorkspace"/>
-                <Button Margin="0,10,0,0" Command="{Binding GetSnapshotCommand}" Content="GetSnapshot"/>
+                <Button Margin="0,10,0,0" Command="{Binding GetCameraCommand}" Content="Get Camera"/>
+                <Button Margin="0,10,0,0" Command="{Binding SetCameraCommand}" Content="Set Camera"/>
+                <Button Margin="0,10,0,0" Command="{Binding SetFlightCommand}" Content="Set Flight"/>
+                <Button Margin="0,10,0,0" Command="{Binding AddLayerCommand}" Content="Add Layer"/>
+                <Button Margin="0,10,0,0" Command="{Binding GetLayerCommand}" Content="Get Layer"/>
+                <Button Margin="0,10,0,0" Command="{Binding RemoveLayerCommand}" Content="Remove Layer"/>
+                <Button Margin="0,10,0,0" Command="{Binding ClearLayersCommand}" Content="Clear Layers"/>
+                <Button Margin="0,10,0,0" Command="{Binding GetWorkspaceCommand}" Content="Get Workspace"/>
+                <Button Margin="0,10,0,0" Command="{Binding SetWorkspaceCommand}" Content="Set Workspace"/>
+                <Button Margin="0,10,0,0" Command="{Binding ClearWorkspaceCommand}" Content="Clear Workspace"/>
+                <Button Margin="0,10,0,0" Command="{Binding GetSnapshotCommand}" Content="Get Snapshot"/>
             </StackPanel>
             <StackPanel Margin="10,0,0,0" Grid.Column="1">
                 <!-- Input data -->
@@ -51,8 +51,8 @@
             </Grid.ColumnDefinitions>
             <StackPanel Margin="0,26,0,0">
                 <!-- Function type -->
-                <Button Margin="0,10,0,0" Command="{Binding ClearInputBoxCommand}" Content="ClearInputBox"/>
-                <Button Margin="0,10,0,0" Command="{Binding ClearOutputBoxCommand}" Content="ClearOutputBox"/>
+                <Button Margin="0,10,0,0" Command="{Binding ClearInputBoxCommand}" Content="Clear Input Box"/>
+                <Button Margin="0,10,0,0" Command="{Binding ClearOutputBoxCommand}" Content="Clear Output Box"/>
                 <Button Margin="0,10,0,0" Command="{Binding HelpCommand}" Content="Help"/>
             </StackPanel>
             <StackPanel Margin="10,0,0,0" Grid.Column="1">
