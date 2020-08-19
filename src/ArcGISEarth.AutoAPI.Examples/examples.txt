@@ -1,5 +1,4 @@
-Get Camera response
-
+Get Camera output
 {
     "position": {
         "x": -92,
@@ -14,9 +13,7 @@ Get Camera response
     "roll": 0
 }
 
-
-Set Camera request
-
+Set Camera input
 {
     "position": {
         "x": -92,
@@ -31,9 +28,7 @@ Set Camera request
     "roll": 0
 }
 
-
-Fly-to
-
+Fly-to input
 {
     "camera": {
         "position": {
@@ -51,16 +46,16 @@ Fly-to
     "duration": 2
 }
 
-
 Add Layer
 
-portal item
+Add portal item input
 {
     "URI": "https://www.arcgis.com/home/item.html?id=19dcff93eeb64f208d09d328656dd492",
     "target": "operationalLayers",
     "type": "PortalItem"
 }
-and its response
+
+Add portal item output
 {
     "displayName": "Visualize New Developments",
     "isVisible": true,
@@ -70,13 +65,14 @@ and its response
     "loadStatus": "Loaded"
 }
 
-WMS
+Add WMS input
 {
     "URI": "http://ogc.bgs.ac.uk/cgi-bin/BGS_Bedrock_and_Superficial_Geology/wms?SERVICE=WMS&REQUEST=GetCapabilities",
     "target": "operationalLayers",
     "type": "WMS"
 }
-and its response:
+
+Add WMS output
 {
     "id": "b990f005-0e76-42cd-b8a8-efbab078a177",
     "opacity": 1.0,
@@ -90,9 +86,7 @@ and its response:
     "loadStatus": "Loaded"
 }
 
-
-Elevation
-
+Add multiple elevation input
 {
     "URIs": [
         "C:\\test1.dt1",
@@ -101,7 +95,8 @@ Elevation
     "target": "elevationLayers",
     "type": "RasterDataLayer"
 }
-and its response
+
+Add multiple elevation output
 {
     "classType": "Raster_Elevation_Source",
     "displayName": "test1.dt1,test2.dt1",
@@ -115,11 +110,12 @@ and its response
     "loadStatus": "Loaded"
 }
 
-
 Get Layer
 
+Get Layer input
 http://localhost:8000/api/layer/311b7317-94f8-4f80-89f2-0e3ca5e77d28
-and its response:
+
+Get Layer output
 {
     "displayName": "Visualize New Developments",
     "isVisible": true,
@@ -129,46 +125,28 @@ and its response:
     "loadStatus": "Loaded"
 }
 
-
-Remove Layer
-
+Remove Layer input
 http://localhost:8000/api/layer/311b7317-94f8-4f80-89f2-0e3ca5e77d28
-and its response:
-{
-    "result": "Success"
-}
 
-
-Clear Layers
-
+Clear Layers input
 http://localhost:8000/api/layers/oprationalLayers
-and its response:
-{
-    "result": "Success"
-}
-
 
 Get Workspace
 
+Get Workspace input
 http://localhost:8000/api/workspace
-and its response:
+
+Get Workspace output
 {
     "url": "http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip",
     "path": "C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"
 }
 
-
-Set Workspace
+Import Workspace input
 {
     "url": "http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip",
     "path": "C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"
 }
-and its response:
-{
-    "result": "Success"
-}
 
-
-Get Snapshot
-
+Take Snapshot input
 D:\earth.jpg

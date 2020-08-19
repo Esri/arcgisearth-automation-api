@@ -28,15 +28,15 @@
                 <!-- Function type -->
                 <Button Margin="0,10,0,0" Command="{Binding GetCameraCommand}" Content="Get Camera"/>
                 <Button Margin="0,10,0,0" Command="{Binding SetCameraCommand}" Content="Set Camera"/>
-                <Button Margin="0,10,0,0" Command="{Binding SetFlightCommand}" Content="Set Flight"/>
+                <Button Margin="0,10,0,0" Command="{Binding SetFlightCommand}" Content="Fly-to"/>
                 <Button Margin="0,10,0,0" Command="{Binding AddLayerCommand}" Content="Add Layer"/>
                 <Button Margin="0,10,0,0" Command="{Binding GetLayerCommand}" Content="Get Layer"/>
                 <Button Margin="0,10,0,0" Command="{Binding RemoveLayerCommand}" Content="Remove Layer"/>
                 <Button Margin="0,10,0,0" Command="{Binding ClearLayersCommand}" Content="Clear Layers"/>
                 <Button Margin="0,10,0,0" Command="{Binding GetWorkspaceCommand}" Content="Get Workspace"/>
-                <Button Margin="0,10,0,0" Command="{Binding SetWorkspaceCommand}" Content="Set Workspace"/>
+                <Button Margin="0,10,0,0" Command="{Binding SetWorkspaceCommand}" Content="Import Workspace"/>
                 <Button Margin="0,10,0,0" Command="{Binding ClearWorkspaceCommand}" Content="Clear Workspace"/>
-                <Button Margin="0,10,0,0" Command="{Binding GetSnapshotCommand}" Content="Get Snapshot"/>
+                <Button Margin="0,10,0,0" Command="{Binding GetSnapshotCommand}" Content="Take Snapshot"/>
             </StackPanel>
             <StackPanel Margin="10,0,0,0" Grid.Column="1">
                 <!-- Input data -->
