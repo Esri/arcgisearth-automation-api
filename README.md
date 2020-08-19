@@ -1,5 +1,5 @@
 # ArcGIS Earth Automation API
-ArcGIS Earth Automation API provides a standard interface for 3rd party applications that support .NET to automate and communicate with ArcGIS Earth. The Automation API is based on [.NET WCF NamedPipe](https://msdn.microsoft.com/en-us/library/system.servicemodel.netnamedpipebinding(v=vs.110).aspx). It provides a fast and reliable way for on-machine communications. 
+ArcGIS Earth Automation API provides a standard interface for 3rd party applications that support REST to automate and communicate with ArcGIS Earth. The Automation API is based on [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1). It provides a fast and reliable way for communications with ArcGIS Earth.
 
 <div  align="center">
    
@@ -31,12 +31,12 @@ ArcGIS Earth Automation API provides a standard interface for 3rd party applicat
 
 ## Resources
 
-* [ArcGIS Earth Online Help](http://doc.arcgis.com/en/arcgis-earth/)
-* [API Reference](http://doc.arcgis.com/en/arcgis-earth/automation-api/get-started.htm)
+* [ArcGIS Earth Online Help](https://doc.arcgis.com/en/arcgis-earth/)
+* [ArcGIS Earth Automation API Reference](https://doc.arcgis.com/en/arcgis-earth/automation-api/get-started.htm)
 * [ArcGIS for Developers](https://developers.arcgis.com/documentation/#extend)
 * Share your ideas or post questions via [GeoNet](https://geonet.esri.com/groups/arcgis-earth)
 * [Twitter@ArcGISEarth](https://twitter.com/arcgisearth?lang=en)
-* For assistance, please refer to [Support](http://support.esri.com/en/)
+* For assistance, please refer to [Support](https://support.esri.com/en/)
 
 
 ## Issues
