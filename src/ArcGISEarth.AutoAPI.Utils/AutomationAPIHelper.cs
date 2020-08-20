@@ -11,7 +11,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Newtonsoft.Json.Linq;
 using System;
 using System.Drawing;
 using System.IO;
@@ -23,19 +22,20 @@ namespace ArcGISEarth.AutoAPI.Utils
 {
     public class AutomationAPIHelper
     {
-        private const string TARGET_OPERATIONALLAYERS = "operationalLayers";
+        private const string CameraControllerName = "camera";
+        private const string FlightControllerName = "flight";
+        private const string LayerControllerName = "layer";
+        private const string LayersControllerName = "layers";
+        private const string WorkspaceControllerName = "workspace";
+        private const string SnapshotControllerName = "snapshot";
 
-        private const string TARGET_BASEMAPS = "baseMaps";
-
-        private const string TARGET_ELEVATIONLAYERS = "elevationLayers";
-
-        public string APIUrl { get; set; }
+        public string APIBaseUrl { get; set; }
 
         public async Task<string> GetCamera()
         {
             try
             {
-                string cameraRequestUrl = $"{APIUrl}/Camera";
+                string cameraRequestUrl = $"{APIBaseUrl}/{CameraControllerName}";
                 HttpClient httpClient = new HttpClient();
                 HttpResponseMessage responseMessage = await httpClient.GetAsync(cameraRequestUrl);
                 return await GetResponseContent(responseMessage);
@@ -50,7 +50,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string cameraRequestUrl = $"{APIUrl}/Camera";
+                string cameraRequestUrl = $"{APIBaseUrl}/{CameraControllerName}";
                 HttpClient httpClient = new HttpClient();
                 HttpContent putContent = ConvertJsonToHttpContent(inputJsonStr);
                 HttpResponseMessage responseMessage = await httpClient.PutAsync(cameraRequestUrl, putContent);
@@ -66,7 +66,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string flightRequestUrl = $"{APIUrl}/Flight";
+                string flightRequestUrl = $"{APIBaseUrl}/{FlightControllerName}";
                 HttpClient httpClient = new HttpClient();
                 HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
                 HttpResponseMessage responseMessage = await httpClient.PostAsync(flightRequestUrl, postContent);
@@ -82,7 +82,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string layerRequestUrl = $"{APIUrl}/Layer";
+                string layerRequestUrl = $"{APIBaseUrl}/{LayerControllerName}";
                 HttpClient httpClient = new HttpClient();
                 HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
                 HttpResponseMessage responseMessage = await httpClient.PostAsync(layerRequestUrl, postContent);
@@ -98,7 +98,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string layerRequestUrl = $"{APIUrl}/Layer";
+                string layerRequestUrl = $"{APIBaseUrl}/{LayerControllerName}";
                 HttpClient httpClient = new HttpClient();
                 var layerIdUrl = $"{layerRequestUrl}/{layerId}";
                 HttpResponseMessage responseMessage = await httpClient.GetAsync(layerIdUrl);
@@ -114,7 +114,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string layerRequestUrl = $"{APIUrl}/Layer";
+                string layerRequestUrl = $"{APIBaseUrl}/{LayerControllerName}";
                 HttpClient httpClient = new HttpClient();
                 var layerIdUrl = $"{layerRequestUrl}/{layerId}";
                 HttpResponseMessage responseMessage = await httpClient.DeleteAsync(layerIdUrl);
@@ -126,32 +126,13 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public async Task<string> ClearLayers(string inputJsonStr)
+        public async Task<string> ClearLayers(string targetType)
         {
             try
             {
-                string layersRequestUrl = $"{APIUrl}/Layers";
-                JObject jobject = JObject.Parse(inputJsonStr);
-                string tartget = jobject["target"].ToString();
-                string url = null;
-                if (tartget.Equals(TARGET_OPERATIONALLAYERS, StringComparison.OrdinalIgnoreCase))
-                {
-                    url = $"{layersRequestUrl}/{TARGET_OPERATIONALLAYERS}";
-                }
-                if (tartget.Equals(TARGET_BASEMAPS, StringComparison.OrdinalIgnoreCase))
-                {
-                    url = $"{layersRequestUrl}/{TARGET_BASEMAPS}";
-                }
-                if (tartget.Equals(TARGET_ELEVATIONLAYERS, StringComparison.OrdinalIgnoreCase))
-                {
-                    url = $"{layersRequestUrl}/{TARGET_ELEVATIONLAYERS}";
-                }
-                if (url == null)
-                {
-                    throw new Exception("Please type correct string.");
-                }
+                string layersRequestUrl = $"{APIBaseUrl}/{LayersControllerName}/{targetType}";
                 HttpClient httpClient = new HttpClient();
-                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(url);
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(layersRequestUrl);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -164,7 +145,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string workspaceRequestUrl = $"{APIUrl}/Workspace";
+                string workspaceRequestUrl = $"{APIBaseUrl}/{WorkspaceControllerName}";
                 HttpClient httpClient = new HttpClient();
                 HttpResponseMessage responseMessage = await httpClient.GetAsync(workspaceRequestUrl);
                 return await GetResponseContent(responseMessage);
@@ -179,7 +160,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string workspaceRequestUrl = $"{APIUrl}/Workspace";
+                string workspaceRequestUrl = $"{APIBaseUrl}/{WorkspaceControllerName}";
                 HttpClient httpClient = new HttpClient();
                 HttpContent putContent = ConvertJsonToHttpContent(inputJsonStr);
                 HttpResponseMessage responseMessage = await httpClient.PutAsync(workspaceRequestUrl, putContent);
@@ -195,7 +176,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string workspaceRequestUrl = $"{APIUrl}/Workspace";
+                string workspaceRequestUrl = $"{APIBaseUrl}/{WorkspaceControllerName}";
                 HttpClient httpClient = new HttpClient();
                 HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workspaceRequestUrl);
                 return await GetResponseContent(responseMessage);
@@ -210,7 +191,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         {
             try
             {
-                string snapshotRequestUrl = $"{APIUrl}/Snapshot";
+                string snapshotRequestUrl = $"{APIBaseUrl}/{SnapshotControllerName}";
                 var uri = new Uri(imagePath);
                 if (uri.IsAbsoluteUri && uri.IsFile)
                 {
