@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
@@ -128,12 +129,7 @@
       <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ArcGISEarth.AutoAPI.Utils\ArcGISEarth.AutoAPI.Utils.csproj">
-      <Project>{c5d42c1e-7456-416f-81b3-d1462c423c18}</Project>
-      <Name>ArcGISEarth.AutoAPI.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="..\ArcGISEarth.AutoAPI.Shared\ArcGISEarth.AutoAPI.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--
   PackageAction can be:
