@@ -30,7 +30,7 @@ namespace ToArcGISEarth
         // ArcGIS Earth automation api utils.
         public static AutomationAPIHelper Utils { get; } = new AutomationAPIHelper()
         {
-            APIUrl = DEFAULT_API_URL
+            APIBaseUrl = DEFAULT_API_URL
         };
 
         // Logging id and it's infomation when adding layer or elevation source.
