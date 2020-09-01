@@ -87,15 +87,15 @@ namespace ToArcGISEarth
                                 if (dataConnection is CIMWMSServiceConnection)
                                 {
                                     // Specify layer type for wms service. API is limited to automatically recognized wms service.
-                                    addLayerJson["type"] = "OGCWMS";
-                                }
+                                    addLayerJson["type"] = "WMS";
+                                }                               
                                 if (layer.MapLayerType == MapLayerType.Operational)
                                 {
-                                    addLayerJson["target"] = "OperationalLayers";
+                                    addLayerJson["target"] = "operationalLayers";
                                 }
                                 if (layer.MapLayerType == MapLayerType.BasemapBackground)
                                 {
-                                    addLayerJson["target"] = "BasemapLayers";
+                                    addLayerJson["target"] = "baseMaps";
                                 }
                                 string currentJson = addLayerJson.ToString();
                                 string[] nameAndType = new string[3]
