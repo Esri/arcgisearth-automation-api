@@ -18,63 +18,17 @@ using System.Windows.Data;
 
 namespace ArcGISEarth.AutoAPI.Examples
 {
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
-        private bool vis = true;
-        public bool Vis
-        {
-            get { return vis; }
-            set
-            {
-                if (vis != value)
-                {
-                    vis = value;
-                    OnPropertyChanged("Vis"); // To notify when the property is changed
-                }
-            }
-        }
-
-        private bool visTextbox = false;
-        public bool VisTextBox
-        {
-            get { return visTextbox; }
-            set
-            {
-                if (visTextbox != value)
-                {
-                    visTextbox = value;
-                    OnPropertyChanged("VisTextBox"); // To notify when the property is changed
-                }
-            }
-        }
         public MainWindow()
         {
             InitializeComponent();
-
-            Vis = true;
-            VisTextBox = false;
-            DataContext = this;
+            DataContext = new MainWindowViewModel();
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Vis = true;
-            VisTextBox = false;
-        }
-
-        private void TextBox_Click(object sender, RoutedEventArgs e)
-        {
-            Vis = false;
-            VisTextBox = true;
+            getCameraButton.Focus();
         }
     }
 }
