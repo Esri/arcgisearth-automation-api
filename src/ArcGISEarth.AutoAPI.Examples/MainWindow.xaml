@@ -7,13 +7,13 @@
         Loaded="Window_Loaded"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converter:EnumToButtonVisibilityConverter x:Key="EnumToButtonVisibilityConverter"/>
         <converter:EnumToTextBoxVisibilityConverter x:Key="EnumToTextBoxVisibilityConverter"/>
         <FontFamily x:Key="Bold">Fonts/Avenir-Bold.otf</FontFamily>
         <FontFamily x:Key="DemiBold">Fonts/Avenir-Medium.otf</FontFamily>
         <FontFamily x:Key="AvenirNext">pack://application:,,,/Fonts/#AvenirNext LT Pro</FontFamily>
         <FontFamily x:Key="Regular">pack://application:,,,/Fonts/#AvenirNext LT Pro Regular</FontFamily>
+        
         <Style TargetType="Button" x:Key="CustomButton">
             <Setter Property="Height" Value="40"/>
             <Setter Property="Width" Value="240"/>
@@ -23,6 +23,7 @@
             <Setter Property="Background" Value="{x:Null}"/>
             <Setter Property="BorderBrush" Value="{x:Null}"/>
             <Setter Property="Foreground" Value="#FF161616"/>
+            <Setter Property="Cursor" Value="Hand"/>
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -30,52 +31,184 @@
                         <Border CornerRadius="4" Background="{TemplateBinding Background}">
                             <Grid>
                                 <Path x:Name="PathIcon" Width="14" Height="36" Stretch="Fill" HorizontalAlignment="Left" Margin="0,0,0,0" Data="M383,152 L394,152 394,176 383,176 z"/>
-                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="64,0,0,0" />
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="54,0,0,0" />
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="White"/>
-                                <Setter Property="Foreground" Value="#FF653499"/>
+                                <Setter Property="Foreground" Value="#653499"/>
                             </Trigger>
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter Property="Background" Value="White" />
-                                <Setter Property="Foreground" Value="#FF653499" />
+                                <Setter Property="Foreground" Value="#653499" />
                                 <Setter Property="FontSize" Value="18"/>
-                                <Setter TargetName="PathIcon" Property="Fill" Value="#FF653499" />
+                                <Setter TargetName="PathIcon" Property="Fill" Value="#653499" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
-        <Style TargetType="TextBox" x:Key="TextBox">
+
+        <Style TargetType="Button" x:Key="BigButton">
+            <Setter Property="Height" Value="56"/>
+            <Setter Property="FontFamily" Value="{StaticResource AvenirNext}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#FF653499"/>
-            <Setter Property="SelectionBrush" Value="#FF653499"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Padding" Value="20, 20, 20, 20"/>
+            <Setter Property="Foreground" Value="#7447A2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="3" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Rectangle Stroke="#653499" StrokeDashArray="4" StrokeThickness="1"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                                    <Image x:Name="ImageName" Source="Icons\send_icon_n.png" Width="20" Height="24" VerticalAlignment="Center"/>
+                                    <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                    <!--<TextBlock Text="Send" FontFamily="{StaticResource AvenirNext}" FontSize="18" FontWeight="DemiBold" VerticalAlignment="Center"/>-->
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#653499"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ImageName" Property="Source" Value="Icons\send_icon_h.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+
+        <Style TargetType="Button" x:Key="SamllClearButton">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="86"/>
+            <Setter Property="FontFamily" Value="{StaticResource AvenirNext}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="BorderBrush" Value="#999999"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#653499"/>
+                                <Setter Property="Foreground" Value="#653499"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="SamllSendButton">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="86"/>
+            <Setter Property="FontFamily" Value="{StaticResource AvenirNext}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="#653499"/>
+            <Setter Property="Foreground" Value="#F5F5F5"/>
+            <Setter Property="BorderBrush" Value="#FFFFFF"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                <Setter Property="Background" Value="#7A42B6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="SelectionBrush" Value="{x:Null}"/>
+            <Setter Property="FontFamily" Value="{StaticResource AvenirNext}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+            <Setter Property="Padding" Value="20,20,20,20"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="SelectionBrush" Value="LightSkyBlue"/>
+            <Setter Property="AutoWordSelection" Value="True"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="White" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" Foreground="Black" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="false">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="MyTextBox">
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="AcceptsTab" Value="True"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="White" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" Foreground="Black" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"/>
+                                <Rectangle x:Name="rectangle" Stroke="#653499" StrokeDashArray="4" StrokeThickness="1" Visibility="{TemplateBinding Visibility}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="240"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto" MinWidth="240"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="103"/>
-            <RowDefinition Height="Auto" MinHeight="921"/>
+            <RowDefinition Height="*" MinHeight="921"/>
         </Grid.RowDefinitions>
         
         <TextBlock Text="ArcGIS Earth Automation API Sample" Grid.ColumnSpan="12" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF653499" Foreground="White" FontFamily="Avenir Next LT Pro" FontWeight="Bold" FontSize="24" HorizontalAlignment="Stretch" Padding="50,35,0,0" MinWidth="1440"/>
 
         <Grid Row="1" Grid.Column="0" Background="White">
             <StackPanel Orientation="Vertical">
-                <!--<Button Style="{StaticResource NormalButton}" x:Name="getCameraButton" Content="Get Camera" Command="{Binding GetCameraCommand}" Cursor="Hand" Margin="0, 40, 0, 0"/>
-
-                <Button Style="{StaticResource NormalButton}" x:Name="setCameraButton" Content="Set Camera" Command="{Binding SetCameraCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>-->
                 <Button Style="{StaticResource CustomButton}" x:Name="getCameraButton" Content="Get Camera" Command="{Binding GetCameraCommand}" Cursor="Hand" Margin="0, 40, 0, 0"/>
 
                 <Button Style="{StaticResource CustomButton}" x:Name="setCameraButton" Content="Set Camera" Command="{Binding SetCameraCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
@@ -97,153 +230,75 @@
                 <Button Style="{StaticResource CustomButton}" x:Name="clearWorkspaceButton" Content="Clear Workspace" Command="{Binding ClearWorkspaceCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
 
                 <Button Style="{StaticResource CustomButton}" x:Name="takeSnapshotButton" Content="Take Snapshot" Command="{Binding TakeSnapshotCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
-                
             </StackPanel>
         </Grid>
+        
+        <Grid Grid.Row="1" Grid.Column="1" Background="#F9F9F9">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid Grid.Row="1" Grid.Column="1" Background="#FFF9F9F9">
+            <!--Input-->
+            <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="30"/>
-                </Grid.ColumnDefinitions>
 
-                <!--Input-->
-                <Grid Grid.Row="1" Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <Label x:Name="inputLabel" Content="Input" Grid.Row="0" FontFamily="{StaticResource Regular}" FontWeight="Regular" FontSize="14" Margin="-10, 0, 0, 0"/>
 
-                    <Label x:Name="InputLabel" Content="Input" Grid.Row="0" FontFamily="{StaticResource Regular}" FontWeight="Regular" FontSize="14" Margin="-10, 0, 0, 0"/>
-
-                    <!--Button-->
-                    <Grid Visibility="{Binding SendButtontype, Converter={StaticResource EnumToButtonVisibilityConverter}, Mode=OneWay}" x:Name="InputButton" Grid.Row="1" Height="56">
-                        <Border Grid.Row="1" CornerRadius="3" BorderBrush="#FF7447A2" BorderThickness="1">
-                            <Button x:Name="SendWithIcon" Command="{Binding SendButtonCommand}" Foreground="#FF7447A2" Background="White" BorderBrush="#FF653499" Cursor="Hand" >
-                                <StackPanel Orientation="Horizontal" Background="{x:Null}">
-                                    <Image Source="Icons\send_icon_n.png" Width="20" Height="24" Margin="0, 0, 10, 0"/>
-                                    <TextBlock Text="Send" FontFamily="{StaticResource AvenirNext}" FontSize="18" FontWeight="DemiBold" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-                        </Border>
-                    </Grid>
-
-                    <!--Textbox-->
-                    <!--<Grid x:Name="inputTextbox" Grid.Row="2" Height="319" Visibility="{Binding VisTextBox, Converter={StaticResource BooleanToVisibilityConverter}}">-->
-                    <Grid x:Name="inputTextbox" Grid.Row="2" Height="319" Visibility="{Binding SendButtontype, Converter={StaticResource EnumToTextBoxVisibilityConverter}, Mode=OneWay}">
-                        <Border CornerRadius="3">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="40"/>
-                                    <RowDefinition Height="10"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="86"/>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="86"/>
-                                    <ColumnDefinition Width="15"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBox Grid.RowSpan="3" Grid.ColumnSpan="5" x:Name="InputTextBox" Padding="20, 20, 20, 20" Foreground="#FF999999" Background="White" BorderBrush="{x:Null}" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding InputString}"/>
-                                <Rectangle Grid.RowSpan="3" Grid.ColumnSpan="5" Stroke="#FF653499" StrokeDashArray="3" StrokeThickness="1"/>
-                                <Border Grid.Row="1" Grid.Column="3" CornerRadius="3" BorderBrush="#FF7447A2" BorderThickness="1">
-                                    <Button x:Name="SendButton" Content="Send" Command="{Binding SendButtonCommand}" Foreground="#FFF5F5F5" Background="#FF653499" FontFamily="{StaticResource AvenirNext}" FontWeight="Regular" FontSize="12" Cursor="Hand"/>
-                                </Border>
-                                <Border Grid.Row="1" Grid.Column="1" CornerRadius="3" BorderBrush="#FF7447A2" BorderThickness="1">
-                                    <Button x:Name="ClearButton" Content="Clear" Command="{Binding ClearInputBoxCommand}" Foreground="#FF666666" Background="White" FontFamily="{StaticResource AvenirNext}" FontWeight="Regular" FontSize="12" Cursor="Hand"/>
-                                </Border>
-                            </Grid>
-                        </Border>
-                    </Grid>
+                <!--Button-->
+                <Grid Visibility="{Binding SendButtontype, Converter={StaticResource EnumToButtonVisibilityConverter}, Mode=OneWay}" x:Name="InputButton" Grid.Row="1">
+                    <Button x:Name="SendWithIcon" Content="Send" Style="{StaticResource BigButton}" Command="{Binding SendButtonCommand}" Cursor="Hand" />
                 </Grid>
 
-                <!--Output-->
-                <Grid Grid.Row="3" Grid.Column="1">
+                <!--Textbox-->
+                <Grid x:Name="inputTextbox" Grid.Row="2" Height="319" Visibility="{Binding SendButtontype, Converter={StaticResource EnumToTextBoxVisibilityConverter}, Mode=OneWay}">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="319"/>
+                        <RowDefinition Height="10"/>
                     </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="86"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="86"/>
+                        <ColumnDefinition Width="15"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Label x:Name="OutputLabel" Content="Output" Grid.Row="0" FontFamily="{StaticResource AvenirNext}" FontWeight="Regular" FontSize="14" Margin="-10, 0, 0, 0"/>
-                    <Border Grid.Row="1" CornerRadius="3" Background="White">
-                        <Border.Effect>
-                            <DropShadowEffect Color="#FF000000" Opacity="0.1"/>
-                        </Border.Effect>
-                    </Border>
-                    <TextBox x:Name="outputTextBox" Text="{Binding OutputString}" Grid.Row="1" FontFamily="{StaticResource AvenirNext}" FontWeight="Regular" FontSize="12" Padding="20, 20, 20, 20" Background="White" Foreground="#FF333333" TextWrapping="Wrap" AcceptsReturn="False"/>
+                    <TextBox Grid.RowSpan="3" Grid.ColumnSpan="5" x:Name="InputTextBox" Style="{StaticResource MyTextBox}" Text="{Binding InputString}"/>
+                    <!--<Rectangle Grid.RowSpan="3" Grid.ColumnSpan="5" Stroke="#FF653499" StrokeDashArray="3" StrokeThickness="1"/>-->
+                    <Button Grid.Row="1" Grid.Column="3" x:Name="SendButton" Content="Send" Style="{StaticResource SamllSendButton}" Command="{Binding SendButtonCommand}" />
+                    <Button Grid.Row="1" Grid.Column="1" x:Name="ClearButton" Content="Clear" Style="{StaticResource SamllClearButton}" Command="{Binding ClearInputBoxCommand}" />
                 </Grid>
+            </Grid>
+
+            <!--Output-->
+            <Grid Grid.Row="3" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="319"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" x:Name="outputLabel" Content="Output" FontFamily="{StaticResource AvenirNext}" FontWeight="Regular" FontSize="14" Margin="-10, 0, 0, 0"/>
+                <Border Grid.Row="1" CornerRadius="3" Background="White">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#FF000000" Opacity="0.1"/>
+                    </Border.Effect>
+                    <TextBox Grid.Row="1" x:Name="outputTextBox" Text="{Binding OutputString}"/>
+                </Border>
             </Grid>
         </Grid>
     </Grid>
-    <!--<Window.DataContext>
-        --><!--Use MainWindowViewModel as the window data context--><!--
-        <local:MainWindowViewModel/>
-    </Window.DataContext>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="380"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Margin="10,10,20,0">
-            --><!-- Automation API url --><!--
-            <TextBlock Margin="20,0,0,0" Text="Automation API Url" VerticalAlignment="Center"/>
-            <TextBox Margin="140,0,0,0" Text="{Binding APIUrl}" Padding="2,2,0,0" Width="540" Height="24" HorizontalAlignment="Left"/>
-            <Button Margin="0,0,0,0" Command="{Binding ResetCommand}" Content="Reset" Width="60" Height="24" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        </Grid>
-        <Grid Grid.Row="1" Margin="20,0,20,20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Margin="0,26,0,0" >
-                --><!-- Function type --><!--
-                <Button Margin="0,10,0,0" Command="{Binding GetCameraCommand}" Content="Get Camera"/>
-                <Button Margin="0,10,0,0" Command="{Binding SetCameraCommand}" Content="Set Camera"/>
-                <Button Margin="0,10,0,0" Command="{Binding SetFlightCommand}" Content="Fly-to"/>
-                <Button Margin="0,10,0,0" Command="{Binding AddLayerCommand}" Content="Add Layer"/>
-                <Button Margin="0,10,0,0" Command="{Binding GetLayerCommand}" Content="Get Layer"/>
-                <Button Margin="0,10,0,0" Command="{Binding RemoveLayerCommand}" Content="Remove Layer"/>
-                <Button Margin="0,10,0,0" Command="{Binding ClearLayersCommand}" Content="Clear Layers"/>
-                <Button Margin="0,10,0,0" Command="{Binding GetWorkspaceCommand}" Content="Get Workspace"/>
-                <Button Margin="0,10,0,0" Command="{Binding SetWorkspaceCommand}" Content="Import Workspace"/>
-                <Button Margin="0,10,0,0" Command="{Binding ClearWorkspaceCommand}" Content="Clear Workspace"/>
-                <Button Margin="0,10,0,0" Command="{Binding GetSnapshotCommand}" Content="Take Snapshot"/>
-            </StackPanel>
-            <StackPanel Margin="10,0,0,0" Grid.Column="1">
-                --><!-- Input data --><!--
-                <TextBlock Margin="0,10,0,0" Text="Input"/>
-                <TextBox  Margin="0,10,0,0" Height="320" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Text="{Binding InputString}"/>
-            </StackPanel>
-        </Grid>
-        <Grid Grid.Row="2"  Margin="20,0,20,20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Margin="0,26,0,0">
-                --><!-- Function type --><!--
-                <Button Margin="0,10,0,0" Command="{Binding ClearInputBoxCommand}" Content="Clear Input Box"/>
-                <Button Margin="0,10,0,0" Command="{Binding ClearOutputBoxCommand}" Content="Clear Output Box"/>
-                <Button Margin="0,10,0,0" Command="{Binding HelpCommand}" Content="Help"/>
-            </StackPanel>
-            <StackPanel Margin="10,0,0,0" Grid.Column="1">
-                --><!-- Output data --><!--
-                <TextBlock Margin="0,10,0,0" Text="Output"/>
-                <TextBox  Margin="0,10,0,0" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Text="{Binding OutputString}"/>
-            </StackPanel>
-        </Grid>
-    </Grid>-->
 </Window>
