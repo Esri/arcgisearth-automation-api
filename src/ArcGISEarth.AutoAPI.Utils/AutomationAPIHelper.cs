@@ -175,7 +175,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public async Task<string> SetWorkspace(string inputJsonStr)
+        public async Task<string> ImportWorkspace(string inputJsonStr)
         {
             try
             {
@@ -206,7 +206,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public async Task<string> GetSnapshot(string imagePath)
+        public async Task<string> TakeSnapshot(string imagePath)
         {
             try
             {

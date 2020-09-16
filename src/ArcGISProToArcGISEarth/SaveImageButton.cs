@@ -59,7 +59,7 @@ namespace ToArcGISEarth
             if (dialog.ShowDialog() == true)
             {
                 // Get screenshot from ArcGIS Earth.
-                await ToolHelper.Utils.GetSnapshot(dialog.FileName);
+                await ToolHelper.Utils.TakeSnapshot(dialog.FileName);
             }
         }
     }
