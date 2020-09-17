@@ -69,7 +69,6 @@
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                                     <Image x:Name="ImageName" Source="Icons\send_icon_n.png" Width="20" Height="24" VerticalAlignment="Center"/>
                                     <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                                    <!--<TextBlock Text="Send" FontFamily="{StaticResource AvenirNext}" FontSize="18" FontWeight="DemiBold" VerticalAlignment="Center"/>-->
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -175,7 +174,7 @@
             </Setter>
         </Style>
 
-        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="MyTextBox">
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="InputTextBox">
             <Setter Property="Foreground" Value="#000000"/>
             <Setter Property="AcceptsReturn" Value="True"/>
             <Setter Property="AcceptsTab" Value="True"/>
@@ -186,7 +185,7 @@
                         <Border x:Name="border" Background="White" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
                             <Grid>
                                 <ScrollViewer x:Name="PART_ContentHost" Focusable="false" Foreground="Black" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"/>
-                                <Rectangle x:Name="rectangle" Stroke="#653499" StrokeDashArray="4" StrokeThickness="1" Visibility="{TemplateBinding Visibility}"/>
+                                <Rectangle x:Name="PART_Rectangle" Stroke="#653499" StrokeDashArray="4" StrokeThickness="1" Visibility="{TemplateBinding Visibility}"/>
                             </Grid>
                         </Border>
                     </ControlTemplate>
@@ -277,8 +276,19 @@
                         <ColumnDefinition Width="15"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.RowSpan="3" Grid.ColumnSpan="5" x:Name="InputTextBox" Style="{StaticResource MyTextBox}" Text="{Binding InputString}"/>
-                    <!--<Rectangle Grid.RowSpan="3" Grid.ColumnSpan="5" Stroke="#FF653499" StrokeDashArray="3" StrokeThickness="1"/>-->
+                    <TextBox Grid.RowSpan="3" Grid.ColumnSpan="5" x:Name="InputTextBox" Style="{StaticResource InputTextBox}" Text="{Binding InputString}" />
+                    <TextBlock IsHitTestVisible="False" Text="{Binding InputPlaceholderString}" Padding="20" Margin="2 0 0 0" Foreground="#999999">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=InputTextBox}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                     <Button Grid.Row="1" Grid.Column="3" x:Name="SendButton" Content="Send" Style="{StaticResource SamllSendButton}" Command="{Binding SendButtonCommand}" />
                     <Button Grid.Row="1" Grid.Column="1" x:Name="ClearButton" Content="Clear" Style="{StaticResource SamllClearButton}" Command="{Binding ClearInputBoxCommand}" />
                 </Grid>

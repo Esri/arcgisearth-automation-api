@@ -89,6 +89,21 @@ namespace ArcGISEarth.AutoAPI.Examples
             }
         }
 
+        private string _inputPlaceholderString;
+
+        public string InputPlaceholderString
+        {
+            get { return _inputPlaceholderString; }
+            set
+            {
+                if (_inputPlaceholderString != value)
+                {
+                    _inputPlaceholderString = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InputPlaceholderString)));
+                }
+            }
+        }
+
         private string _inputString;
 
         public string InputString
@@ -207,12 +222,14 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.GetCamera:
                     {
                         SendButtontype = SendButtonType.GetCamera;
+                        InputPlaceholderString = "Testing InputPlaceholderString GetCamera";
                         OutputString = "";
                         break;
                     }
                 case FunctionType.SetCamera:
                     {
                         SendButtontype = SendButtonType.SetCamera;
+                        InputPlaceholderString = "Testing InputPlaceholderString SetCamera";
                         OutputString = "";
                         break;
                     }
