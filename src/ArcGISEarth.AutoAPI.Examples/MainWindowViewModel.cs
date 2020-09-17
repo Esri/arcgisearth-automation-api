@@ -14,6 +14,8 @@
 using ArcGISEarth.AutoAPI.Utils;
 using System;
 using System.ComponentModel;
+using System.Runtime.Serialization.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -214,6 +216,26 @@ namespace ArcGISEarth.AutoAPI.Examples
             }
         }
 
+        public string PrettyJson(string unPrettyJson)
+        {
+            var options = new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            };
+
+            var jsonElement = JsonSerializer.Deserialize<JsonElement>(unPrettyJson);
+            return JsonSerializer.Serialize(jsonElement, options);
+        }
+
+        string cameraExample = "{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0}";
+        string flightExample = "{\"camera\":{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0},\"duration\":2}";
+        string addLayerExample = @"{ ""URI"": ""https://www.arcgis.com/home/item.html?id=19dcff93eeb64f208d09d328656dd492"", ""target"": ""operationalLayers"", ""type"": ""PortalItem"" }";
+        string getLayerExample = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
+        string removeLayerExample = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
+        string removeLayersExample = "operationalLayers";
+        string importWorkspaceExample = @"{ ""url"": ""http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"", ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip""}";
+        string takeSnapshotExample = @"D:\ArcGISEarth.png";
+
         private async void ExecuteFuction(FunctionType functionType)
         {            
             switch (functionType)
@@ -222,44 +244,48 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.GetCamera:
                     {
                         SendButtontype = SendButtonType.GetCamera;
-                        InputPlaceholderString = "Testing InputPlaceholderString GetCamera";
                         OutputString = "";
                         break;
                     }
                 case FunctionType.SetCamera:
                     {
                         SendButtontype = SendButtonType.SetCamera;
-                        InputPlaceholderString = "Testing InputPlaceholderString SetCamera";
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(cameraExample);
                         OutputString = "";
                         break;
                     }
                 case FunctionType.SetFlight:
                     {
                         SendButtontype = SendButtonType.SetFlight;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(flightExample);
                         OutputString = "";
                         break;
                     }
                 case FunctionType.AddLayer:
                     {
                         SendButtontype = SendButtonType.AddLayer;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(addLayerExample);
                         OutputString = "";
                         break;
                     }
                 case FunctionType.GetLayer:
                     {
                         SendButtontype = SendButtonType.GetLayer;
+                        InputPlaceholderString = "Example:\n\n" + getLayerExample;
                         OutputString = "";
                         break;
                     }
                 case FunctionType.RemoveLayer:
                     {
                         SendButtontype = SendButtonType.RemoveLayer;
+                        InputPlaceholderString = "Example:\n\n" + removeLayerExample;
                         OutputString = "";
                         break;
                     }
                 case FunctionType.ClearLayers:
                     {
                         SendButtontype = SendButtonType.ClearLayers;
+                        InputPlaceholderString = "Example:\n\n" + removeLayersExample;
                         OutputString = "";
                         break;
                     }
@@ -272,6 +298,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.ImportWorkspace:
                     {
                         SendButtontype = SendButtonType.ImportWorkspace;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(importWorkspaceExample);
                         OutputString = "";
                         break;
                     }
@@ -284,6 +311,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.TakeSnapshot:
                     {
                         SendButtontype = SendButtonType.TakeSnapshot;
+                        InputPlaceholderString = "Example:\n\n" + takeSnapshotExample;
                         OutputString = "";
                         break;
                     }
