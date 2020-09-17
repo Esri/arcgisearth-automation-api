@@ -9,18 +9,16 @@
     <Window.Resources>
         <converter:EnumToButtonVisibilityConverter x:Key="EnumToButtonVisibilityConverter"/>
         <converter:EnumToTextBoxVisibilityConverter x:Key="EnumToTextBoxVisibilityConverter"/>
-        <FontFamily x:Key="Bold">Fonts/Avenir-Bold.otf</FontFamily>
-        <FontFamily x:Key="DemiBold">Fonts/Avenir-Medium.otf</FontFamily>
-        <FontFamily x:Key="AvenirNext">pack://application:,,,/Fonts/#AvenirNext LT Pro</FontFamily>
+        <FontFamily x:Key="Bold">pack://application:,,,/Fonts/Bold/#Avenir Next LT Pro Medium</FontFamily>
+        <FontFamily x:Key="DemiBold">pack://application:,,,/Fonts/Demi/#Avenir Next LT Pro Regular</FontFamily>
         <FontFamily x:Key="Regular">pack://application:,,,/Fonts/#AvenirNext LT Pro Regular</FontFamily>
         
         <Style TargetType="Button" x:Key="CustomButton">
             <Setter Property="Height" Value="40"/>
             <Setter Property="Width" Value="240"/>
-            <Setter Property="FontFamily" Value="{StaticResource AvenirNext}"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontFamily" Value="{StaticResource DemiBold}"/>
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="{x:Null}"/>
             <Setter Property="Foreground" Value="#FF161616"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -31,7 +29,7 @@
                         <Border CornerRadius="4" Background="{TemplateBinding Background}">
                             <Grid>
                                 <Path x:Name="PathIcon" Width="14" Height="36" Stretch="Fill" HorizontalAlignment="Left" Margin="0,0,0,0" Data="M383,152 L394,152 394,176 383,176 z"/>
-                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="54,0,0,0" />
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="54,0,0,0"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -53,7 +51,7 @@
 
         <Style TargetType="Button" x:Key="BigButton">
             <Setter Property="Height" Value="56"/>
-            <Setter Property="FontFamily" Value="{StaticResource AvenirNext}"/>
+            <Setter Property="FontFamily" Value="{StaticResource DemiBold}"/>
             <Setter Property="FontWeight" Value="DemiBold"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="Background" Value="White"/>
@@ -87,8 +85,7 @@
         <Style TargetType="Button" x:Key="SamllClearButton">
             <Setter Property="Height" Value="40"/>
             <Setter Property="Width" Value="86"/>
-            <Setter Property="FontFamily" Value="{StaticResource AvenirNext}"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontFamily" Value="{StaticResource DemiBold}"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="#666666"/>
@@ -115,8 +112,7 @@
         <Style TargetType="Button" x:Key="SamllSendButton">
             <Setter Property="Height" Value="40"/>
             <Setter Property="Width" Value="86"/>
-            <Setter Property="FontFamily" Value="{StaticResource AvenirNext}"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontFamily" Value="{StaticResource DemiBold}"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Background" Value="#653499"/>
             <Setter Property="Foreground" Value="#F5F5F5"/>
@@ -145,9 +141,8 @@
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="{x:Null}"/>
             <Setter Property="SelectionBrush" Value="{x:Null}"/>
-            <Setter Property="FontFamily" Value="{StaticResource AvenirNext}"/>
+            <Setter Property="FontFamily" Value="{StaticResource Regular}"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Regular"/>
             <Setter Property="Padding" Value="20,20,20,20"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="SelectionBrush" Value="LightSkyBlue"/>
@@ -204,31 +199,31 @@
             <RowDefinition Height="*" MinHeight="921"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Text="ArcGIS Earth Automation API Sample" Grid.ColumnSpan="12" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF653499" Foreground="White" FontFamily="Avenir Next LT Pro" FontWeight="Bold" FontSize="24" HorizontalAlignment="Stretch" Padding="50,35,0,0" MinWidth="1440"/>
+        <TextBlock Text="ArcGIS Earth Automation API Sample" Grid.ColumnSpan="12" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF653499" Foreground="White" FontFamily="{StaticResource Bold}" FontSize="24" HorizontalAlignment="Stretch" Padding="50,35,0,0" MinWidth="1440"/>
 
         <Grid Row="1" Grid.Column="0" Background="White">
             <StackPanel Orientation="Vertical">
-                <Button Style="{StaticResource CustomButton}" x:Name="getCameraButton" Content="Get Camera" Command="{Binding GetCameraCommand}" Cursor="Hand" Margin="0, 40, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="getCameraButton" Content="Get Camera" Command="{Binding GetCameraCommand}" Margin="0, 40, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="setCameraButton" Content="Set Camera" Command="{Binding SetCameraCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="setCameraButton" Content="Set Camera" Command="{Binding SetCameraCommand}" Margin="0, 10, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="setFlightButton" Content="Set Flight" Command="{Binding SetFlightCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="setFlightButton" Content="Set Flight" Command="{Binding SetFlightCommand}" Margin="0, 10, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="addLayerButton" Content="Add Layer" Command="{Binding AddLayerCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="addLayerButton" Content="Add Layer" Command="{Binding AddLayerCommand}" Margin="0, 10, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="getLayerButton" Content="Get Layer" Command="{Binding GetLayerCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="getLayerButton" Content="Get Layer" Command="{Binding GetLayerCommand}" Margin="0, 10, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="removeLayerButton" Content="Remove Layer" Command="{Binding RemoveLayerCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="removeLayerButton" Content="Remove Layer" Command="{Binding RemoveLayerCommand}" Margin="0, 10, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="clearLayersButton" Content="Clear Layers" Command="{Binding ClearLayersCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="clearLayersButton" Content="Clear Layers" Command="{Binding ClearLayersCommand}" Margin="0, 10, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="getWorkspaceButton" Content="Get Workspace" Command="{Binding GetWorkspaceCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="getWorkspaceButton" Content="Get Workspace" Command="{Binding GetWorkspaceCommand}" Margin="0, 10, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="importWorkspaceButton" Content="Import Workspace" Command="{Binding ImportWorkspaceCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="importWorkspaceButton" Content="Import Workspace" Command="{Binding ImportWorkspaceCommand}" Margin="0, 10, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="clearWorkspaceButton" Content="Clear Workspace" Command="{Binding ClearWorkspaceCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="clearWorkspaceButton" Content="Clear Workspace" Command="{Binding ClearWorkspaceCommand}" Margin="0, 10, 0, 0"/>
 
-                <Button Style="{StaticResource CustomButton}" x:Name="takeSnapshotButton" Content="Take Snapshot" Command="{Binding TakeSnapshotCommand}" Cursor="Hand" Margin="0, 10, 0, 0"/>
+                <Button Style="{StaticResource CustomButton}" x:Name="takeSnapshotButton" Content="Take Snapshot" Command="{Binding TakeSnapshotCommand}" Margin="0, 10, 0, 0"/>
             </StackPanel>
         </Grid>
         
@@ -254,7 +249,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label x:Name="inputLabel" Content="Input" Grid.Row="0" FontFamily="{StaticResource Regular}" FontWeight="Regular" FontSize="14" Margin="-10, 0, 0, 0"/>
+                <Label x:Name="inputLabel" Content="Input" Grid.Row="0" FontFamily="{StaticResource DemiBold}" FontSize="14" Margin="-10, 0, 0, 0"/>
 
                 <!--Button-->
                 <Grid Visibility="{Binding SendButtontype, Converter={StaticResource EnumToButtonVisibilityConverter}, Mode=OneWay}" x:Name="InputButton" Grid.Row="1">
@@ -276,8 +271,8 @@
                         <ColumnDefinition Width="15"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.RowSpan="3" Grid.ColumnSpan="5" x:Name="InputTextBox" Style="{StaticResource InputTextBox}" Text="{Binding InputString}" />
-                    <TextBlock IsHitTestVisible="False" Text="{Binding InputPlaceholderString}" Padding="20" Margin="2 0 0 0" Foreground="#999999" FontFamily="Avenir Next" FontSize="14">
+                    <TextBox Grid.RowSpan="3" Grid.ColumnSpan="5" x:Name="InputTextBox" Style="{StaticResource InputTextBox}" Text="{Binding InputString}"/>
+                    <TextBlock IsHitTestVisible="False" Text="{Binding InputPlaceholderString}" Padding="20" Margin="2 0 0 0" Foreground="#999999" FontFamily="Avenir Next" FontSize="14" ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -301,7 +296,7 @@
                     <RowDefinition Height="319"/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" x:Name="outputLabel" Content="Output" FontFamily="{StaticResource AvenirNext}" FontWeight="Regular" FontSize="14" Margin="-10, 0, 0, 0"/>
+                <Label Grid.Row="0" x:Name="outputLabel" Content="Output" FontFamily="{StaticResource DemiBold}" FontSize="14" Margin="-10, 0, 0, 0"/>
                 <Border Grid.Row="1" CornerRadius="3" Background="White">
                     <Border.Effect>
                         <DropShadowEffect Color="#FF000000" Opacity="0.1"/>

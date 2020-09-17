@@ -220,11 +220,19 @@ namespace ArcGISEarth.AutoAPI.Examples
         {
             var options = new JsonSerializerOptions()
             {
-                WriteIndented = true
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
             };
 
-            var jsonElement = JsonSerializer.Deserialize<JsonElement>(unPrettyJson);
-            return JsonSerializer.Serialize(jsonElement, options);
+            if (unPrettyJson.StartsWith("{"))
+            {
+                var jsonElement = JsonSerializer.Deserialize<JsonElement>(unPrettyJson);
+                return JsonSerializer.Serialize(jsonElement, options);
+            }
+            else
+            {
+                return unPrettyJson;
+            }
         }
 
         string cameraExample = "{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0}";
@@ -243,12 +251,14 @@ namespace ArcGISEarth.AutoAPI.Examples
                 // More about input string syntax, please refer to "examples.txt".
                 case FunctionType.GetCamera:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.GetCamera;
                         OutputString = "";
                         break;
                     }
                 case FunctionType.SetCamera:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.SetCamera;
                         InputPlaceholderString = "Example:\n\n" + PrettyJson(cameraExample);
                         OutputString = "";
@@ -256,6 +266,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.SetFlight:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.SetFlight;
                         InputPlaceholderString = "Example:\n\n" + PrettyJson(flightExample);
                         OutputString = "";
@@ -263,6 +274,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.AddLayer:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.AddLayer;
                         InputPlaceholderString = "Example:\n\n" + PrettyJson(addLayerExample);
                         OutputString = "";
@@ -270,6 +282,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.GetLayer:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.GetLayer;
                         InputPlaceholderString = "Example:\n\n" + getLayerExample;
                         OutputString = "";
@@ -277,6 +290,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.RemoveLayer:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.RemoveLayer;
                         InputPlaceholderString = "Example:\n\n" + removeLayerExample;
                         OutputString = "";
@@ -284,6 +298,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.ClearLayers:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.ClearLayers;
                         InputPlaceholderString = "Example:\n\n" + removeLayersExample;
                         OutputString = "";
@@ -291,12 +306,14 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.GetWorkspace:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.GetWorkspace;
                         OutputString = "";
                         break;
                     }
                 case FunctionType.ImportWorkspace:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.ImportWorkspace;
                         InputPlaceholderString = "Example:\n\n" + PrettyJson(importWorkspaceExample);
                         OutputString = "";
@@ -304,6 +321,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.ClearWorkspace:
                     {
+                        InputString = "";
                         SendButtontype = SendButtonType.ClearWorkspace;
                         OutputString = "";
                         break;
@@ -322,7 +340,8 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.Send:
                     {
-                        OutputString = await SendMessage(_helper, SendButtontype, InputString);
+                        string outputString = await SendMessage(_helper, SendButtontype, InputString);
+                        OutputString = PrettyJson(outputString);
                         break;
                     }
             }            
