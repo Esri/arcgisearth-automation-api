@@ -84,7 +84,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     _apiUrl = value;
                     if (_helper != null)
                     {
-                        _helper.APIUrl = value;
+                        _helper.APIBaseUrl = value;
                     }
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(APIUrl)));
                 }

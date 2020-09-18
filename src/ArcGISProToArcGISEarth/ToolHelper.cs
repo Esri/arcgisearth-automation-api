@@ -30,7 +30,7 @@ namespace ToArcGISEarth
         // ArcGIS Earth automation api utils.
         public static AutomationAPIHelper Utils { get; } = new AutomationAPIHelper()
         {
-            APIUrl = DEFAULT_API_URL
+            APIBaseUrl = DEFAULT_API_URL
         };
 
         // Logging id and it's infomation when adding layer or elevation source.
@@ -119,7 +119,7 @@ namespace ToArcGISEarth
             Uri.TryCreate(realUrl, UriKind.RelativeOrAbsolute, out Uri uri);
             if (uri != null)
             {
-                realUrl = uri.AbsolutePath; // e.g. "D:/temp/test.slpk/layers/0".
+                realUrl = uri.LocalPath; // e.g. "D:/temp/test.slpk/layers/0".
                 if (realUrl.Length >= 9)
                 {
                     return realUrl.Remove(realUrl.Length - 9, 9); // e.g.  "/D:/temp/test.slpk".
