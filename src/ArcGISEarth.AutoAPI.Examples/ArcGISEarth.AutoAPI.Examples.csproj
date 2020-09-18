@@ -156,9 +156,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\ArcGISEarth.ico" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>IF EXIST $(ProjectDir)obj\project.assets.json DEL /F $(ProjectDir)obj\project.assets.json</PreBuildEvent>
