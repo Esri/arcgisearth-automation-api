@@ -131,8 +131,9 @@ namespace ArcGISEarth.AutoAPI.Utils
             try
             {
                 string layersRequestUrl = $"{APIUrl}/Layers";
-                JObject jobject = JObject.Parse(inputJsonStr);
-                string tartget = jobject["target"].ToString();
+                //JObject jobject = JObject.Parse(inputJsonStr);
+                //string tartget = jobject["target"].ToString();
+                string tartget = inputJsonStr;
                 string url = null;
                 if (tartget.Equals(TARGET_OPERATIONALLAYERS, StringComparison.OrdinalIgnoreCase))
                 {
@@ -148,7 +149,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 }
                 if (url == null)
                 {
-                    throw new Exception("Please type correct string.");
+                    throw new Exception("Please input a correct target value: OperationalLayers, baseMaps, or elevationLayers.");
                 }
                 HttpClient httpClient = new HttpClient();
                 HttpResponseMessage responseMessage = await httpClient.DeleteAsync(url);
@@ -230,16 +231,16 @@ namespace ArcGISEarth.AutoAPI.Utils
                             var image = Image.FromStream(stream);
                             image.Save(imagePath);
                         }
-                        return "Save snapshot successful!";
+                        return "Take snapshot successfully: " + imagePath + ".";
                     }
                     else
                     {
-                        return "Save snapshot failed, please type correct image format!";
+                        return "Take snapshot failed, please try to input a correct image format.";
                     }
                 }
                 else
                 {
-                    return "Save snapshot failed, please type correct file path!";
+                    return "Take snapshot failed, please input a correct file path.";
                 }
             }
             catch (Exception ex)

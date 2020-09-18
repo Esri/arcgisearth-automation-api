@@ -340,6 +340,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.Send:
                     {
+                        OutputString = "Waiting response...";
                         string outputString = await SendMessage(_helper, SendButtontype, InputString);
                         OutputString = PrettyJson(outputString);
                         break;
