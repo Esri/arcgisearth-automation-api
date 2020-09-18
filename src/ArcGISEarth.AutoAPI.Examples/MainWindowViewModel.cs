@@ -135,7 +135,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 }
             }
         }
-
+        
         public ICommand GetCameraCommand { get; private set; }
 
         public ICommand SetCameraCommand { get; private set; }
@@ -170,8 +170,8 @@ namespace ArcGISEarth.AutoAPI.Examples
             // Initialize variable and property.            
             _helper = new AutomationAPIHelper();
             APIUrl = DEFAULT_API_URL;
-            InputString = string.Empty;
-            OutputString = string.Empty;
+            InputString = string.Empty; 
+             OutputString = string.Empty;
             GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
             SetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetCamera));
             SetFlightCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetFlight));
