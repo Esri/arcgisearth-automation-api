@@ -184,7 +184,7 @@
             </Setter>
         </Style>
 
-        <Style TargetType="TextBox">
+        <Style TargetType="TextBox" x:Key="OutputTextBox">
             <Setter Property="Foreground" Value="#333333"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderBrush" Value="{x:Null}"/>
@@ -218,7 +218,7 @@
             </Setter>
         </Style>
 
-        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}" x:Key="InputTextBox">
+        <Style TargetType="TextBox" BasedOn="{StaticResource OutputTextBox}" x:Key="InputTextBox">
             <Setter Property="Foreground" Value="#000000"/>
             <Setter Property="AcceptsReturn" Value="True"/>
             <Setter Property="AcceptsTab" Value="True"/>
@@ -248,8 +248,14 @@
                 <RowDefinition Height="103"/>
                 <RowDefinition Height="*" MinHeight="810"/>
             </Grid.RowDefinitions>
-        
-            <TextBlock Text="ArcGIS Earth Automation API Sample" Grid.ColumnSpan="12" Grid.Row="0" VerticalAlignment="Stretch" Background="#FF653499" Foreground="White" FontFamily="{StaticResource Bold}" FontSize="24" HorizontalAlignment="Stretch" Padding="50,35,0,0" MinWidth="1440"/>
+            <StackPanel Grid.ColumnSpan="12" Grid.Row="0" Orientation="Vertical" Background="#FF653499" >
+                <TextBlock Text="ArcGIS Earth Automation API Sample" Foreground="White" FontFamily="{StaticResource Bold}" FontSize="24" Padding="50, 35, 0, 0"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="baseUrl: " Background="#FF653499" Foreground="White" FontFamily="{StaticResource Regular}" FontSize="14" Padding="50, 2, 0, 0"/>
+                    <TextBox Text="{Binding APIUrl}" TextDecorations="Underline" Background="#FF653499" Foreground="White" BorderThickness="0" FontFamily="{StaticResource Regular}" FontSize="14" Padding="0, 2, 0, 0" />
+                </StackPanel>
+            </StackPanel>
+            
 
             <Grid Row="1" Grid.Column="0" Background="White">
                 <ListView Margin="-2, 0" BorderBrush="{x:Null}">
@@ -408,7 +414,7 @@
                         <Border.Effect>
                             <DropShadowEffect Color="#FF000000" Opacity="0.1"/>
                         </Border.Effect>
-                        <TextBox Grid.Row="1" x:Name="outputTextBox" Text="{Binding OutputString}"/>
+                        <TextBox Grid.Row="1" Style="{StaticResource OutputTextBox}" x:Name="outputTextBox" Text="{Binding OutputString}"/>
                     </Border>
                 </Grid>
             </Grid>

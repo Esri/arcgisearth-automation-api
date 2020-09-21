@@ -83,7 +83,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     _apiUrl = value;
                     if (_helper != null)
                     {
-                        _helper.APIBaseUrl = value;
+                        _helper.APIBaseUrl = value.Trim();
                     }
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(APIUrl)));
                 }
@@ -170,7 +170,7 @@ namespace ArcGISEarth.AutoAPI.Examples
             _helper = new AutomationAPIHelper();
             APIUrl = DEFAULT_API_URL;
             InputString = string.Empty; 
-             OutputString = string.Empty;
+            OutputString = string.Empty;
             GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
             SetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetCamera));
             SetFlightCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetFlight));
