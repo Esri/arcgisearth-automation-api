@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using static ArcGISEarth.AutoAPI.Examples.MainWindowViewModel;
 
 namespace ArcGISEarth.AutoAPI.Examples.Converter
 {
-    public class EnumToButtonVisibilityConverter : IValueConverter
+    public class EnumToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

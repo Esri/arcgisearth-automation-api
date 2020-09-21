@@ -14,7 +14,6 @@
 using ArcGISEarth.AutoAPI.Utils;
 using System;
 using System.ComponentModel;
-using System.Runtime.Serialization.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -235,14 +234,14 @@ namespace ArcGISEarth.AutoAPI.Examples
             }
         }
 
-        string cameraExample = "{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0}";
-        string flightExample = "{\"camera\":{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0},\"duration\":2}";
-        string addLayerExample = @"{ ""URI"": ""https://www.arcgis.com/home/item.html?id=19dcff93eeb64f208d09d328656dd492"", ""target"": ""operationalLayers"", ""type"": ""PortalItem"" }";
-        string getLayerExample = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
-        string removeLayerExample = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
-        string removeLayersExample = "operationalLayers";
-        string importWorkspaceExample = @"{ ""url"": ""http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"", ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip""}";
-        string takeSnapshotExample = @"D:\ArcGISEarth.png";
+        private const string CAMERA_EXAMPLE = "{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0}";
+        private const string FLIGHT_EXAMPLE = "{\"camera\":{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0},\"duration\":2}";
+        private const string ADDLAYER_EXAMPLE = @"{ ""URI"": ""https://www.arcgis.com/home/item.html?id=19dcff93eeb64f208d09d328656dd492"", ""target"": ""operationalLayers"", ""type"": ""PortalItem"" }";
+        private const string GETLAYER_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
+        private const string REMOVELAYER_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
+        private const string REMOVELAYERS_EXAMPLE = "operationalLayers";
+        private const string IMPORTWORKSPACE_EXAMPLE = @"{ ""url"": ""http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"", ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip""}";
+        private const string TAKESNAPSHOT_EXAMPLE = @"D:\ArcGISEarth.png";
 
         private async void ExecuteFuction(FunctionType functionType)
         {            
@@ -260,7 +259,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     {
                         InputString = "";
                         SendButtontype = SendButtonType.SetCamera;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(cameraExample);
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(CAMERA_EXAMPLE);
                         OutputString = "";
                         break;
                     }
@@ -268,7 +267,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     {
                         InputString = "";
                         SendButtontype = SendButtonType.SetFlight;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(flightExample);
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(FLIGHT_EXAMPLE);
                         OutputString = "";
                         break;
                     }
@@ -276,7 +275,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     {
                         InputString = "";
                         SendButtontype = SendButtonType.AddLayer;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(addLayerExample);
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(ADDLAYER_EXAMPLE);
                         OutputString = "";
                         break;
                     }
@@ -284,7 +283,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     {
                         InputString = "";
                         SendButtontype = SendButtonType.GetLayer;
-                        InputPlaceholderString = "Example:\n\n" + getLayerExample;
+                        InputPlaceholderString = "Example:\n\n" + GETLAYER_EXAMPLE;
                         OutputString = "";
                         break;
                     }
@@ -292,7 +291,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     {
                         InputString = "";
                         SendButtontype = SendButtonType.RemoveLayer;
-                        InputPlaceholderString = "Example:\n\n" + removeLayerExample;
+                        InputPlaceholderString = "Example:\n\n" + REMOVELAYER_EXAMPLE;
                         OutputString = "";
                         break;
                     }
@@ -300,7 +299,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     {
                         InputString = "";
                         SendButtontype = SendButtonType.ClearLayers;
-                        InputPlaceholderString = "Example:\n\n" + removeLayersExample;
+                        InputPlaceholderString = "Example:\n\n" + REMOVELAYERS_EXAMPLE;
                         OutputString = "";
                         break;
                     }
@@ -315,7 +314,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                     {
                         InputString = "";
                         SendButtontype = SendButtonType.ImportWorkspace;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(importWorkspaceExample);
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(IMPORTWORKSPACE_EXAMPLE);
                         OutputString = "";
                         break;
                     }
@@ -329,7 +328,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.TakeSnapshot:
                     {
                         SendButtontype = SendButtonType.TakeSnapshot;
-                        InputPlaceholderString = "Example:\n\n" + takeSnapshotExample;
+                        InputPlaceholderString = "Example:\n\n" + TAKESNAPSHOT_EXAMPLE;
                         OutputString = "";
                         break;
                     }

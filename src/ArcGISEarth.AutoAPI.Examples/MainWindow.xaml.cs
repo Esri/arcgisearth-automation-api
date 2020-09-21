@@ -11,10 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Windows;
-using System.Windows.Data;
 
 namespace ArcGISEarth.AutoAPI.Examples
 {

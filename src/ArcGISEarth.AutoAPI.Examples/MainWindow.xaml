@@ -5,15 +5,14 @@
         xmlns:local="clr-namespace:ArcGISEarth.AutoAPI.Examples"
         xmlns:converter="clr-namespace:ArcGISEarth.AutoAPI.Examples.Converter"
         Title="ArcGIS Earth Automation API Sample" Height="1024" Width="1440"
-        Icon="./Icons/API.ico"
-        Name="APIWindow"
+        Icon="./Icons/logo.ico"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <converter:EnumToButtonVisibilityConverter x:Key="EnumToButtonVisibilityConverter"/>
+        <converter:EnumToVisibilityConverter x:Key="EnumToButtonVisibilityConverter"/>
         <converter:EnumToTextBoxVisibilityConverter x:Key="EnumToTextBoxVisibilityConverter"/>
-        <FontFamily x:Key="Bold">pack://application:,,,/Fonts/Bold/#Avenir Next LT Pro Medium</FontFamily>
-        <FontFamily x:Key="DemiBold">pack://application:,,,/Fonts/Demi/#Avenir Next LT Pro Regular</FontFamily>
-        <FontFamily x:Key="Regular">pack://application:,,,/Fonts/#Avenir Next LT Pro Regular</FontFamily>
+        <FontFamily x:Key="Bold">Avenir Next LT Pro Bold</FontFamily>
+        <FontFamily x:Key="DemiBold">Avenir Next LT Pro Demi</FontFamily>
+        <FontFamily x:Key="Regular">Avenir Next LT Pro Regular</FontFamily>
         
         <Style TargetType="{x:Type ListViewItem}" x:Key="SideListViewItem">
             <Setter Property="Height" Value="40"/>
@@ -112,7 +111,7 @@
                             <Grid>
                                 <Rectangle Stroke="#653499" StrokeDashArray="4" StrokeThickness="1"/>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                                    <Image x:Name="ImageName" Source="Icons\send_icon_n.png" Width="20" Height="24" VerticalAlignment="Center"/>
+                                    <Image x:Name="ImageName" Source="Icons\send_normal_icon.png" Width="20" Height="24" VerticalAlignment="Center"/>
                                     <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
                                 </StackPanel>
                             </Grid>
@@ -121,7 +120,7 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#653499"/>
                                 <Setter Property="Foreground" Value="#FFFFFF"/>
-                                <Setter TargetName="ImageName" Property="Source" Value="Icons\send_icon_h.png"/>
+                                <Setter TargetName="ImageName" Property="Source" Value="Icons\send_hover_icon.png"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
