@@ -12,9 +12,9 @@
 // limitations under the License.
 
 using ArcGISEarth.AutoAPI.Utils;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -215,22 +215,16 @@ namespace ArcGISEarth.AutoAPI.Examples
             }
         }
 
-        public string PrettyJson(string unPrettyJson)
+        public string PrettyJson(string jsonString)
         {
-            var options = new JsonSerializerOptions()
+            try
             {
-                WriteIndented = true,
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
-            };
-
-            if (unPrettyJson.StartsWith("{"))
-            {
-                var jsonElement = JsonSerializer.Deserialize<JsonElement>(unPrettyJson);
-                return JsonSerializer.Serialize(jsonElement, options);
+                var obj = JsonConvert.DeserializeObject(jsonString);
+                return JsonConvert.SerializeObject(obj, Formatting.Indented);
             }
-            else
+            catch (Exception ex)
             {
-                return unPrettyJson;
+                return ex.Message;
             }
         }
 
