@@ -78,15 +78,7 @@ namespace ArcGISEarth.AutoAPI.Examples
             get { return _apiUrl; }
             set
             {
-                if (_apiUrl != value)
-                {
-                    _apiUrl = value;
-                    if (_helper != null)
-                    {
-                        _helper.APIBaseUrl = value.Trim();
-                    }
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(APIUrl)));
-                }
+                _apiUrl = value;
             }
         }
 
@@ -161,14 +153,12 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         public ICommand SendButtonCommand { get; private set; }
 
-        private const string DEFAULT_API_URL = "http://localhost:8000/arcgisearth";
-
 
         public MainWindowViewModel()
         {
             // Initialize variable and property.            
             _helper = new AutomationAPIHelper();
-            APIUrl = DEFAULT_API_URL;
+            APIUrl = _helper.APIBaseUrl;
             InputString = string.Empty; 
             OutputString = string.Empty;
             GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
@@ -219,8 +209,16 @@ namespace ArcGISEarth.AutoAPI.Examples
         {
             try
             {
-                var obj = JsonConvert.DeserializeObject(jsonString);
-                return JsonConvert.SerializeObject(obj, Formatting.Indented);
+                // Handle non-json format output.
+                if (jsonString.StartsWith("{"))
+                {
+                    var obj = JsonConvert.DeserializeObject(jsonString);
+                    return JsonConvert.SerializeObject(obj, Formatting.Indented);
+                }
+                else
+                {
+                    return jsonString;
+                }
             }
             catch (Exception ex)
             {

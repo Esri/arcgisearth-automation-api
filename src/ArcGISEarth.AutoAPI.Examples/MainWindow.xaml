@@ -250,10 +250,10 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.ColumnSpan="12" Grid.Row="0" Orientation="Vertical" Background="#FF653499" >
                 <TextBlock Text="ArcGIS Earth Automation API Sample" Foreground="White" FontFamily="{StaticResource Bold}" FontSize="24" Padding="50, 35, 0, 0"/>
-                <StackPanel Orientation="Horizontal">
+                <!--<StackPanel Orientation="Horizontal">
                     <TextBlock Text="baseUrl: " Background="#FF653499" Foreground="White" FontFamily="{StaticResource Regular}" FontSize="14" Padding="50, 2, 0, 0"/>
                     <TextBox Text="{Binding APIUrl}" TextDecorations="Underline" Background="#FF653499" Foreground="White" BorderThickness="0" FontFamily="{StaticResource Regular}" FontSize="14" Padding="0, 2, 0, 0" />
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
             
 
