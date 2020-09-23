@@ -26,7 +26,7 @@ namespace ToArcGISEarth
         protected override void OnClick()
         {
             IsChecked = true;
-            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Are you sure you want to remove all items from current workspace?", null, MessageBoxButton.OKCancel);
+            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Are you sure you want to remove all items from current workspace of ArcGIS Earth?", null, MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 ClearAll();

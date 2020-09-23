@@ -15,7 +15,7 @@ ArcGIS Earth Automation API provides a standard interface for 3rd party applicat
 </div>
 
 ## Requirements
-* `ArcGISEarth.AutoAPI.Examples` project and `ArcGISEarth.AutoAPI.Utils` project require .NET Framework 4.6.1 or later.
+* `ArcGISEarth.AutoAPI.Examples` project and `ArcGISEarth.AutoAPI.Shared` project require .NET Framework 4.6.1 or later.
 * `ArcGISProToArcGISEarth` project requires .NET Framework 4.8 or later.
 
 ## Features

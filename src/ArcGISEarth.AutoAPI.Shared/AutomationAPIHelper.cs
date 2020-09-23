@@ -11,6 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Newtonsoft.Json.Linq;
 using System;
 using System.Drawing;
 using System.IO;
@@ -28,9 +29,20 @@ namespace ArcGISEarth.AutoAPI.Utils
         private const string LayersControllerName = "layers";
         private const string WorkspaceControllerName = "workspace";
         private const string SnapshotControllerName = "snapshot";
+        private const string DEFAULT_BASEURL = "http://localhost:8000";
+        private const string END_POINT = "/arcgisearth";
 
-        public string APIBaseUrl { get; set; }
+        public string APIBaseUrl 
+        {
+            get { return GetBaseUrl(); }
+        }
 
+        #region Automation API Function Tasks
+
+        /// <summary>
+        /// Automation API Functions
+        /// </summary>
+        /// <returns>Automation API response message</returns>
         public async Task<string> GetCamera()
         {
             try
@@ -156,7 +168,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public async Task<string> SetWorkspace(string inputJsonStr)
+        public async Task<string> ImportWorkspace(string inputJsonStr)
         {
             try
             {
@@ -187,7 +199,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public async Task<string> GetSnapshot(string imagePath)
+        public async Task<string> TakeSnapshot(string imagePath)
         {
             try
             {
@@ -211,16 +223,16 @@ namespace ArcGISEarth.AutoAPI.Utils
                             var image = Image.FromStream(stream);
                             image.Save(imagePath);
                         }
-                        return "Save snapshot successful!";
+                        return "Take snapshot successfully: " + imagePath + ".";
                     }
                     else
                     {
-                        return "Save snapshot failed, please type correct image format!";
+                        return "Take snapshot failed, please try to input a correct image format.";
                     }
                 }
                 else
                 {
-                    return "Save snapshot failed, please type correct file path!";
+                    return "Take snapshot failed, please input a correct file path.";
                 }
             }
             catch (Exception ex)
@@ -228,6 +240,8 @@ namespace ArcGISEarth.AutoAPI.Utils
                 return ex.Message;
             }
         }
+
+        #endregion
 
         private HttpContent ConvertJsonToHttpContent(string json)
         {
@@ -242,5 +256,67 @@ namespace ArcGISEarth.AutoAPI.Utils
             HttpContent content = responseMessage.Content;
             return await content.ReadAsStringAsync();
         }
+
+        #region Get Automation API baseUrl from settings
+
+        public static string DefaultWebRootFolder
+        {
+            get
+            {
+                string myFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                if (!myFolder.EndsWith("\\"))
+                {
+                    myFolder += "\\";
+                }
+                myFolder += "ArcGISEarth\\automation\\";
+
+                if (!Directory.Exists(myFolder))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(myFolder);
+                    }
+                    catch { }
+                }
+
+                return myFolder;
+            }
+        }
+
+        private static string GetBaseUrl()
+        {
+            string baseUrl = null;
+
+            try
+            {
+                string expectedSettingPath = Path.Combine(DefaultWebRootFolder, "settings.json");
+
+                if (File.Exists(expectedSettingPath))
+                {
+                    string json = File.ReadAllText(expectedSettingPath);
+                    JObject setting = JObject.Parse(json);
+                    if (setting != null)
+                    {
+                        baseUrl = setting["baseUrl"].ToString();
+                    }
+                    else
+                    {
+                        return DEFAULT_BASEURL + END_POINT;
+                    }
+                }
+                else
+                {
+                    return DEFAULT_BASEURL + END_POINT;
+                }
+
+                return baseUrl + END_POINT;
+            }
+            catch
+            {
+                return DEFAULT_BASEURL + END_POINT;
+            }
+        }
+
+        #endregion
     }
 }

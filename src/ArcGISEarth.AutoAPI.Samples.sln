@@ -12,6 +12,7 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ArcGISEarth.AutoAPI.Shared\ArcGISEarth.AutoAPI.Shared.projitems*{5159e20a-f3b9-4d45-b27e-22d3cabcc8ab}*SharedItemsImports = 13
+		ArcGISEarth.AutoAPI.Shared\ArcGISEarth.AutoAPI.Shared.projitems*{94776263-9f12-4574-927e-c3c2de42bcaf}*SharedItemsImports = 4
 		ArcGISEarth.AutoAPI.Shared\ArcGISEarth.AutoAPI.Shared.projitems*{e6b66ef3-7476-4b46-8b15-468e77065f46}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

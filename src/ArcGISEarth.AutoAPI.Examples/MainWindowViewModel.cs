@@ -12,8 +12,10 @@
 // limitations under the License.
 
 using ArcGISEarth.AutoAPI.Utils;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ArcGISEarth.AutoAPI.Examples
@@ -21,7 +23,6 @@ namespace ArcGISEarth.AutoAPI.Examples
     internal enum FunctionType
     {
         // UI function type
-        Reset,
         GetCamera,
         SetCamera,
         SetFlight,
@@ -30,12 +31,11 @@ namespace ArcGISEarth.AutoAPI.Examples
         RemoveLayer,
         ClearLayers,
         GetWorkspace,
-        SetWorkspace,
+        ImportWorkspace,
         ClearWorkspace,
-        GetSnapshot,
+        TakeSnapshot,
         ClearInputputBox,
-        ClearOutputBox,
-        Help
+        Send
     }
 
     internal class FunctionTypeCommand : ICommand
@@ -78,14 +78,21 @@ namespace ArcGISEarth.AutoAPI.Examples
             get { return _apiUrl; }
             set
             {
-                if (_apiUrl != value)
+                _apiUrl = value;
+            }
+        }
+
+        private string _inputPlaceholderString;
+
+        public string InputPlaceholderString
+        {
+            get { return _inputPlaceholderString; }
+            set
+            {
+                if (_inputPlaceholderString != value)
                 {
-                    _apiUrl = value;
-                    if (_helper != null)
-                    {
-                        _helper.APIBaseUrl = value;
-                    }
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(APIUrl)));
+                    _inputPlaceholderString = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InputPlaceholderString)));
                 }
             }
         }
@@ -119,11 +126,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 }
             }
         }
-
-        public ICommand OKCommand { get; private set; }
-
-        public ICommand ResetCommand { get; private set; }
-
+        
         public ICommand GetCameraCommand { get; private set; }
 
         public ICommand SetCameraCommand { get; private set; }
@@ -140,28 +143,24 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         public ICommand GetWorkspaceCommand { get; private set; }
 
-        public ICommand SetWorkspaceCommand { get; private set; }
+        public ICommand ImportWorkspaceCommand { get; private set; }
 
         public ICommand ClearWorkspaceCommand { get; private set; }
 
-        public ICommand GetSnapshotCommand { get; private set; }
+        public ICommand TakeSnapshotCommand { get; private set; }
 
         public ICommand ClearInputBoxCommand { get; private set; }
 
-        public ICommand ClearOutputBoxCommand { get; private set; }
+        public ICommand SendButtonCommand { get; private set; }
 
-        public ICommand HelpCommand { get; private set; }
-
-        private const string DEFAULT_API_URL = "http://localhost:8000/arcgisearth";
 
         public MainWindowViewModel()
         {
             // Initialize variable and property.            
-            _helper = new AutomationAPIHelper();            
-            APIUrl = DEFAULT_API_URL;
-            InputString = string.Empty;
+            _helper = new AutomationAPIHelper();
+            APIUrl = _helper.APIBaseUrl;
+            InputString = string.Empty; 
             OutputString = string.Empty;
-            ResetCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Reset));
             GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
             SetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetCamera));
             SetFlightCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetFlight));
@@ -170,77 +169,159 @@ namespace ArcGISEarth.AutoAPI.Examples
             RemoveLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.RemoveLayer));
             ClearLayersCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearLayers));
             GetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetWorkspace));
-            SetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetWorkspace));
+            ImportWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ImportWorkspace));
             ClearWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearWorkspace));
-            GetSnapshotCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetSnapshot));
+            TakeSnapshotCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.TakeSnapshot));
             ClearInputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearInputputBox));
-            ClearOutputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearOutputBox));
-            HelpCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Help));
+            SendButtonCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Send));
         }
 
-        private async void ExecuteFuction(FunctionType functionType)
+        public enum SendButtonType
         {
+            GetCamera,
+            SetCamera,
+            SetFlight,
+            AddLayer,
+            GetLayer,
+            RemoveLayer,
+            ClearLayers,
+            GetWorkspace,
+            ImportWorkspace,
+            ClearWorkspace,
+            TakeSnapshot
+        }
+
+        private SendButtonType _sendButtonType;
+        public SendButtonType SendButtontype 
+        {
+            get { return _sendButtonType; }
+            set 
+            {
+                if (_sendButtonType != value)
+                {
+                    _sendButtonType = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SendButtontype)));
+                }
+            }
+        }
+
+        public string PrettyJson(string jsonString)
+        {
+            try
+            {
+                // Handle non-json format output.
+                if (jsonString.StartsWith("{"))
+                {
+                    var obj = JsonConvert.DeserializeObject(jsonString);
+                    return JsonConvert.SerializeObject(obj, Formatting.Indented);
+                }
+                else
+                {
+                    return jsonString;
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        private const string CAMERA_EXAMPLE = "{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0}";
+        private const string FLIGHT_EXAMPLE = "{\"camera\":{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0},\"duration\":2}";
+        private const string ADDLAYER_EXAMPLE = @"{ ""URI"": ""https://www.arcgis.com/home/item.html?id=19dcff93eeb64f208d09d328656dd492"", ""target"": ""operationalLayers"", ""type"": ""PortalItem"" }";
+        private const string GETLAYER_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
+        private const string REMOVELAYER_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
+        private const string REMOVELAYERS_EXAMPLE = "operationalLayers";
+        private const string IMPORTWORKSPACE_EXAMPLE = @"{ ""url"": ""http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"", ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip""}";
+        private const string TAKESNAPSHOT_EXAMPLE = @"D:\ArcGISEarth.png";
+
+        private async void ExecuteFuction(FunctionType functionType)
+        {            
             switch (functionType)
             {
-                case FunctionType.Reset:
-                    {
-                        APIUrl = DEFAULT_API_URL;                        
-                        break;
-                    }
                 // More about input string syntax, please refer to "examples.txt".
                 case FunctionType.GetCamera:
                     {
-                        OutputString = await _helper.GetCamera();
+                        InputString = "";
+                        SendButtontype = SendButtonType.GetCamera;
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.SetCamera:
                     {
-                        OutputString = await _helper.SetCamera(InputString);
+                        InputString = "";
+                        SendButtontype = SendButtonType.SetCamera;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(CAMERA_EXAMPLE);
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.SetFlight:
                     {
-                        OutputString = await _helper.SetFlight(InputString);
+                        InputString = "";
+                        SendButtontype = SendButtonType.SetFlight;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(FLIGHT_EXAMPLE);
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.AddLayer:
                     {
-                        OutputString = await _helper.AddLayer(InputString);
+                        InputString = "";
+                        SendButtontype = SendButtonType.AddLayer;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(ADDLAYER_EXAMPLE);
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.GetLayer:
                     {
-                        OutputString = await _helper.GetLayer(InputString);
+                        InputString = "";
+                        SendButtontype = SendButtonType.GetLayer;
+                        InputPlaceholderString = "Example:\n\n" + GETLAYER_EXAMPLE;
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.RemoveLayer:
                     {
-                        OutputString = await _helper.RemoveLayer(InputString);
+                        InputString = "";
+                        SendButtontype = SendButtonType.RemoveLayer;
+                        InputPlaceholderString = "Example:\n\n" + REMOVELAYER_EXAMPLE;
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.ClearLayers:
                     {
-                        OutputString = await _helper.ClearLayers(InputString);
+                        InputString = "";
+                        SendButtontype = SendButtonType.ClearLayers;
+                        InputPlaceholderString = "Example:\n\n" + REMOVELAYERS_EXAMPLE;
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.GetWorkspace:
                     {
-                        OutputString = await _helper.GetWorkspace();
+                        InputString = "";
+                        SendButtontype = SendButtonType.GetWorkspace;
+                        OutputString = "";
                         break;
                     }
-                case FunctionType.SetWorkspace:
+                case FunctionType.ImportWorkspace:
                     {
-                        OutputString = await _helper.SetWorkspace(InputString);
+                        InputString = "";
+                        SendButtontype = SendButtonType.ImportWorkspace;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(IMPORTWORKSPACE_EXAMPLE);
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.ClearWorkspace:
                     {
-                        OutputString = await _helper.ClearWorkspace();
+                        InputString = "";
+                        SendButtontype = SendButtonType.ClearWorkspace;
+                        OutputString = "";
                         break;
                     }
-                case FunctionType.GetSnapshot:
+                case FunctionType.TakeSnapshot:
                     {
-                        OutputString = await _helper.GetSnapshot(InputString);
+                        SendButtontype = SendButtonType.TakeSnapshot;
+                        InputPlaceholderString = "Example:\n\n" + TAKESNAPSHOT_EXAMPLE;
+                        OutputString = "";
                         break;
                     }
                 case FunctionType.ClearInputputBox:
@@ -248,17 +329,56 @@ namespace ArcGISEarth.AutoAPI.Examples
                         InputString = "";
                         break;
                     }
-                case FunctionType.ClearOutputBox:
+                case FunctionType.Send:
                     {
-                        OutputString = "";
+                        OutputString = "Waiting response...";
+                        string outputString = await SendMessage(_helper, SendButtontype, InputString);
+                        OutputString = PrettyJson(outputString);
                         break;
                     }
-                case FunctionType.Help:
-                    {
-                        OutputString = Properties.Resources.examples;
-                        break;
-                    }
+            }            
+        }
+
+        private async Task<string> SendMessage(AutomationAPIHelper helper, SendButtonType sendType, string inputStr)
+        {
+            string outputStr = null;
+            switch (sendType)
+            {
+                case SendButtonType.GetCamera:
+                    outputStr = await helper.GetCamera();
+                    break;
+                case SendButtonType.SetCamera:
+                    outputStr = await helper.SetCamera(inputStr);
+                    break;
+                case SendButtonType.SetFlight:
+                    outputStr = await helper.SetFlight(inputStr);
+                    break;
+                case SendButtonType.AddLayer:
+                    outputStr = await helper.AddLayer(inputStr);
+                    break;
+                case SendButtonType.GetLayer:
+                    outputStr = await helper.GetLayer(inputStr);
+                    break;
+                case SendButtonType.RemoveLayer:
+                    outputStr = await helper.RemoveLayer(inputStr);
+                    break;
+                case SendButtonType.ClearLayers:
+                    outputStr = await helper.ClearLayers(inputStr);
+                    break;
+                case SendButtonType.GetWorkspace:
+                    outputStr = await helper.GetWorkspace();
+                    break;
+                case SendButtonType.ImportWorkspace:
+                    outputStr = await helper.ImportWorkspace(inputStr);
+                    break;
+                case SendButtonType.ClearWorkspace:
+                    outputStr = await helper.ClearWorkspace();
+                    break;
+                case SendButtonType.TakeSnapshot:
+                    outputStr = await helper.TakeSnapshot(inputStr);
+                    break;
             }
+            return outputStr;
         }
     }
 }

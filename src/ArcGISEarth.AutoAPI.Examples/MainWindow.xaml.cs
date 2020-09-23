@@ -20,6 +20,7 @@ namespace ArcGISEarth.AutoAPI.Examples
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
         }
     }
 }
