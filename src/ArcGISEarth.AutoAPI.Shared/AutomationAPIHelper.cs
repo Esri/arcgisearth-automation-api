@@ -13,11 +13,12 @@
 
 using Newtonsoft.Json.Linq;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace ArcGISEarth.AutoAPI.Utils
 {
@@ -199,45 +200,73 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
 
-        public async Task<string> TakeSnapshot(string imagePath)
+        //public async Task<string> TakeSnapshot(string imagePath)
+        //{
+        //    try
+        //    {
+        //        string snapshotRequestUrl = $"{APIBaseUrl}/{SnapshotControllerName}";
+        //        var uri = new Uri(imagePath);
+        //        if (uri.IsAbsoluteUri && uri.IsFile)
+        //        {
+        //            var ext = Path.GetExtension(imagePath);
+        //            if (string.IsNullOrEmpty(ext))
+        //            {
+        //                imagePath += ".jpg";
+        //            }
+        //            ext = Path.GetExtension(imagePath).ToLower();
+        //            if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".tif" || ext == ".tiff")
+        //            {
+        //                HttpClient httpClient = new HttpClient();
+        //                HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl);
+        //                HttpContent content = responseMessage.Content;
+        //                using (Stream stream = await content.ReadAsStreamAsync())
+        //                {
+        //                    var image = Image.FromStream(stream);
+        //                    image.Save(imagePath);
+        //                }
+
+        //                return "Take snapshot successfully: " + imagePath + ".";
+        //            }
+        //            else
+        //            {
+        //                return "Take snapshot failed, please try to input a correct image format.";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return "Take snapshot failed, please input a correct file path.";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ex.Message;
+        //    }
+        //}
+
+        public async Task<ImageSource> TakeSnapshot()
         {
             try
             {
                 string snapshotRequestUrl = $"{APIBaseUrl}/{SnapshotControllerName}";
-                var uri = new Uri(imagePath);
-                if (uri.IsAbsoluteUri && uri.IsFile)
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl);
+                HttpContent content = responseMessage.Content;
+
+                BitmapImage biImg = new BitmapImage();
+                using (Stream stream = await content.ReadAsStreamAsync())
                 {
-                    var ext = Path.GetExtension(imagePath);
-                    if (string.IsNullOrEmpty(ext))
-                    {
-                        imagePath += ".jpg";
-                    }
-                    ext = Path.GetExtension(imagePath).ToLower();
-                    if (ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".tif" || ext == ".tiff")
-                    {
-                        HttpClient httpClient = new HttpClient();
-                        HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl);
-                        HttpContent content = responseMessage.Content;
-                        using (Stream stream = await content.ReadAsStreamAsync())
-                        {
-                            var image = Image.FromStream(stream);
-                            image.Save(imagePath);
-                        }
-                        return "Take snapshot successfully: " + imagePath + ".";
-                    }
-                    else
-                    {
-                        return "Take snapshot failed, please try to input a correct image format.";
-                    }
+                    biImg.BeginInit();
+                    biImg.StreamSource = stream;
+                    biImg.EndInit();
                 }
-                else
-                {
-                    return "Take snapshot failed, please input a correct file path.";
-                }
+
+                ImageSource imgSrc = biImg as ImageSource;
+
+                return imgSrc;
             }
-            catch (Exception ex)
+            catch
             {
-                return ex.Message;
+                return null;
             }
         }
 
