@@ -208,15 +208,14 @@ namespace ArcGISEarth.AutoAPI.Utils
                 HttpClient httpClient = new HttpClient();
                 HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl);
                 HttpContent content = responseMessage.Content;
-                BitmapImage biImg = new BitmapImage();
+                BitmapImage bmpImg = new BitmapImage();
                 using (Stream stream = await content.ReadAsStreamAsync())
                 {
-                    biImg.BeginInit();
-                    biImg.StreamSource = stream;
-                    biImg.EndInit();
+                    bmpImg.BeginInit();
+                    bmpImg.StreamSource = stream;
+                    bmpImg.EndInit();
                 }
-                ImageSource imgSrc = biImg as ImageSource;
-                return imgSrc;
+                return bmpImg;
             }
             catch
             {
