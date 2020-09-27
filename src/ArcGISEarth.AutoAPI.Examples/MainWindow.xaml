@@ -8,8 +8,11 @@
         Icon="./Icons/logo.ico"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <converter:EnumToVisibilityConverter x:Key="EnumToButtonVisibilityConverter"/>
+        <converter:EnumToButtonVisibilityConverter x:Key="EnumToButtonVisibilityConverter"/>
         <converter:EnumToTextBoxVisibilityConverter x:Key="EnumToTextBoxVisibilityConverter"/>
+        <converter:EnumToImageVisibilityConverter x:Key="EnumToImageVisibilityConverter"/>
+        
+        
         <FontFamily x:Key="Bold">Avenir Next LT Pro Bold</FontFamily>
         <FontFamily x:Key="DemiBold">Avenir Next LT Pro Demi</FontFamily>
         <FontFamily x:Key="Regular">Avenir Next LT Pro Regular</FontFamily>
@@ -246,7 +249,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="103"/>
-                <RowDefinition Height="*" MinHeight="810"/>
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Grid.ColumnSpan="12" Grid.Row="0" Orientation="Vertical" Background="#FF653499" >
                 <TextBlock Text="ArcGIS Earth Automation API Sample" Foreground="White" FontFamily="{StaticResource Bold}" FontSize="24" Padding="50, 35, 0, 0"/>
@@ -369,7 +372,7 @@
                     </Grid>
 
                     <!--Textbox-->
-                    <Grid x:Name="inputTextbox" Grid.Row="2" Height="319" Visibility="{Binding SendButtontype, Converter={StaticResource EnumToTextBoxVisibilityConverter}, Mode=OneWay}">
+                    <Grid x:Name="inputTextbox" Grid.Row="2" Height="300" Visibility="{Binding SendButtontype, Converter={StaticResource EnumToTextBoxVisibilityConverter}, Mode=OneWay}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="40"/>
@@ -406,7 +409,8 @@
                 <Grid Grid.Row="3" Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="319"/>
+                        <RowDefinition Height="Auto" MinHeight="300"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" x:Name="outputLabel" Content="Output" FontFamily="{StaticResource DemiBold}" FontSize="14" Margin="-10, 0, 0, 0"/>
@@ -414,7 +418,13 @@
                         <Border.Effect>
                             <DropShadowEffect Color="#FF000000" Opacity="0.1"/>
                         </Border.Effect>
-                        <TextBox Grid.Row="1" Style="{StaticResource OutputTextBox}" x:Name="outputTextBox" Text="{Binding OutputString}"/>
+                        <TextBox Style="{StaticResource OutputTextBox}" x:Name="outputTextBox" Text="{Binding OutputString}"/>
+                    </Border>
+                    <Border Grid.Row="1" CornerRadius="3" Background="White" Visibility="{Binding SendButtontype, Converter={StaticResource EnumToImageVisibilityConverter}, Mode=OneWay}">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#FF000000" Opacity="0.1"/>
+                        </Border.Effect>
+                        <Image Source="{Binding OutputImage}" Stretch="Fill" HorizontalAlignment="Stretch"/>
                     </Border>
                 </Grid>
             </Grid>

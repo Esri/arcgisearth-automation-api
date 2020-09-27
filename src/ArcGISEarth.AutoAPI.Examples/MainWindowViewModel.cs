@@ -17,27 +17,10 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ArcGISEarth.AutoAPI.Examples
 {
-    internal enum FunctionType
-    {
-        // UI function type
-        GetCamera,
-        SetCamera,
-        SetFlight,
-        AddLayer,
-        GetLayer,
-        RemoveLayer,
-        ClearLayers,
-        GetWorkspace,
-        ImportWorkspace,
-        ClearWorkspace,
-        TakeSnapshot,
-        ClearInputputBox,
-        Send
-    }
-
     internal class FunctionTypeCommand : ICommand
     {
         // Implement ICommand
@@ -126,7 +109,22 @@ namespace ArcGISEarth.AutoAPI.Examples
                 }
             }
         }
-        
+
+        private ImageSource _outputImage;
+
+        public ImageSource OutputImage
+        {
+            get { return _outputImage; }
+            set
+            {
+                if (_outputImage != value)
+                {
+                    _outputImage = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(OutputImage)));
+                }
+            }
+        }
+
         public ICommand GetCameraCommand { get; private set; }
 
         public ICommand SetCameraCommand { get; private set; }
@@ -176,23 +174,8 @@ namespace ArcGISEarth.AutoAPI.Examples
             SendButtonCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Send));
         }
 
-        public enum SendButtonType
-        {
-            GetCamera,
-            SetCamera,
-            SetFlight,
-            AddLayer,
-            GetLayer,
-            RemoveLayer,
-            ClearLayers,
-            GetWorkspace,
-            ImportWorkspace,
-            ClearWorkspace,
-            TakeSnapshot
-        }
-
-        private SendButtonType _sendButtonType;
-        public SendButtonType SendButtontype 
+        private FunctionType _sendButtonType;
+        public FunctionType SendButtontype 
         {
             get { return _sendButtonType; }
             set 
@@ -243,14 +226,14 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.GetCamera:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.GetCamera;
+                        SendButtontype = FunctionType.GetCamera;
                         OutputString = "";
                         break;
                     }
                 case FunctionType.SetCamera:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.SetCamera;
+                        SendButtontype = FunctionType.SetCamera;
                         InputPlaceholderString = "Example:\n\n" + PrettyJson(CAMERA_EXAMPLE);
                         OutputString = "";
                         break;
@@ -258,7 +241,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.SetFlight:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.SetFlight;
+                        SendButtontype = FunctionType.SetFlight;
                         InputPlaceholderString = "Example:\n\n" + PrettyJson(FLIGHT_EXAMPLE);
                         OutputString = "";
                         break;
@@ -266,7 +249,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.AddLayer:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.AddLayer;
+                        SendButtontype = FunctionType.AddLayer;
                         InputPlaceholderString = "Example:\n\n" + PrettyJson(ADDLAYER_EXAMPLE);
                         OutputString = "";
                         break;
@@ -274,7 +257,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.GetLayer:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.GetLayer;
+                        SendButtontype = FunctionType.GetLayer;
                         InputPlaceholderString = "Example:\n\n" + GETLAYER_EXAMPLE;
                         OutputString = "";
                         break;
@@ -282,7 +265,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.RemoveLayer:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.RemoveLayer;
+                        SendButtontype = FunctionType.RemoveLayer;
                         InputPlaceholderString = "Example:\n\n" + REMOVELAYER_EXAMPLE;
                         OutputString = "";
                         break;
@@ -290,7 +273,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.ClearLayers:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.ClearLayers;
+                        SendButtontype = FunctionType.ClearLayers;
                         InputPlaceholderString = "Example:\n\n" + REMOVELAYERS_EXAMPLE;
                         OutputString = "";
                         break;
@@ -298,14 +281,14 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.GetWorkspace:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.GetWorkspace;
+                        SendButtontype = FunctionType.GetWorkspace;
                         OutputString = "";
                         break;
                     }
                 case FunctionType.ImportWorkspace:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.ImportWorkspace;
+                        SendButtontype = FunctionType.ImportWorkspace;
                         InputPlaceholderString = "Example:\n\n" + PrettyJson(IMPORTWORKSPACE_EXAMPLE);
                         OutputString = "";
                         break;
@@ -313,15 +296,16 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.ClearWorkspace:
                     {
                         InputString = "";
-                        SendButtontype = SendButtonType.ClearWorkspace;
+                        SendButtontype = FunctionType.ClearWorkspace;
                         OutputString = "";
                         break;
                     }
                 case FunctionType.TakeSnapshot:
                     {
-                        SendButtontype = SendButtonType.TakeSnapshot;
+                        SendButtontype = FunctionType.TakeSnapshot;
                         InputPlaceholderString = "Example:\n\n" + TAKESNAPSHOT_EXAMPLE;
                         OutputString = "";
+                        OutputImage = null;
                         break;
                     }
                 case FunctionType.ClearInputputBox:
@@ -332,53 +316,68 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.Send:
                     {
                         OutputString = "Waiting response...";
-                        string outputString = await SendMessage(_helper, SendButtontype, InputString);
-                        OutputString = PrettyJson(outputString);
+                        if (SendButtontype != FunctionType.TakeSnapshot)
+                        {
+                            string outputString = await SendMessage(_helper, SendButtontype, InputString);
+                            OutputString = PrettyJson(outputString);
+                        }
+                        else
+                        {
+                            OutputImage = await TakeSnapshotSend(_helper, SendButtontype);
+                        }
                         break;
                     }
             }            
         }
 
-        private async Task<string> SendMessage(AutomationAPIHelper helper, SendButtonType sendType, string inputStr)
+        private async Task<string> SendMessage(AutomationAPIHelper helper, FunctionType sendType, string inputStr)
         {
             string outputStr = null;
             switch (sendType)
             {
-                case SendButtonType.GetCamera:
+                case FunctionType.GetCamera:
                     outputStr = await helper.GetCamera();
                     break;
-                case SendButtonType.SetCamera:
+                case FunctionType.SetCamera:
                     outputStr = await helper.SetCamera(inputStr);
                     break;
-                case SendButtonType.SetFlight:
+                case FunctionType.SetFlight:
                     outputStr = await helper.SetFlight(inputStr);
                     break;
-                case SendButtonType.AddLayer:
+                case FunctionType.AddLayer:
                     outputStr = await helper.AddLayer(inputStr);
                     break;
-                case SendButtonType.GetLayer:
+                case FunctionType.GetLayer:
                     outputStr = await helper.GetLayer(inputStr);
                     break;
-                case SendButtonType.RemoveLayer:
+                case FunctionType.RemoveLayer:
                     outputStr = await helper.RemoveLayer(inputStr);
                     break;
-                case SendButtonType.ClearLayers:
+                case FunctionType.ClearLayers:
                     outputStr = await helper.ClearLayers(inputStr);
                     break;
-                case SendButtonType.GetWorkspace:
+                case FunctionType.GetWorkspace:
                     outputStr = await helper.GetWorkspace();
                     break;
-                case SendButtonType.ImportWorkspace:
+                case FunctionType.ImportWorkspace:
                     outputStr = await helper.ImportWorkspace(inputStr);
                     break;
-                case SendButtonType.ClearWorkspace:
+                case FunctionType.ClearWorkspace:
                     outputStr = await helper.ClearWorkspace();
                     break;
-                case SendButtonType.TakeSnapshot:
-                    outputStr = await helper.TakeSnapshot(inputStr);
-                    break;
             }
+
             return outputStr;
+        }
+
+        private async Task<ImageSource> TakeSnapshotSend(AutomationAPIHelper helper, FunctionType sendType)
+        {
+            ImageSource outputImg = null;
+            if (sendType == FunctionType.TakeSnapshot)
+            {
+                outputImg = await helper.TakeSnapshot();
+            }
+            return outputImg;
         }
     }
 }
