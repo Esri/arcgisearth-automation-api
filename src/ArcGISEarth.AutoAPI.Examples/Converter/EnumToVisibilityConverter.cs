@@ -90,7 +90,6 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
         {
             var sendButtonType = (FunctionType)value;
             var visibility = Visibility.Collapsed;
-
             switch (sendButtonType)
             {
                 case FunctionType.GetCamera:

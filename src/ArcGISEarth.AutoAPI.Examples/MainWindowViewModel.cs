@@ -11,7 +11,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using ArcGISEarth.AutoAPI.Examples.Converter;
 using ArcGISEarth.AutoAPI.Utils;
 using Newtonsoft.Json;
 using System;
@@ -366,9 +365,6 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.ClearWorkspace:
                     outputStr = await helper.ClearWorkspace();
                     break;
-                //case FunctionType.TakeSnapshot:
-                //    outputStr = await helper.TakeSnapshot(inputStr);
-                //    break;
             }
 
             return outputStr;
@@ -381,7 +377,6 @@ namespace ArcGISEarth.AutoAPI.Examples
             {
                 outputImg = await helper.TakeSnapshot();
             }
-
             return outputImg;
         }
     }
