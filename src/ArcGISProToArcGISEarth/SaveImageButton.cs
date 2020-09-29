@@ -84,7 +84,7 @@ namespace ToArcGISEarth
             }
             catch (Exception)
             {
-                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to add layer to ArcGIS Earth.");
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to save image.");
             }
         }
     }
