@@ -12,6 +12,7 @@
 // limitations under the License.
 
 using ArcGIS.Desktop.Framework.Contracts;
+using ArcGISEarth.AutoAPI.Utils;
 using Microsoft.Win32;
 
 namespace ToArcGISEarth
@@ -59,7 +60,7 @@ namespace ToArcGISEarth
             if (dialog.ShowDialog() == true)
             {
                 // Get screenshot from ArcGIS Earth.
-                await ToolHelper.Utils.TakeSnapshot(dialog.FileName);
+                await AutomationAPIHelper.TakeSnapshot(dialog.FileName);
             }
         }
     }

@@ -25,9 +25,6 @@ namespace ToArcGISEarth
 {
     public static class ToolHelper
     {
-        // ArcGIS Earth automation api utils.
-        public static AutomationAPIHelper Utils = new AutomationAPIHelper();
-               
         // Logging id and it's infomation when adding layer or elevation source.
         public static Dictionary<string, string[]> IdInfoDictionary { get; set; } = new Dictionary<string, string[]>();
 

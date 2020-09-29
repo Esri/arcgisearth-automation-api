@@ -17,6 +17,7 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
+using ArcGISEarth.AutoAPI.Utils;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,7 +107,7 @@ namespace ToArcGISEarth
                                 };
                                 // Add layer to ArcGIS Earth.
                                 // Return layer id when use adding layer, whether it's succeed or failed.
-                                string id = await ToolHelper.Utils.AddLayer(currentJson);
+                                string id = await AutomationAPIHelper.AddLayer(currentJson);
                                 if (!ToolHelper.IdInfoDictionary.Keys.Contains(id))
                                 {
                                     // Use IdInfoDictionary to save layer id and layer information.

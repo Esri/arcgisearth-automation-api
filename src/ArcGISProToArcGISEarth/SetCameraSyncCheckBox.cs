@@ -15,6 +15,7 @@ using ArcGIS.Core.CIM;
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
+using ArcGISEarth.AutoAPI.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace ToArcGISEarth
@@ -84,7 +85,7 @@ namespace ToArcGISEarth
                         ["roll"] = mapView.Camera.Roll
                     };
                     // Set camera in ArcGIS Earth.
-                    await ToolHelper.Utils.SetCamera(cameraJObject.ToString());
+                    await AutomationAPIHelper.SetCamera(cameraJObject.ToString());
                 }
             }
             catch

@@ -52,8 +52,6 @@ namespace ArcGISEarth.AutoAPI.Examples
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private AutomationAPIHelper _helper;
-
         private string _apiUrl;
 
         public string APIUrl
@@ -154,9 +152,7 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         public MainWindowViewModel()
         {
-            // Initialize variable and property.            
-            _helper = new AutomationAPIHelper();
-            APIUrl = _helper.APIBaseUrl;
+            APIUrl = AutomationAPIHelper.APIBaseUrl;
             InputString = string.Empty; 
             OutputString = string.Empty;
             GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
@@ -318,64 +314,64 @@ namespace ArcGISEarth.AutoAPI.Examples
                         OutputString = "Waiting response...";
                         if (SendButtontype != FunctionType.TakeSnapshot)
                         {
-                            string outputString = await SendMessage(_helper, SendButtontype, InputString);
+                            string outputString = await SendMessage(SendButtontype, InputString);
                             OutputString = PrettyJson(outputString);
                         }
                         else
                         {
-                            OutputImage = await TakeSnapshotSend(_helper, SendButtontype);
+                            OutputImage = await TakeSnapshotSend(SendButtontype);
                         }
                         break;
                     }
             }            
         }
 
-        private async Task<string> SendMessage(AutomationAPIHelper helper, FunctionType sendType, string inputStr)
+        private async Task<string> SendMessage(FunctionType sendType, string inputStr)
         {
             string outputStr = null;
             switch (sendType)
             {
                 case FunctionType.GetCamera:
-                    outputStr = await helper.GetCamera();
+                    outputStr = await AutomationAPIHelper.GetCamera();
                     break;
                 case FunctionType.SetCamera:
-                    outputStr = await helper.SetCamera(inputStr);
+                    outputStr = await AutomationAPIHelper.SetCamera(inputStr);
                     break;
                 case FunctionType.SetFlight:
-                    outputStr = await helper.SetFlight(inputStr);
+                    outputStr = await AutomationAPIHelper.SetFlight(inputStr);
                     break;
                 case FunctionType.AddLayer:
-                    outputStr = await helper.AddLayer(inputStr);
+                    outputStr = await AutomationAPIHelper.AddLayer(inputStr);
                     break;
                 case FunctionType.GetLayer:
-                    outputStr = await helper.GetLayer(inputStr);
+                    outputStr = await AutomationAPIHelper.GetLayer(inputStr);
                     break;
                 case FunctionType.RemoveLayer:
-                    outputStr = await helper.RemoveLayer(inputStr);
+                    outputStr = await AutomationAPIHelper.RemoveLayer(inputStr);
                     break;
                 case FunctionType.ClearLayers:
-                    outputStr = await helper.ClearLayers(inputStr);
+                    outputStr = await AutomationAPIHelper.ClearLayers(inputStr);
                     break;
                 case FunctionType.GetWorkspace:
-                    outputStr = await helper.GetWorkspace();
+                    outputStr = await AutomationAPIHelper.GetWorkspace();
                     break;
                 case FunctionType.ImportWorkspace:
-                    outputStr = await helper.ImportWorkspace(inputStr);
+                    outputStr = await AutomationAPIHelper.ImportWorkspace(inputStr);
                     break;
                 case FunctionType.ClearWorkspace:
-                    outputStr = await helper.ClearWorkspace();
+                    outputStr = await AutomationAPIHelper.ClearWorkspace();
                     break;
             }
 
             return outputStr;
         }
 
-        private async Task<ImageSource> TakeSnapshotSend(AutomationAPIHelper helper, FunctionType sendType)
+        private async Task<ImageSource> TakeSnapshotSend(FunctionType sendType)
         {
             ImageSource outputImg = null;
             if (sendType == FunctionType.TakeSnapshot)
             {
-                outputImg = await helper.TakeSnapshot();
+                outputImg = await AutomationAPIHelper.TakeSnapshot();
             }
             return outputImg;
         }
