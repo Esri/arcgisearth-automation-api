@@ -12,6 +12,7 @@
 // limitations under the License.
 
 using ArcGIS.Desktop.Framework.Contracts;
+using ArcGISEarth.AutoAPI.Utils;
 using System.Windows;
 
 namespace ToArcGISEarth
@@ -51,7 +52,7 @@ namespace ToArcGISEarth
         private async void ClearAll()
         {
             // Clear ArcGIS Earth workspace.
-            await ToolHelper.Utils.ClearWorkspace();
+            await AutomationAPIHelper.ClearWorkspace();
         }
     }
 }
