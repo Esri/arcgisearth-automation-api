@@ -327,7 +327,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 HttpClient httpClient = new HttpClient();
                 HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl);
                 HttpContent content = responseMessage.Content;
-                BitmapImage bmpImg = new BitmapImage();
+                BitmapImage bmpImg = new BitmapImage();                
                 using (Stream stream = await content.ReadAsStreamAsync())
                 {
                     bmpImg.BeginInit();
@@ -384,7 +384,6 @@ namespace ArcGISEarth.AutoAPI.Utils
         private static string GetBaseUrl()
         {
             string baseUrl = null;
-
             try
             {
                 string expectedSettingPath = Path.Combine(DefaultWebRootFolder, "settings.json");

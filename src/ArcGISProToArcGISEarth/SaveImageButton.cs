@@ -14,6 +14,10 @@
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGISEarth.AutoAPI.Utils;
 using Microsoft.Win32;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace ToArcGISEarth
 {
@@ -48,19 +52,39 @@ namespace ToArcGISEarth
 
         private async void SaveImage()
         {
-            // Set save file options.
-            SaveFileDialog dialog = new SaveFileDialog
+            try
             {
-                Filter = "Jpeg Files|*.jpg|Png Files|*.png|Tiff Files|*.tif",
-                FileName = "ArcGIS Earth.jpg",
-                DefaultExt = "jpg",
-                OverwritePrompt = true,
-                RestoreDirectory = true
-            };
-            if (dialog.ShowDialog() == true)
+                // Set save file options.
+                SaveFileDialog dialog = new SaveFileDialog
+                {
+                    Filter = "Jpeg Files|*.jpg|Png Files|*.png|Tiff Files|*.tif",
+                    FileName = "ArcGIS Earth.jpg",
+                    DefaultExt = "jpg",
+                    OverwritePrompt = true,
+                    RestoreDirectory = true
+                };
+                if (dialog.ShowDialog() == true)
+                {
+                    // Get screenshot from ArcGIS Earth.   
+                    var bitmapImage = await AutomationAPIHelper.TakeSnapshot() as BitmapImage;
+                    if (bitmapImage == null)
+                    {
+                        ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to save image.");
+                        return;
+                    }
+                    using (var outStream = new MemoryStream())
+                    {
+                        var encoder = new BmpBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+                        encoder.Save(outStream);
+                        var bitmap = new Bitmap(outStream);
+                        bitmap.Save(dialog.FileName);
+                    }
+                }
+            }
+            catch (Exception)
             {
-                // Get screenshot from ArcGIS Earth.
-                await AutomationAPIHelper.TakeSnapshot(dialog.FileName);
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to add layer to ArcGIS Earth.");
             }
         }
     }
