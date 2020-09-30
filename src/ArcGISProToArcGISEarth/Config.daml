@@ -1,11 +1,11 @@
 ﻿<ArcGIS defaultAssembly="ToArcGISEarth.dll" defaultNamespace="ToArcGISEarth" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{94776263-9f12-4574-927e-c3c2de42bcaf}" version="1.1" desktopVersion="2.2">
+  <AddInInfo id="{94776263-9f12-4574-927e-c3c2de42bcaf}" version="1.2" desktopVersion="2.5">
     <Name>ToArcGISEarth</Name>
     <Description>ArcGIS Pro to ArcGIS Earth</Description>
     <Image>Images\ArcGISEarth32.png</Image>
     <Author>ArcGIS Earth Tutorials</Author>
-    <Company>esri, http://www.esri.com</Company>
-    <Date>8/20/2018 11:00:00 AM, 2018</Date>
+    <Company>Esri, http://www.esri.com</Company>
+    <Date>10/01/2020 11:00:00 AM, 2020</Date>
     <Subject>Framework</Subject>
   </AddInInfo>
   <modules>
