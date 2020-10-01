@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Esri
+﻿// Copyright 2020 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -17,6 +17,7 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
+using ArcGISEarth.AutoAPI.Utils;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,10 @@ using System.Linq;
 namespace ToArcGISEarth
 {
     public class AddLayerSyncCheckBox : Button
-    {    
+    {
         public AddLayerSyncCheckBox()
         {
-            Enabled = false;          
+            Enabled = false;
         }
 
         protected override void OnClick()
@@ -35,21 +36,21 @@ namespace ToArcGISEarth
             if (IsChecked)
             {
                 // Unsubscribe events of adding layer and elevation source.
-                LayersAddedEvent.Unsubscribe(AddLayerToEarth);               
+                LayersAddedEvent.Unsubscribe(AddLayerToEarth);
                 IsChecked = false;
             }
             else
             {
                 // Subscribe events of adding layer and elevation source.
-                LayersAddedEvent.Subscribe(AddLayerToEarth, false);            
+                LayersAddedEvent.Subscribe(AddLayerToEarth, false);
                 IsChecked = true;
             }
         }
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -59,7 +60,7 @@ namespace ToArcGISEarth
                 LayersAddedEvent.Unsubscribe(AddLayerToEarth);
                 Enabled = false;
                 IsChecked = false;
-            }          
+            }
         }
 
         private void AddLayerToEarth(LayerEventsArgs args)
@@ -72,7 +73,7 @@ namespace ToArcGISEarth
                 {
                     foreach (var layer in layerList)
                     {
-                        QueuedTask.Run(() =>
+                        QueuedTask.Run(async () =>
                         {
                             // GetDataConnection method must be called within the lambda passed to QueuedTask.Run. 
                             CIMDataConnection dataConnection = layer.GetDataConnection();
@@ -87,15 +88,15 @@ namespace ToArcGISEarth
                                 if (dataConnection is CIMWMSServiceConnection)
                                 {
                                     // Specify layer type for wms service. API is limited to automatically recognized wms service.
-                                    addLayerJson["type"] = "OGCWMS";
-                                }
+                                    addLayerJson["type"] = "WMS";
+                                }                               
                                 if (layer.MapLayerType == MapLayerType.Operational)
                                 {
-                                    addLayerJson["target"] = "OperationalLayers";
+                                    addLayerJson["target"] = "operationalLayers";
                                 }
                                 if (layer.MapLayerType == MapLayerType.BasemapBackground)
                                 {
-                                    addLayerJson["target"] = "BasemapLayers";
+                                    addLayerJson["target"] = "baseMaps";
                                 }
                                 string currentJson = addLayerJson.ToString();
                                 string[] nameAndType = new string[3]
@@ -106,7 +107,7 @@ namespace ToArcGISEarth
                                 };
                                 // Add layer to ArcGIS Earth.
                                 // Return layer id when use adding layer, whether it's succeed or failed.
-                                string id = ToolHelper.Utils.AddLayer(currentJson);
+                                string id = await AutomationAPIHelper.AddLayer(currentJson);
                                 if (!ToolHelper.IdInfoDictionary.Keys.Contains(id))
                                 {
                                     // Use IdInfoDictionary to save layer id and layer information.
@@ -131,6 +132,6 @@ namespace ToArcGISEarth
         {
             // Determine if group layer is created. 
             return layerList?.Count == 1 && layerList[0]?.Name == "New Group Layer" && (layerList[0].GetType()?.GetProperty("Layers")?.GetValue(layerList[0]) as List<Layer>) == null;
-        }      
+        }
     }
 }

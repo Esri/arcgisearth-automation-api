@@ -1,40 +1,433 @@
 ﻿<Window x:Class="ArcGISEarth.AutoAPI.Examples.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:ArcGISEarth.AutoAPI.Examples"
-        Title="ArcGISEarth.AutoAPI.Examples" Height="600" Width="800" ResizeMode="CanMinimize">
-    <Window.DataContext>
-        <!--Use MainWindowViewModel as the window data context-->
-        <local:MainWindowViewModel/>
-    </Window.DataContext>
-    <Grid Margin="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel>
-            <!--Function type-->
-            <Button Margin="0,10,0,0" Command="{Binding ConnectEarthCommand}" Content="ConnectEarth"/>
-            <Button Margin="0,10,0,0" Command="{Binding GetCameraCommand}" Content="GetCamera"/>
-            <Button Margin="0,10,0,0" Command="{Binding SetCameraCommand}" Content="SetCamera"/>
-            <Button Margin="0,10,0,0" Command="{Binding FlyToCommand}" Content="FlyTo"/>
-            <Button Margin="0,10,0,0" Command="{Binding AddLayerCommand}" Content="AddLayer"/>
-            <Button Margin="0,10,0,0" Command="{Binding GetLayerLoadStatusCommand}" Content="GetLayerLoadStatus"/>
-            <Button Margin="0,10,0,0" Command="{Binding RemoveLayerCommand}" Content="RemoveLayer"/>
-            <Button Margin="0,10,0,0" Command="{Binding ClearLayersCommand}" Content="ClearLayers"/>
-            <Button Margin="0,10,0,0" Command="{Binding GetSnapshotCommand}" Content="GetSnapshot"/>
-            <Button Margin="0,10,0,0" Command="{Binding GetWorkspaceCommand}" Content="GetWorkspace"/>
-            <Button Margin="0,10,0,0" Command="{Binding ImportWorkspaceCommand}" Content="ImportWorkspace"/>
-            <Button Margin="0,50,0,0" Command="{Binding ClearInputBoxCommand}" Content="ClearInputBox"/>
-            <Button Margin="0,10,0,0" Command="{Binding ClearOutputBoxCommand}" Content="ClearOutputBox"/>
-            <Button Margin="0,10,0,0" Command="{Binding HelpCommand}" Content="Help"/>
-        </StackPanel>
-        <StackPanel Margin="10,0,0,0" Grid.Column="1">
-            <!--Input data and show result-->
-            <TextBlock Margin="0,10,0,0" Text="Input"/>
-            <TextBox  Margin="0,10,0,0" Height="327" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Text="{Binding InputString}"/>
-            <TextBlock Margin="0,10,0,0" Text="Output"/>
-            <TextBox  Margin="0,10,0,0" Height="105" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Text="{Binding OutputString}"/>
-        </StackPanel>
-    </Grid>
+        xmlns:converter="clr-namespace:ArcGISEarth.AutoAPI.Examples.Converter"
+        Title="ArcGIS Earth Automation API Sample" Height="1024" Width="1440"
+        Icon="./Icons/logo.ico"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <converter:EnumToButtonVisibilityConverter x:Key="EnumToButtonVisibilityConverter"/>
+        <converter:EnumToTextBoxVisibilityConverter x:Key="EnumToTextBoxVisibilityConverter"/>
+        <converter:EnumToImageVisibilityConverter x:Key="EnumToImageVisibilityConverter"/>
+        
+        
+        <FontFamily x:Key="Bold">Avenir Next LT Pro Bold</FontFamily>
+        <FontFamily x:Key="DemiBold">Avenir Next LT Pro Demi</FontFamily>
+        <FontFamily x:Key="Regular">Avenir Next LT Pro Regular</FontFamily>
+        
+        <Style TargetType="{x:Type ListViewItem}" x:Key="SideListViewItem">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="240"/>
+            <Setter Property="FontFamily" Value="{StaticResource DemiBold}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#FF161616"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Border>
+                            <Grid>
+                                <Path x:Name="PathIcon" Width="14" Height="36" Stretch="Fill" HorizontalAlignment="Left" Margin="0,0,0,0" Data="M383,152 L394,152 394,176 383,176 z"/>
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="54,0,0,0"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="Foreground" Value="#653499"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="#653499" />
+                                <Setter Property="FontSize" Value="18"/>
+                                <Setter Property="FontFamily" Value="{StaticResource Bold}"/>
+                                <Setter TargetName="PathIcon" Property="Fill" Value="#653499" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Foreground" Value="#653499" />
+                                <Setter Property="FontSize" Value="18"/>
+                                <Setter Property="FontFamily" Value="{StaticResource Bold}"/>
+                                <Setter TargetName="PathIcon" Property="Fill" Value="#653499" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Foreground" Value="#653499" />
+                                <Setter Property="FontSize" Value="18"/>
+                                <Setter Property="FontFamily" Value="{StaticResource Bold}"/>
+                                <Setter TargetName="PathIcon" Property="Fill" Value="#653499" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="TransparentButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="BigButton">
+            <Setter Property="Height" Value="56"/>
+            <Setter Property="FontFamily" Value="{StaticResource DemiBold}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#7447A2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="3" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Rectangle Stroke="#653499" StrokeDashArray="4" StrokeThickness="1"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                                    <Image x:Name="ImageName" Source="Icons\send_normal_icon.png" Width="20" Height="24" VerticalAlignment="Center"/>
+                                    <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#653499"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                                <Setter TargetName="ImageName" Property="Source" Value="Icons\send_hover_icon.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="SamllClearButton">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="86"/>
+            <Setter Property="FontFamily" Value="{StaticResource DemiBold}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="BorderBrush" Value="#999999"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#653499"/>
+                                <Setter Property="Foreground" Value="#653499"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="SamllSendButton">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="86"/>
+            <Setter Property="FontFamily" Value="{StaticResource DemiBold}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="#653499"/>
+            <Setter Property="Foreground" Value="#F5F5F5"/>
+            <Setter Property="BorderBrush" Value="#FFFFFF"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="#FFFFFF"/>
+                                <Setter Property="Background" Value="#7A42B6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox" x:Key="OutputTextBox">
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="SelectionBrush" Value="{x:Null}"/>
+            <Setter Property="FontFamily" Value="{StaticResource Regular}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="20,20,20,20"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="SelectionBrush" Value="LightSkyBlue"/>
+            <Setter Property="AutoWordSelection" Value="True"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="White" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" Foreground="Black" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="false">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox" BasedOn="{StaticResource OutputTextBox}" x:Key="InputTextBox">
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="AcceptsTab" Value="True"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Background="White" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" Foreground="Black" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"/>
+                                <Rectangle x:Name="PART_Rectangle" Stroke="#653499" StrokeDashArray="4" StrokeThickness="1" Visibility="{TemplateBinding Visibility}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="240"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="103"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.ColumnSpan="12" Grid.Row="0" Orientation="Vertical" Background="#FF653499" >
+                <TextBlock Text="ArcGIS Earth Automation API Sample" Foreground="White" FontFamily="{StaticResource Bold}" FontSize="24" Padding="50, 35, 0, 0"/>
+                <!--<StackPanel Orientation="Horizontal">
+                    <TextBlock Text="baseUrl: " Background="#FF653499" Foreground="White" FontFamily="{StaticResource Regular}" FontSize="14" Padding="50, 2, 0, 0"/>
+                    <TextBox Text="{Binding APIUrl}" TextDecorations="Underline" Background="#FF653499" Foreground="White" BorderThickness="0" FontFamily="{StaticResource Regular}" FontSize="14" Padding="0, 2, 0, 0" />
+                </StackPanel>-->
+            </StackPanel>
+            
+
+            <Grid Row="1" Grid.Column="0" Background="White">
+                <ListView Margin="-2, 0" BorderBrush="{x:Null}">
+                    <ListViewItem Style="{StaticResource SideListViewItem}" x:Name="getCameraButton" Content="Get Camera" Margin="0, 30, 0, 0" IsSelected="True">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding GetCameraCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" x:Name="setCameraButton" Content="Set Camera" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding SetCameraCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" x:Name="setFlightButton" Content="Set Flight" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding SetFlightCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" x:Name="addLayerButton" Content="Add Layer" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding AddLayerCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" x:Name="getLayerButton" Content="Get Layer" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding GetLayerCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Remove Layer" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding RemoveLayerCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Clear Layers" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ClearLayersCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Get Workspace" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding GetWorkspaceCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Import Workspace" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ImportWorkspaceCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Clear Workspace" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ClearWorkspaceCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Take Snapshot" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding TakeSnapshotCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                </ListView>
+            </Grid>
+        
+            <Grid Grid.Row="1" Grid.Column="1" Background="#F9F9F9">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Input-->
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Label x:Name="inputLabel" Content="Input" Grid.Row="0" FontFamily="{StaticResource DemiBold}" FontSize="14" Margin="-10, 0, 0, 0"/>
+
+                    <!--Button-->
+                    <Grid Visibility="{Binding SendButtontype, Converter={StaticResource EnumToButtonVisibilityConverter}, Mode=OneWay}" x:Name="InputButton" Grid.Row="1">
+                        <Button x:Name="SendWithIcon" Content="Send" Style="{StaticResource BigButton}" Command="{Binding SendButtonCommand}" Cursor="Hand" />
+                    </Grid>
+
+                    <!--Textbox-->
+                    <Grid x:Name="inputTextbox" Grid.Row="2" Height="300" Visibility="{Binding SendButtontype, Converter={StaticResource EnumToTextBoxVisibilityConverter}, Mode=OneWay}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="10"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="86"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="86"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="5"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.RowSpan="3" Grid.ColumnSpan="6" x:Name="InputTextBox" Style="{StaticResource InputTextBox}" Text="{Binding InputString}"/>
+                        <TextBlock Grid.RowSpan="2" Grid.ColumnSpan="6" IsHitTestVisible="False" Text="{Binding InputPlaceholderString}" Padding="20" Margin="2" Foreground="#999999" FontFamily="{StaticResource Regular}" FontSize="14">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=InputTextBox}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Button Grid.Row="1" Grid.Column="3" x:Name="SendButton" Content="Send" Style="{StaticResource SamllSendButton}" Command="{Binding SendButtonCommand}" />
+                        <Button Grid.Row="1" Grid.Column="1" x:Name="ClearButton" Content="Clear" Style="{StaticResource SamllClearButton}" Command="{Binding ClearInputBoxCommand}" />
+                    </Grid>
+                </Grid>
+
+                <!--Output-->
+                <Grid Grid.Row="3" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="Auto" MinHeight="300"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" x:Name="outputLabel" Content="Output" FontFamily="{StaticResource DemiBold}" FontSize="14" Margin="-10, 0, 0, 0"/>
+                    <Border Grid.Row="1" CornerRadius="3" Background="White">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#FF000000" Opacity="0.1"/>
+                        </Border.Effect>
+                        <TextBox Style="{StaticResource OutputTextBox}" x:Name="outputTextBox" Text="{Binding OutputString}"/>
+                    </Border>
+                    <Border Grid.Row="1" CornerRadius="3" Background="White" Visibility="{Binding SendButtontype, Converter={StaticResource EnumToImageVisibilityConverter}, Mode=OneWay}">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#FF000000" Opacity="0.1"/>
+                        </Border.Effect>
+                        <Image Source="{Binding OutputImage}" Stretch="Fill" HorizontalAlignment="Stretch"/>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </Window>
