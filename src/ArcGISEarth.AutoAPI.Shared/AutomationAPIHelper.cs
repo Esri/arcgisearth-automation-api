@@ -28,6 +28,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         private const string FLIGHT_CONTROLLER_NAME = "flight";
         private const string LAYER_CONTROLLER_NAME = "layer";
         private const string LAYERS_CONTROLLER_NAME = "layers";
+        private const string GRAPHIC_CONTROLLER_NAME = "graphics";
         private const string WORKSPACE_CONTROLLER_NAME = "workspace";
         private const string SNAPSHOT_CONTROLLER_NAME = "snapshot";
         private const string DEFAULT_BASEURL = "http://localhost:8000";
@@ -238,6 +239,122 @@ namespace ArcGISEarth.AutoAPI.Utils
                 string layersRequestUrl = $"{APIBaseUrl}/{LAYERS_CONTROLLER_NAME}/{targetType}";
                 HttpClient httpClient = new HttpClient();
                 HttpResponseMessage responseMessage = await httpClient.DeleteAsync(layersRequestUrl);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Add a graphic to Earth.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format.</param>
+        /// JSON parameters example:
+        /// {
+        ///     "geometry": {
+        ///         "type": "point",
+        ///         "x": -100,
+        ///         "y": 40
+        ///     },
+        ///     "symbol": {
+        ///         "type": "picture-marker",
+        ///         "url": "https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png",
+        ///         "width": "64px",
+        ///         "height": "64px",
+        ///         "xoffset": "10px",
+        ///         "yoffset": "10px"
+        ///     }
+        /// }
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> AddGraphic(string inputJsonStr)
+        {
+            try
+            {
+                string graphicRequestUrl = $"{APIBaseUrl}/{GRAPHIC_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(graphicRequestUrl, postContent);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Get graphic information by id.
+        /// </summary>
+        /// <param name="graphicId"></param>
+        /// <returns></returns>
+        public static async Task<string> GetGraphic(string graphicId)
+        {
+            try
+            {
+                string graphicRequestUrl = $"{APIBaseUrl}/{GRAPHIC_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                var graphicIdUrl = $"{graphicRequestUrl}/{graphicId}";
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(graphicIdUrl);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Update a graphic in Earth.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format.</param>
+        /// JSON parameters example:
+        /// {
+        ///     "geometry": {
+        ///         "type": "point",
+        ///         "x": -100,
+        ///         "y": 40
+        ///     },
+        ///     "symbol": {
+        ///         "type": "picture-marker",
+        ///         "url": "https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png",
+        ///         "width": "64px",
+        ///         "height": "64px",
+        ///         "xoffset": "10px",
+        ///         "yoffset": "10px"
+        ///     }
+        /// }
+        /// <returns>Automation API response message. If success, the content is null.</returns>
+        public static async Task<string> UpdateGraphic(string inputJsonStr)
+        {
+            try
+            {
+                string graphicRequestUrl = $"{APIBaseUrl}/{GRAPHIC_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PatchAsync(graphicRequestUrl, postContent);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Delete a graphic by id.
+        /// </summary>
+        /// <param name="graphicId"> The graphic id.</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> RemoveGraphic(string graphicId)
+        {
+            try
+            {
+                string graphicRequestUrl = $"{APIBaseUrl}/{GRAPHIC_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                var graphicIdUrl = $"{graphicRequestUrl}/{graphicId}";
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(graphicIdUrl);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
