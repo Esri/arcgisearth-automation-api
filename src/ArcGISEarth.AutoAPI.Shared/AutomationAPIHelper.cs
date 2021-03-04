@@ -287,8 +287,8 @@ namespace ArcGISEarth.AutoAPI.Utils
         /// <summary>
         /// Get graphic information by id.
         /// </summary>
-        /// <param name="graphicId"></param>
-        /// <returns></returns>
+        /// <param name="graphicId">The graphic id.</param>
+        /// <returns>Automation API response message.</returns>
         public static async Task<string> GetGraphic(string graphicId)
         {
             try
@@ -311,6 +311,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         /// <param name="inputJsonStr">The parameters in JSON format.</param>
         /// JSON parameters example:
         /// {
+        ///     "id": "311b7317-94f8-4f80-89f2-0e3ca5e77d28",
         ///     "geometry": {
         ///         "type": "point",
         ///         "x": -100,
@@ -318,7 +319,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         ///     },
         ///     "symbol": {
         ///         "type": "picture-marker",
-        ///         "url": "https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png",
+        ///         "url": "https://static.arcgis.com/images/Symbols/Basic/RedSphere.png",
         ///         "width": "64px",
         ///         "height": "64px",
         ///         "xoffset": "10px",
@@ -345,8 +346,8 @@ namespace ArcGISEarth.AutoAPI.Utils
         /// <summary>
         /// Delete a graphic by id.
         /// </summary>
-        /// <param name="graphicId"> The graphic id.</param>
-        /// <returns>Automation API response message.</returns>
+        /// <param name="graphicId">The graphic id.</param>
+        /// <returns>Automation API response message. If success, the content is null.</returns>
         public static async Task<string> RemoveGraphic(string graphicId)
         {
             try
@@ -531,5 +532,29 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
         #endregion
+    }
+
+    //Refer to https://stackoverflow.com/a/29772349/5765982
+    public static class HttpClientExtensions
+    {
+        public static async Task<HttpResponseMessage> PatchAsync(this HttpClient client, string requestUri, HttpContent content)
+        {
+            var method = new HttpMethod("PATCH");
+            var request = new HttpRequestMessage(method, new Uri(requestUri))
+            {
+                Content = content
+            };
+
+            HttpResponseMessage response = new HttpResponseMessage();
+            try
+            {
+                response = await client.SendAsync(request);
+            }
+            catch (TaskCanceledException e)
+            {
+            }
+
+            return response;
+        }
     }
 }

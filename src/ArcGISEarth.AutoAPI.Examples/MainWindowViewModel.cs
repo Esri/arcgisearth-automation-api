@@ -363,6 +363,10 @@ namespace ArcGISEarth.AutoAPI.Examples
                         if (SendButtontype != FunctionType.TakeSnapshot)
                         {
                             string outputString = await SendMessage(SendButtontype, InputString);
+                            if (string.IsNullOrEmpty(outputString))
+                            {
+                                outputString = "{ \"result\": \"Success\" }";
+                            }
                             OutputString = PrettyJson(outputString);
                         }
                         else
