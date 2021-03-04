@@ -365,7 +365,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                             string outputString = await SendMessage(SendButtontype, InputString);
                             if (string.IsNullOrEmpty(outputString))
                             {
-                                outputString = "{ \"result\": \"Success\" }";
+                                outputString = "Finished";
                             }
                             OutputString = PrettyJson(outputString);
                         }
