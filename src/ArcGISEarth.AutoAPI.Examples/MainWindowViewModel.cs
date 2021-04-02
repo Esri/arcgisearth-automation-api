@@ -137,6 +137,14 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         public ICommand ClearLayersCommand { get; private set; }
 
+        public ICommand AddGraphicCommand { get; private set; }
+
+        public ICommand GetGraphicCommand { get; private set; }
+
+        public ICommand UpdateGraphicCommand { get; private set; }
+
+        public ICommand RemoveGraphicCommand { get; private set; }
+
         public ICommand GetWorkspaceCommand { get; private set; }
 
         public ICommand ImportWorkspaceCommand { get; private set; }
@@ -162,6 +170,10 @@ namespace ArcGISEarth.AutoAPI.Examples
             GetLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetLayer));
             RemoveLayerCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.RemoveLayer));
             ClearLayersCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearLayers));
+            AddGraphicCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.AddGraphic));
+            GetGraphicCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetGraphic));
+            UpdateGraphicCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.UpdateGraphic));
+            RemoveGraphicCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.RemoveGraphic));
             GetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetWorkspace));
             ImportWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ImportWorkspace));
             ClearWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearWorkspace));
@@ -211,6 +223,10 @@ namespace ArcGISEarth.AutoAPI.Examples
         private const string GETLAYER_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
         private const string REMOVELAYER_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
         private const string REMOVELAYERS_EXAMPLE = "operationalLayers";
+        private const string ADDGRAPHIC_EXAMPLE = "{ \"geometry\": {\"type\": \"point\", \"x\": -100, \"y\": 40 }, \"symbol\": { \"type\": \"picture-marker\", \"url\": \"https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png\", \"width\": \"64px\", \"height\": \"64px\", \"xoffset\": \"10px\", \"yoffset\": \"10px\"}}";
+        private const string GETGRAPHIC_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
+        private const string UPDATEGRAPHIC_EXAMPLE = "{\"id\": \"311b7317-94f8-4f80-89f2-0e3ca5e77d28\", \"geometry\": {\"type\": \"point\", \"x\": -100, \"y\": 40 }, \"symbol\": { \"type\": \"picture-marker\", \"url\": \"https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png\", \"width\": \"64px\", \"height\": \"64px\", \"xoffset\": \"10px\", \"yoffset\": \"10px\"}}";
+        private const string REMOVEGRAPHIC_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
         private const string IMPORTWORKSPACE_EXAMPLE = @"{ ""url"": ""http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"", ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip""}";
         private const string TAKESNAPSHOT_EXAMPLE = @"D:\ArcGISEarth.png";
 
@@ -274,6 +290,38 @@ namespace ArcGISEarth.AutoAPI.Examples
                         OutputString = "";
                         break;
                     }
+                case FunctionType.AddGraphic:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.AddGraphic;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(ADDGRAPHIC_EXAMPLE);
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.GetGraphic:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.GetGraphic;
+                        InputPlaceholderString = "Example:\n\n" + GETGRAPHIC_EXAMPLE;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.UpdateGraphic:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.UpdateGraphic;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(UPDATEGRAPHIC_EXAMPLE);
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.RemoveGraphic:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.RemoveGraphic;
+                        InputPlaceholderString = "Example:\n\n" + REMOVEGRAPHIC_EXAMPLE;
+                        OutputString = "";
+                        break;
+                    }
                 case FunctionType.GetWorkspace:
                     {
                         InputString = "";
@@ -315,6 +363,10 @@ namespace ArcGISEarth.AutoAPI.Examples
                         if (SendButtontype != FunctionType.TakeSnapshot)
                         {
                             string outputString = await SendMessage(SendButtontype, InputString);
+                            if (string.IsNullOrEmpty(outputString))
+                            {
+                                outputString = "Finished";
+                            }
                             OutputString = PrettyJson(outputString);
                         }
                         else
@@ -351,6 +403,18 @@ namespace ArcGISEarth.AutoAPI.Examples
                     break;
                 case FunctionType.ClearLayers:
                     outputStr = await AutomationAPIHelper.ClearLayers(inputStr);
+                    break;
+                case FunctionType.AddGraphic:
+                    outputStr = await AutomationAPIHelper.AddGraphic(inputStr);
+                    break;
+                case FunctionType.GetGraphic:
+                    outputStr = await AutomationAPIHelper.GetGraphic(inputStr);
+                    break;
+                case FunctionType.UpdateGraphic:
+                    outputStr = await AutomationAPIHelper.UpdateGraphic(inputStr);
+                    break;
+                case FunctionType.RemoveGraphic:
+                    outputStr = await AutomationAPIHelper.RemoveGraphic(inputStr);
                     break;
                 case FunctionType.GetWorkspace:
                     outputStr = await AutomationAPIHelper.GetWorkspace();

@@ -38,6 +38,10 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
                 case FunctionType.GetLayer:
                 case FunctionType.RemoveLayer:
                 case FunctionType.ClearLayers:
+                case FunctionType.AddGraphic:
+                case FunctionType.GetGraphic:
+                case FunctionType.UpdateGraphic:
+                case FunctionType.RemoveGraphic:
                 case FunctionType.ImportWorkspace:
                     visibility = Visibility.Collapsed;
                     break;
@@ -71,6 +75,10 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
                 case FunctionType.GetLayer:
                 case FunctionType.RemoveLayer:
                 case FunctionType.ClearLayers:
+                case FunctionType.AddGraphic:
+                case FunctionType.GetGraphic:
+                case FunctionType.UpdateGraphic:
+                case FunctionType.RemoveGraphic:
                 case FunctionType.ImportWorkspace:
                     visibility = Visibility.Visible;
                     break;
@@ -101,6 +109,10 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
                 case FunctionType.GetLayer:
                 case FunctionType.RemoveLayer:
                 case FunctionType.ClearLayers:
+                case FunctionType.AddGraphic:
+                case FunctionType.GetGraphic:
+                case FunctionType.UpdateGraphic:
+                case FunctionType.RemoveGraphic:
                 case FunctionType.ImportWorkspace:
                     visibility = Visibility.Collapsed;
                     break;

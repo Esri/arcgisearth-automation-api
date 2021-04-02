@@ -28,6 +28,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         private const string FLIGHT_CONTROLLER_NAME = "flight";
         private const string LAYER_CONTROLLER_NAME = "layer";
         private const string LAYERS_CONTROLLER_NAME = "layers";
+        private const string GRAPHIC_CONTROLLER_NAME = "graphics";
         private const string WORKSPACE_CONTROLLER_NAME = "workspace";
         private const string SNAPSHOT_CONTROLLER_NAME = "snapshot";
         private const string DEFAULT_BASEURL = "http://localhost:8000";
@@ -63,7 +64,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             {
                 string cameraRequestUrl = $"{APIBaseUrl}/{CAMERA_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
-                HttpResponseMessage responseMessage = await httpClient.GetAsync(cameraRequestUrl);
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(cameraRequestUrl).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -101,7 +102,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 string cameraRequestUrl = $"{APIBaseUrl}/{CAMERA_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
                 HttpContent putContent = ConvertJsonToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await httpClient.PutAsync(cameraRequestUrl, putContent);
+                HttpResponseMessage responseMessage = await httpClient.PutAsync(cameraRequestUrl, putContent).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -139,7 +140,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 string flightRequestUrl = $"{APIBaseUrl}/{FLIGHT_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
                 HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await httpClient.PostAsync(flightRequestUrl, postContent);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(flightRequestUrl, postContent).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -166,7 +167,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 string layerRequestUrl = $"{APIBaseUrl}/{LAYER_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
                 HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await httpClient.PostAsync(layerRequestUrl, postContent);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(layerRequestUrl, postContent).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -196,7 +197,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 string layerRequestUrl = $"{APIBaseUrl}/{LAYER_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
                 var layerIdUrl = $"{layerRequestUrl}/{layerId}";
-                HttpResponseMessage responseMessage = await httpClient.GetAsync(layerIdUrl);
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(layerIdUrl).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -217,7 +218,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 string layerRequestUrl = $"{APIBaseUrl}/{LAYER_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
                 var layerIdUrl = $"{layerRequestUrl}/{layerId}";
-                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(layerIdUrl);
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(layerIdUrl).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -237,7 +238,124 @@ namespace ArcGISEarth.AutoAPI.Utils
             {
                 string layersRequestUrl = $"{APIBaseUrl}/{LAYERS_CONTROLLER_NAME}/{targetType}";
                 HttpClient httpClient = new HttpClient();
-                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(layersRequestUrl);
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(layersRequestUrl).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Add a graphic to Earth.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format.</param>
+        /// JSON parameters example:
+        /// {
+        ///     "geometry": {
+        ///         "type": "point",
+        ///         "x": -100,
+        ///         "y": 40
+        ///     },
+        ///     "symbol": {
+        ///         "type": "picture-marker",
+        ///         "url": "https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png",
+        ///         "width": "64px",
+        ///         "height": "64px",
+        ///         "xoffset": "10px",
+        ///         "yoffset": "10px"
+        ///     }
+        /// }
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> AddGraphic(string inputJsonStr)
+        {
+            try
+            {
+                string graphicRequestUrl = $"{APIBaseUrl}/{GRAPHIC_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(graphicRequestUrl, postContent).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Get graphic information by id.
+        /// </summary>
+        /// <param name="graphicId">The graphic id.</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> GetGraphic(string graphicId)
+        {
+            try
+            {
+                string graphicRequestUrl = $"{APIBaseUrl}/{GRAPHIC_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                var graphicIdUrl = $"{graphicRequestUrl}/{graphicId}";
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(graphicIdUrl).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Update a graphic in Earth.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format.</param>
+        /// JSON parameters example:
+        /// {
+        ///     "id": "311b7317-94f8-4f80-89f2-0e3ca5e77d28",
+        ///     "geometry": {
+        ///         "type": "point",
+        ///         "x": -100,
+        ///         "y": 40
+        ///     },
+        ///     "symbol": {
+        ///         "type": "picture-marker",
+        ///         "url": "https://static.arcgis.com/images/Symbols/Basic/RedSphere.png",
+        ///         "width": "64px",
+        ///         "height": "64px",
+        ///         "xoffset": "10px",
+        ///         "yoffset": "10px"
+        ///     }
+        /// }
+        /// <returns>Automation API response message. If success, the content is null.</returns>
+        public static async Task<string> UpdateGraphic(string inputJsonStr)
+        {
+            try
+            {
+                string graphicRequestUrl = $"{APIBaseUrl}/{GRAPHIC_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PatchAsync(graphicRequestUrl, postContent).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Delete a graphic by id.
+        /// </summary>
+        /// <param name="graphicId">The graphic id.</param>
+        /// <returns>Automation API response message. If success, the content is null.</returns>
+        public static async Task<string> RemoveGraphic(string graphicId)
+        {
+            try
+            {
+                string graphicRequestUrl = $"{APIBaseUrl}/{GRAPHIC_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                var graphicIdUrl = $"{graphicRequestUrl}/{graphicId}";
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(graphicIdUrl).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -261,7 +379,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             {
                 string workspaceRequestUrl = $"{APIBaseUrl}/{WORKSPACE_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
-                HttpResponseMessage responseMessage = await httpClient.GetAsync(workspaceRequestUrl);
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(workspaceRequestUrl).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -287,7 +405,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 string workspaceRequestUrl = $"{APIBaseUrl}/{WORKSPACE_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
                 HttpContent putContent = ConvertJsonToHttpContent(inputJsonStr);
-                HttpResponseMessage responseMessage = await httpClient.PutAsync(workspaceRequestUrl, putContent);
+                HttpResponseMessage responseMessage = await httpClient.PutAsync(workspaceRequestUrl, putContent).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -306,7 +424,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             {
                 string workspaceRequestUrl = $"{APIBaseUrl}/{WORKSPACE_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
-                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workspaceRequestUrl);
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workspaceRequestUrl).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
@@ -325,10 +443,10 @@ namespace ArcGISEarth.AutoAPI.Utils
             {
                 string snapshotRequestUrl = $"{APIBaseUrl}/{SNAPSHOT_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
-                HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl);
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl).ConfigureAwait(false);
                 HttpContent content = responseMessage.Content;
                 BitmapImage bmpImg = new BitmapImage();                
-                using (Stream stream = await content.ReadAsStreamAsync())
+                using (Stream stream = await content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
                     bmpImg.BeginInit();
                     bmpImg.StreamSource = stream;
@@ -414,5 +532,23 @@ namespace ArcGISEarth.AutoAPI.Utils
             }
         }
         #endregion
+    }
+
+    //Refer to https://stackoverflow.com/a/29772349/5765982
+    public static class HttpClientExtensions
+    {
+        public static async Task<HttpResponseMessage> PatchAsync(this HttpClient client, string requestUri, HttpContent content)
+        {
+            var method = new HttpMethod("PATCH");
+            var request = new HttpRequestMessage(method, new Uri(requestUri))
+            {
+                Content = content
+            };
+
+            HttpResponseMessage response = new HttpResponseMessage();
+            response = await client.SendAsync(request);
+
+            return response;
+        }
     }
 }
