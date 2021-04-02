@@ -443,7 +443,7 @@ namespace ArcGISEarth.AutoAPI.Utils
             {
                 string snapshotRequestUrl = $"{APIBaseUrl}/{SNAPSHOT_CONTROLLER_NAME}";
                 HttpClient httpClient = new HttpClient();
-                HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl).ConfigureAwait(false);
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(snapshotRequestUrl);
                 HttpContent content = responseMessage.Content;
                 BitmapImage bmpImg = new BitmapImage();                
                 using (Stream stream = await content.ReadAsStreamAsync().ConfigureAwait(false))
