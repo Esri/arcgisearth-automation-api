@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30323.103
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ArcGISEarth.AutoAPI.Shared", "ArcGISEarth.AutoAPI.Shared\ArcGISEarth.AutoAPI.Shared.shproj", "{5159E20A-F3B9-4D45-B27E-22D3CABCC8AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArcGISEarth.AutoAPI.Examples.NetCore", "ArcGISEarth.AutoAPI.Examples\ArcGISEarth.AutoAPI.Examples.NetCore.csproj", "{7949AAE8-EC91-4280-86AE-42FA496A7EF9}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		ArcGISEarth.AutoAPI.Shared\ArcGISEarth.AutoAPI.Shared.projitems*{5159e20a-f3b9-4d45-b27e-22d3cabcc8ab}*SharedItemsImports = 13
+		ArcGISEarth.AutoAPI.Shared\ArcGISEarth.AutoAPI.Shared.projitems*{7949aae8-ec91-4280-86ae-42fa496a7ef9}*SharedItemsImports = 5
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7949AAE8-EC91-4280-86AE-42FA496A7EF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7949AAE8-EC91-4280-86AE-42FA496A7EF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7949AAE8-EC91-4280-86AE-42FA496A7EF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7949AAE8-EC91-4280-86AE-42FA496A7EF9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {70DAF370-3DE8-4599-BDFC-51EE548C34E7}
+	EndGlobalSection
+EndGlobal

@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Esri
+﻿// Copyright 2020 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -15,9 +15,8 @@ using ArcGIS.Core.CIM;
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
-using Newtonsoft.Json;
+using ArcGISEarth.AutoAPI.Utils;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 
 namespace ToArcGISEarth
 {
@@ -44,8 +43,8 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -57,7 +56,7 @@ namespace ToArcGISEarth
             }
         }
 
-        private void SetCameraInEarth(MapViewCameraChangedEventArgs args)
+        private async void SetCameraInEarth(MapViewCameraChangedEventArgs args)
         {
             try
             {
@@ -67,21 +66,26 @@ namespace ToArcGISEarth
                 {
                     JObject cameraJObject = new JObject()
                     {
-                        // Get heading.
-                        ["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading,
-                        // Get pitch.
-                        ["pitch"] = mapView.Camera.Pitch + 90,
-                        // Get mapPoint.
-                        ["mapPoint"] = new JObject
+                        // Get position.
+                        ["position"] = new JObject
                         {
                             ["x"] = mapView.Camera.X,
                             ["y"] = mapView.Camera.Y,
-                            ["z"] = mapView.Camera.Z
-                        }
+                            ["z"] = mapView.Camera.Z,
+                            ["spatialReference"] = new JObject
+                            {
+                                ["wkid"] = mapView.Camera.SpatialReference?.Wkid
+                            }
+                        },
+                        // Get heading.
+                        ["heading"] = mapView.Camera.Heading > 0 ? 360 - mapView.Camera.Heading : -mapView.Camera.Heading,
+                        // Get tilt.
+                        ["tilt"] = mapView.Camera.Pitch + 90,
+                        // Get roll.
+                        ["roll"] = mapView.Camera.Roll
                     };
-
                     // Set camera in ArcGIS Earth.
-                    ToolHelper.Utils.SetCamera(cameraJObject.ToString());
+                    await AutomationAPIHelper.SetCamera(cameraJObject.ToString());
                 }
             }
             catch

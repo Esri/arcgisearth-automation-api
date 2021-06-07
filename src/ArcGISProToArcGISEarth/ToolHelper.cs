@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Esri
+﻿// Copyright 2020 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -12,8 +12,9 @@
 // limitations under the License.
 
 using ArcGIS.Core.CIM;
+using ArcGIS.Desktop.Internal.Catalog;
 using ArcGIS.Desktop.Mapping;
-using ArcGISEarth.WCFNamedPipeIPC;
+using ArcGISEarth.AutoAPI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,20 +25,20 @@ namespace ToArcGISEarth
 {
     public static class ToolHelper
     {
-        // ArcGIS Earth automation api utils.
-        public static EarthNamedpipeAPIUtils Utils { get; } = new EarthNamedpipeAPIUtils();
-
-        // Logging the status of connecting to ArcGIS Earth.
-        public static bool IsConnectSuccessfully { get; set; } = false;
-
-        // Logging id and it's infomation when adding layer or elevation source. 
+        // Logging id and it's infomation when adding layer or elevation source.
         public static Dictionary<string, string[]> IdInfoDictionary { get; set; } = new Dictionary<string, string[]>();
 
         // Logging the status of ArcGIS Earth running.
-        public static bool IsArcGISEarthRunning { get { return Process.GetProcessesByName("ArcGISEarth").Length > 0; } }
+        public static bool IsArcGISEarthRunning
+        {
+            get { return Process.GetProcessesByName("ArcGISEarth").Length > 0; }
+        }
 
         // Logging the status of ArcGIS Pro global scene opening.
-        public static bool IsArcGISProGlobalSceneOpening { get { return MapView.Active?.Map?.IsScene == true && MapView.Active?.Map.DefaultViewingMode == MapViewingMode.SceneGlobal; } }
+        public static bool IsArcGISProGlobalSceneOpening
+        {
+            get { return MapView.Active?.Map?.IsScene == true && MapView.Active?.Map.DefaultViewingMode == MapViewingMode.SceneGlobal; }
+        }
 
         public static string GetDataSource(CIMDataConnection dataConnection)
         {
@@ -110,7 +111,7 @@ namespace ToArcGISEarth
             Uri.TryCreate(realUrl, UriKind.RelativeOrAbsolute, out Uri uri);
             if (uri != null)
             {
-                realUrl = uri.AbsolutePath; // e.g. "D:/temp/test.slpk/layers/0".
+                realUrl = uri.LocalPath; // e.g. "D:/temp/test.slpk/layers/0".
                 if (realUrl.Length >= 9)
                 {
                     return realUrl.Remove(realUrl.Length - 9, 9); // e.g.  "/D:/temp/test.slpk".
@@ -167,5 +168,3 @@ namespace ToArcGISEarth
         }
     }
 }
-
-

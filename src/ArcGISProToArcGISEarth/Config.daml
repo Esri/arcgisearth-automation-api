@@ -1,18 +1,17 @@
 ﻿<ArcGIS defaultAssembly="ToArcGISEarth.dll" defaultNamespace="ToArcGISEarth" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{94776263-9f12-4574-927e-c3c2de42bcaf}" version="1.1" desktopVersion="2.2">
+  <AddInInfo id="{94776263-9f12-4574-927e-c3c2de42bcaf}" version="1.2" desktopVersion="2.5 or later">
     <Name>ToArcGISEarth</Name>
     <Description>ArcGIS Pro to ArcGIS Earth</Description>
     <Image>Images\ArcGISEarth32.png</Image>
     <Author>ArcGIS Earth Tutorials</Author>
-    <Company>esri, http://www.esri.com</Company>
-    <Date>8/20/2018 11:00:00 AM, 2018</Date>
+    <Company>Esri, http://www.esri.com</Company>
+    <Date>10/01/2020 11:00:00 AM, 2020</Date>
     <Subject>Framework</Subject>
   </AddInInfo>
   <modules>
     <insertModule id="ArcGISProToArcGISEarth" className="ArcGISEarthModule" autoLoad="false" caption="ArcGISEarthModule">
       <groups>
-        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
-          <button refID="ToArcGISEarth_ConnectButton" size="large" />
+        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">          
           <menu refID="ToArcGISEarth_SynchronizationMenu" size="middle"/>
           <button refID="ToArcGISEarth_ClearWorkspaceButton" size="middle" />
           <button refID="ToArcGISEarth_SaveImageButton" size="middle" />
@@ -27,10 +26,7 @@
           <button refID="ToArcGISEarth_RemoveLayerSyncCheckBox" />
         </menu>
       </menus>
-      <controls>
-        <button id="ToArcGISEarth_ConnectButton" caption="Connect" className="ConnectButton" loadOnClick="false" smallImage="Images\ArcGISEarth16.png" largeImage="Images\ArcGISEarth32.png" keytip="CE">
-          <tooltip>This add-in demonstrates how to communicate with ArcGIS Earth via the Automation API in ArcGIS Pro 2.2.</tooltip>
-        </button>
+      <controls>       
         <button id="ToArcGISEarth_SetCameraSyncCheckBox" caption="Camera view" className="SetCameraSyncCheckBox" loadOnClick="false"  keytip="SC">
           <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
         </button>

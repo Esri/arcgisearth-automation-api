@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Esri
+﻿// Copyright 2020 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,8 +11,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Windows;
 using ArcGIS.Desktop.Framework.Contracts;
+using ArcGISEarth.AutoAPI.Utils;
+using System.Windows;
 
 namespace ToArcGISEarth
 {
@@ -26,7 +27,7 @@ namespace ToArcGISEarth
         protected override void OnClick()
         {
             IsChecked = true;
-            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Are you sure you want to remove all items from current workspace?", null, MessageBoxButton.OKCancel);
+            MessageBoxResult result = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Are you sure you want to remove all items from current workspace of ArcGIS Earth?", null, MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 ClearAll();
@@ -36,8 +37,8 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -48,10 +49,10 @@ namespace ToArcGISEarth
             }
         }
 
-        private void ClearAll()
+        private async void ClearAll()
         {
             // Clear ArcGIS Earth workspace.
-            ToolHelper.Utils.ClearLayers("{\"target\":\"AllLayers\"}");
+            await AutomationAPIHelper.ClearWorkspace();
         }
     }
 }

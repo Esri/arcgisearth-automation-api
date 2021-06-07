@@ -11,26 +11,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using ArcGIS.Desktop.Framework;
-using ArcGIS.Desktop.Framework.Contracts;
-
-namespace ToArcGISEarth
+namespace ArcGISEarth.AutoAPI.Examples
 {
-    internal class ArcGISEarthModule : Module
+    internal enum FunctionType
     {
-        private static ArcGISEarthModule _this = null;
-
-        public static ArcGISEarthModule Current
-        {
-            get
-            {
-                return _this ?? (_this = (ArcGISEarthModule)FrameworkApplication.FindModule("ArcGISProToArcGISEarth"));
-            }
-        }
-
-        protected override bool CanUnload()
-        {
-            return true;
-        }
+        // UI function type
+        GetCamera,
+        SetCamera,
+        SetFlight,
+        AddLayer,
+        GetLayer,
+        RemoveLayer,
+        ClearLayers,
+        AddGraphic,
+        GetGraphic,
+        UpdateGraphic,
+        RemoveGraphic,
+        GetWorkspace,
+        ImportWorkspace,
+        ClearWorkspace,
+        TakeSnapshot,
+        ClearInputputBox,
+        Send
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Esri
+﻿// Copyright 2020 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -14,6 +14,8 @@
 using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
+using ArcGISEarth.AutoAPI.Utils;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace ToArcGISEarth
@@ -43,8 +45,8 @@ namespace ToArcGISEarth
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -56,7 +58,7 @@ namespace ToArcGISEarth
             }
         }
 
-        private void RemoveLayerFromEarth(LayerEventsArgs args)
+        private async void RemoveLayerFromEarth(LayerEventsArgs args)
         {
             try
             {
@@ -80,7 +82,9 @@ namespace ToArcGISEarth
                     // Remove elevation sources in ArcGIS Earth and removed id of these sources.
                     foreach (var id in idList)
                     {
-                        ToolHelper.Utils.RemoveLayer(id);
+                        JObject idJson = JObject.Parse(id);
+                        string idString = idJson["id"].ToString();
+                        await AutomationAPIHelper.RemoveLayer(idString);
                         ToolHelper.IdInfoDictionary.Remove(id);
                     }
                 }
@@ -91,4 +95,3 @@ namespace ToArcGISEarth
         }
     }
 }
-

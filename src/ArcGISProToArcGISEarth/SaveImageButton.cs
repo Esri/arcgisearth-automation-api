@@ -1,4 +1,4 @@
-﻿// Copyright 2018 Esri
+﻿// Copyright 2020 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,9 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Threading.Tasks;
 using ArcGIS.Desktop.Framework.Contracts;
+using ArcGISEarth.AutoAPI.Utils;
 using Microsoft.Win32;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace ToArcGISEarth
 {
@@ -24,18 +28,18 @@ namespace ToArcGISEarth
             Enabled = false;
         }
 
-        protected override async void OnClick()
+        protected override void OnClick()
         {
             IsChecked = true;
-            await SaveImage();
+            SaveImage();
             IsChecked = false;
             return;
         }
 
         protected override void OnUpdate()
         {
-            // Set button status when status of connecting to ArcGIS Earth changed.
-            if (ToolHelper.IsConnectSuccessfully)
+            // Set button status when status of ArcGIS Earth or ArcGIS Pro changed.
+            if (ToolHelper.IsArcGISEarthRunning && ToolHelper.IsArcGISProGlobalSceneOpening)
             {
                 Enabled = true;
             }
@@ -46,21 +50,41 @@ namespace ToArcGISEarth
             }
         }
 
-        private async Task SaveImage()
+        private async void SaveImage()
         {
-            // Set save file options.
-            SaveFileDialog dialog = new SaveFileDialog
+            try
             {
-                Filter = "Jpeg Files|*.jpg|Png Files|*.png|Tiff Files|*.tif",
-                FileName = "ArcGIS Earth.jpg",
-                DefaultExt = "jpg",
-                OverwritePrompt = true,
-                RestoreDirectory = true
-            };
-            if (dialog.ShowDialog() == true)
+                // Set save file options.
+                SaveFileDialog dialog = new SaveFileDialog
+                {
+                    Filter = "Jpeg Files|*.jpg|Png Files|*.png|Tiff Files|*.tif",
+                    FileName = "ArcGIS Earth.jpg",
+                    DefaultExt = "jpg",
+                    OverwritePrompt = true,
+                    RestoreDirectory = true
+                };
+                if (dialog.ShowDialog() == true)
+                {
+                    // Get screenshot from ArcGIS Earth.   
+                    var bitmapImage = await AutomationAPIHelper.TakeSnapshot() as BitmapImage;
+                    if (bitmapImage == null)
+                    {
+                        ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to save image.");
+                        return;
+                    }
+                    using (var outStream = new MemoryStream())
+                    {
+                        var encoder = new BmpBitmapEncoder();
+                        encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+                        encoder.Save(outStream);
+                        var bitmap = new Bitmap(outStream);
+                        bitmap.Save(dialog.FileName);
+                    }
+                }
+            }
+            catch (Exception)
             {
-                // Get screenshot from ArcGIS Earth.
-                await ToolHelper.Utils.GetSnapshot(dialog.FileName);
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to save image.");
             }
         }
     }
