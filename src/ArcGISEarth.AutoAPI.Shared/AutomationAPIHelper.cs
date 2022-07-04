@@ -385,7 +385,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         }
 
         /// <summary>
-        /// Add a  to Earth.
+        /// Add a drawing element to Earth.
         /// </summary>
         /// <param name="inputJsonStr">The parameters in JSON format.</param>
         /// JSON parameters example:
