@@ -23,26 +23,18 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var sendButtonType = (FunctionType)value;
-            var visibility = Visibility.Visible;
+            Visibility visibility;
             switch (sendButtonType)
             {
                 case FunctionType.GetCamera:
+                case FunctionType.ClearGraphics:
+                case FunctionType.ClearDrawings:
                 case FunctionType.GetWorkspace:
                 case FunctionType.ClearWorkspace:
                 case FunctionType.TakeSnapshot:
                     visibility = Visibility.Visible;
                     break;
-                case FunctionType.SetCamera:                    
-                case FunctionType.SetFlight:                    
-                case FunctionType.AddLayer:
-                case FunctionType.GetLayer:
-                case FunctionType.RemoveLayer:
-                case FunctionType.ClearLayers:
-                case FunctionType.AddGraphic:
-                case FunctionType.GetGraphic:
-                case FunctionType.UpdateGraphic:
-                case FunctionType.RemoveGraphic:
-                case FunctionType.ImportWorkspace:
+                default:
                     visibility = Visibility.Collapsed;
                     break;
             }
@@ -60,26 +52,18 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var sendButtonType = (FunctionType)value;
-            var visibility = Visibility.Collapsed;
+            Visibility visibility;
             switch (sendButtonType)
             {
                 case FunctionType.GetCamera:
+                case FunctionType.ClearGraphics:
+                case FunctionType.ClearDrawings:
                 case FunctionType.GetWorkspace:
                 case FunctionType.ClearWorkspace:
                 case FunctionType.TakeSnapshot:
                     visibility = Visibility.Collapsed;
                     break;
-                case FunctionType.SetCamera:
-                case FunctionType.SetFlight:
-                case FunctionType.AddLayer:
-                case FunctionType.GetLayer:
-                case FunctionType.RemoveLayer:
-                case FunctionType.ClearLayers:
-                case FunctionType.AddGraphic:
-                case FunctionType.GetGraphic:
-                case FunctionType.UpdateGraphic:
-                case FunctionType.RemoveGraphic:
-                case FunctionType.ImportWorkspace:
+                default:
                     visibility = Visibility.Visible;
                     break;
             }
@@ -97,27 +81,14 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var sendButtonType = (FunctionType)value;
-            var visibility = Visibility.Collapsed;
+            Visibility visibility;
             switch (sendButtonType)
             {
-                case FunctionType.GetCamera:
-                case FunctionType.GetWorkspace:
-                case FunctionType.ClearWorkspace:
-                case FunctionType.SetCamera:
-                case FunctionType.SetFlight:
-                case FunctionType.AddLayer:
-                case FunctionType.GetLayer:
-                case FunctionType.RemoveLayer:
-                case FunctionType.ClearLayers:
-                case FunctionType.AddGraphic:
-                case FunctionType.GetGraphic:
-                case FunctionType.UpdateGraphic:
-                case FunctionType.RemoveGraphic:
-                case FunctionType.ImportWorkspace:
-                    visibility = Visibility.Collapsed;
-                    break;
                 case FunctionType.TakeSnapshot:
                     visibility = Visibility.Visible;
+                    break;
+                default:
+                    visibility = Visibility.Collapsed;
                     break;
             }
             return visibility;

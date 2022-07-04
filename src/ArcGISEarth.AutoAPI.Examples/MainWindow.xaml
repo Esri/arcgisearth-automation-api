@@ -339,6 +339,34 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Clear Graphics" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ClearGraphicsCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Add Drawing" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding AddDrawingCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Remove Drawing" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding RemoveDrawingCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Clear Drawings" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ClearDrawingsCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
                     <ListViewItem Style="{StaticResource SideListViewItem}" Content="Get Workspace" Margin="0, 10, 0, 0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
