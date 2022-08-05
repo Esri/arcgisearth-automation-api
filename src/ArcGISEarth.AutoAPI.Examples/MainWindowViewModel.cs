@@ -145,6 +145,14 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         public ICommand RemoveGraphicCommand { get; private set; }
 
+        public ICommand ClearGraphicsCommand { get; private set; }
+
+        public ICommand AddDrawingCommand { get; private set; }
+
+        public ICommand RemoveDrawingCommand { get; private set; }
+
+        public ICommand ClearDrawingsCommand { get; private set; }
+
         public ICommand GetWorkspaceCommand { get; private set; }
 
         public ICommand ImportWorkspaceCommand { get; private set; }
@@ -174,6 +182,10 @@ namespace ArcGISEarth.AutoAPI.Examples
             GetGraphicCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetGraphic));
             UpdateGraphicCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.UpdateGraphic));
             RemoveGraphicCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.RemoveGraphic));
+            ClearGraphicsCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearGraphics));
+            AddDrawingCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.AddDrawing));
+            RemoveDrawingCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.RemoveDrawing));
+            ClearDrawingsCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearDrawings));
             GetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetWorkspace));
             ImportWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ImportWorkspace));
             ClearWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearWorkspace));
@@ -227,6 +239,8 @@ namespace ArcGISEarth.AutoAPI.Examples
         private const string GETGRAPHIC_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
         private const string UPDATEGRAPHIC_EXAMPLE = "{\"id\": \"311b7317-94f8-4f80-89f2-0e3ca5e77d28\", \"geometry\": {\"type\": \"point\", \"x\": -100, \"y\": 40 }, \"symbol\": { \"type\": \"picture-marker\", \"url\": \"https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png\", \"width\": \"64px\", \"height\": \"64px\", \"xoffset\": \"10px\", \"yoffset\": \"10px\"}}";
         private const string REMOVEGRAPHIC_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
+        private const string ADDDRAWING_EXAMPLE = "{\"id\":\"8a1701c9-b8e1-1b0a-c1a7-ac6242c7645e\",\"visible\":true,\"title\":\"Point\",\"geometry\":{\"x\":-100,\"y\":40,\"spatialReference\":{\"wkid\":4326}},\"symbol\":{\"type\":\"picture-marker\",\"url\":\"https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png\",\"size\":\"32px\"},\"labelSymbol\":{\"type\":\"text\",\"color\":[100,100,100,255],\"font\":{\"size\":\"16px\"}}}";
+        private const string REMOVEDRAWING_EXAMPLE = "8a1701c9-b8e1-1b0a-c1a7-ac6242c7645e";
         private const string IMPORTWORKSPACE_EXAMPLE = @"{ ""url"": ""http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"", ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip""}";
         private const string TAKESNAPSHOT_EXAMPLE = @"D:\ArcGISEarth.png";
 
@@ -319,6 +333,36 @@ namespace ArcGISEarth.AutoAPI.Examples
                         InputString = "";
                         SendButtontype = FunctionType.RemoveGraphic;
                         InputPlaceholderString = "Example:\n\n" + REMOVEGRAPHIC_EXAMPLE;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.ClearGraphics:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.ClearGraphics;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.AddDrawing:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.AddDrawing;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(ADDDRAWING_EXAMPLE);
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.RemoveDrawing:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.RemoveDrawing;
+                        InputPlaceholderString = "Example:\n\n" + REMOVEDRAWING_EXAMPLE;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.ClearDrawings:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.ClearDrawings;
                         OutputString = "";
                         break;
                     }
@@ -415,6 +459,18 @@ namespace ArcGISEarth.AutoAPI.Examples
                     break;
                 case FunctionType.RemoveGraphic:
                     outputStr = await AutomationAPIHelper.RemoveGraphic(inputStr);
+                    break;
+                case FunctionType.ClearGraphics:
+                    outputStr = await AutomationAPIHelper.ClearGraphics();
+                    break;
+                case FunctionType.AddDrawing:
+                    outputStr = await AutomationAPIHelper.AddDrawing(inputStr);
+                    break;
+                case FunctionType.RemoveDrawing:
+                    outputStr = await AutomationAPIHelper.RemoveDrawing(inputStr);
+                    break;
+                case FunctionType.ClearDrawings:
+                    outputStr = await AutomationAPIHelper.ClearDrawings();
                     break;
                 case FunctionType.GetWorkspace:
                     outputStr = await AutomationAPIHelper.GetWorkspace();

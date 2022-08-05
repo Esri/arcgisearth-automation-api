@@ -29,6 +29,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         private const string LAYER_CONTROLLER_NAME = "layer";
         private const string LAYERS_CONTROLLER_NAME = "layers";
         private const string GRAPHIC_CONTROLLER_NAME = "graphics";
+        private const string DRAWING_CONTROLLER_NAME = "drawings";
         private const string WORKSPACE_CONTROLLER_NAME = "workspace";
         private const string SNAPSHOT_CONTROLLER_NAME = "snapshot";
         private const string DEFAULT_BASEURL = "http://localhost:8000";
@@ -356,6 +357,116 @@ namespace ArcGISEarth.AutoAPI.Utils
                 HttpClient httpClient = new HttpClient();
                 var graphicIdUrl = $"{graphicRequestUrl}/{graphicId}";
                 HttpResponseMessage responseMessage = await httpClient.DeleteAsync(graphicIdUrl).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Remove all graphics from ArcGIS Earth.
+        /// </summary>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> ClearGraphics()
+        {
+            try
+            {
+                string graphicsRequestUrl = $"{APIBaseUrl}/{GRAPHIC_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(graphicsRequestUrl).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Add a drawing element to Earth.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format.</param>
+        /// JSON parameters example:
+        /// {
+        ///     "id": "8a1701c9-b8e1-1b0a-c1a7-ac6242c7645e",
+        ///     "visible": true,
+        ///     "title": "Point",
+        ///     "geometry": {
+        ///         "x": -100,
+        ///         "y": 40,
+        ///         "spatialReference": {
+        ///             "wkid": 4326
+        ///         }
+        ///     },
+        ///     "symbol": {
+        ///         "type": "picture-marker",
+        ///         "url": "https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png",
+        ///         "size": "32px"
+        ///     },
+        ///     "labelSymbol": {
+        ///         "type": "text",
+        ///         "color": [
+        ///             100,
+        ///             100,
+        ///             100,
+        ///             255
+        ///         ],
+        ///         "font": {
+        ///             "size": "16px"
+        ///         }
+        ///     }
+        /// }
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> AddDrawing(string inputJsonStr)
+        {
+            try
+            {
+                string drawingsRequestUrl = $"{APIBaseUrl}/{DRAWING_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(drawingsRequestUrl, postContent).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Delete a drawing element by id.
+        /// </summary>
+        /// <param name="drawingId">The drawing element id.</param>
+        /// <returns>Automation API response message. If success, the content is null.</returns>
+        public static async Task<string> RemoveDrawing(string drawingId)
+        {
+            try
+            {
+                string drawingsRequestUrl = $"{APIBaseUrl}/{DRAWING_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                var drawingIdUrl = $"{drawingsRequestUrl}/{drawingId}";
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(drawingIdUrl).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Remove all graphics from ArcGIS Earth.
+        /// </summary>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> ClearDrawings()
+        {
+            try
+            {
+                string drawingsRequestUrl = $"{APIBaseUrl}/{DRAWING_CONTROLLER_NAME}";
+                HttpClient httpClient = new HttpClient();
+                HttpResponseMessage responseMessage = await httpClient.DeleteAsync(drawingsRequestUrl).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)
