@@ -13,15 +13,20 @@
 
 using ArcGIS.Desktop.Framework.Contracts;
 using System.Diagnostics;
+using System.Security.Policy;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
-    public class HelpButton : Button
+    internal class HelpButton : Button
     {
         protected override void OnClick()
         {
             // Open the help page. 
-            Process.Start("http://doc.arcgis.com/en/arcgis-earth/automation-api/samples.htm");
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "http://doc.arcgis.com/en/arcgis-earth/automation-api/samples.htm",
+                UseShellExecute = true
+            });            
         }
     }
 }

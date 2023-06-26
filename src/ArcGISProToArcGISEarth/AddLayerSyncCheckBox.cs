@@ -22,7 +22,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
     public class AddLayerSyncCheckBox : Button
     {

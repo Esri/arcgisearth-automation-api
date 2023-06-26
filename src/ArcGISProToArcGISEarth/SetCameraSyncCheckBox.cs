@@ -18,7 +18,7 @@ using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
 using Newtonsoft.Json.Linq;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
     public class SetCameraSyncCheckBox : Button
     {

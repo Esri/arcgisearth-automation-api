@@ -1,5 +1,5 @@
 # ArcGIS Pro To ArcGIS Earth
-Use ArcGIS Pro 2.5 or later versions to control and comminucate with ArcGIS Earth.
+Use ArcGIS Pro 3.0 or later versions to control and comminicate with ArcGIS Earth.
 
 ### Build
 Build and compile the add-in using source codes provided. Modify codes where necessary in your own program.

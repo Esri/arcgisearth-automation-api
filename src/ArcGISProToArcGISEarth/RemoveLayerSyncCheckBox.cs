@@ -18,7 +18,7 @@ using ArcGISEarth.AutoAPI.Utils;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
     public class RemoveLayerSyncCheckBox : Button
     {

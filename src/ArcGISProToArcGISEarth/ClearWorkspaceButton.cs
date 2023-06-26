@@ -15,7 +15,7 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGISEarth.AutoAPI.Utils;
 using System.Windows;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
     public class ClearWorkspaceButton : Button
     {
