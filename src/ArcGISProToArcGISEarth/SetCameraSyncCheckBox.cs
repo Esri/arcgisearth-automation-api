@@ -16,7 +16,7 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
-using Newtonsoft.Json.Linq;
+using System.Text.Json.Nodes;
 
 namespace ArcGISProToArcGISEarth
 {
@@ -64,15 +64,15 @@ namespace ArcGISProToArcGISEarth
                 MapView mapView = args.MapView;
                 if (null != mapView && null != mapView.Camera && mapView.ViewingMode == MapViewingMode.SceneGlobal)
                 {
-                    JObject cameraJObject = new JObject()
+                    JsonObject cameraJObject = new JsonObject
                     {
                         // Get position.
-                        ["position"] = new JObject
+                        ["position"] = new JsonObject
                         {
                             ["x"] = mapView.Camera.X,
                             ["y"] = mapView.Camera.Y,
                             ["z"] = mapView.Camera.Z,
-                            ["spatialReference"] = new JObject
+                            ["spatialReference"] = new JsonObject
                             {
                                 ["wkid"] = mapView.Camera.SpatialReference?.Wkid
                             }

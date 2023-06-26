@@ -18,9 +18,9 @@ using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
 
 namespace ArcGISProToArcGISEarth
 {
@@ -80,8 +80,8 @@ namespace ArcGISProToArcGISEarth
                             // Get layer url.
                             string url = ToolHelper.GetDataSource(dataConnection);
                             if (!string.IsNullOrWhiteSpace(url))
-                            {
-                                JObject addLayerJson = new JObject
+                            {                                
+                                JsonObject addLayerJson = new JsonObject
                                 {
                                     ["URI"] = url
                                 };

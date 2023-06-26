@@ -2,7 +2,7 @@
   <AddInInfo id="{d754c583-5aa9-4b29-8b9e-c04afdb2d2c3}" version="1.0" desktopVersion="3.2.48173">
     <Name>ArcGISProToArcGISEarth</Name>
     <Description>ArcGIS Pro to ArcGIS Earth</Description>
-    <Image>Images\ArcGISEarth32.png</Image>
+    <Image>pack://application:,,,/ArcGISProToArcGISEarth;component/Images/ArcGISEarth32.png</Image>
     <Author>ArcGIS Earth Tutorials</Author>
     <Company>Esri, http://www.esri.com</Company>
     <Date>06/26/2020 11:00:00 AM, 2023</Date>
@@ -46,10 +46,7 @@
         </button>
         <button id="ToArcGISEarth_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Help16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Help32.png" keytip="HE">
           <tooltip>See ArcGIS Earth Automation API help document for more details.</tooltip>
-        </button>
-        <button id="ArcGISProToArcGISEarth_Button1" caption="Button 1" className="Button1" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonBlue32.png">
-          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
-        </button>
+        </button>        
       </controls>
       <panes></panes>
     </insertModule>

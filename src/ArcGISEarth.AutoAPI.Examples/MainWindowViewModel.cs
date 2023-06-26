@@ -12,8 +12,8 @@
 // limitations under the License.
 
 using ArcGISEarth.AutoAPI.Utils;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -169,7 +169,7 @@ namespace ArcGISEarth.AutoAPI.Examples
         public MainWindowViewModel()
         {
             APIUrl = AutomationAPIHelper.APIBaseUrl;
-            InputString = string.Empty; 
+            InputString = string.Empty;
             OutputString = string.Empty;
             GetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetCamera));
             SetCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SetCamera));
@@ -195,10 +195,10 @@ namespace ArcGISEarth.AutoAPI.Examples
         }
 
         private FunctionType _sendButtonType;
-        public FunctionType SendButtontype 
+        public FunctionType SendButtontype
         {
             get { return _sendButtonType; }
-            set 
+            set
             {
                 if (_sendButtonType != value)
                 {
@@ -215,8 +215,9 @@ namespace ArcGISEarth.AutoAPI.Examples
                 // Handle non-json format output.
                 if (jsonString.StartsWith("{"))
                 {
-                    var obj = JsonConvert.DeserializeObject(jsonString);
-                    return JsonConvert.SerializeObject(obj, Formatting.Indented);
+                    var obj = JsonSerializer.Deserialize(jsonString, typeof(object));
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    return JsonSerializer.Serialize(obj, options);
                 }
                 else
                 {
@@ -245,7 +246,7 @@ namespace ArcGISEarth.AutoAPI.Examples
         private const string TAKESNAPSHOT_EXAMPLE = @"D:\ArcGISEarth.png";
 
         private async void ExecuteFuction(FunctionType functionType)
-        {            
+        {
             switch (functionType)
             {
                 // More about input string syntax, please refer to "examples.txt".
@@ -419,7 +420,7 @@ namespace ArcGISEarth.AutoAPI.Examples
                         }
                         break;
                     }
-            }            
+            }
         }
 
         private async Task<string> SendMessage(FunctionType sendType, string inputStr)

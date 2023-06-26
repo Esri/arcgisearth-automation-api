@@ -15,8 +15,8 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Text.Json.Nodes;
 
 namespace ArcGISProToArcGISEarth
 {
@@ -82,7 +82,7 @@ namespace ArcGISProToArcGISEarth
                     // Remove elevation sources in ArcGIS Earth and removed id of these sources.
                     foreach (var id in idList)
                     {
-                        JObject idJson = JObject.Parse(id);
+                        JsonObject idJson = JsonNode.Parse(id).AsObject();                        
                         string idString = idJson["id"].ToString();
                         await AutomationAPIHelper.RemoveLayer(idString);
                         ToolHelper.IdInfoDictionary.Remove(id);
