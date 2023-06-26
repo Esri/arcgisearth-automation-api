@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.33808.371
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ArcGISEarth.AutoAPI.Shared", "ArcGISEarth.AutoAPI.Shared\ArcGISEarth.AutoAPI.Shared.shproj", "{5159E20A-F3B9-4D45-B27E-22D3CABCC8AB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArcGISEarth.AutoAPI.Examples.NetCore", "ArcGISEarth.AutoAPI.Examples\ArcGISEarth.AutoAPI.Examples.NetCore.csproj", "{7949AAE8-EC91-4280-86AE-42FA496A7EF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArcGISEarth.AutoAPI.Examples", "ArcGISEarth.AutoAPI.Examples\ArcGISEarth.AutoAPI.Examples.csproj", "{7949AAE8-EC91-4280-86AE-42FA496A7EF9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArcGISProToArcGISEarth", "ArcGISProToArcGISEarth\ArcGISProToArcGISEarth.csproj", "{122173C8-AB14-4A2E-97FC-C0C704092EDB}"
 EndProject
