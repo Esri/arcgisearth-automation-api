@@ -1,0 +1,53 @@
+﻿<ArcGIS defaultAssembly="ProAppModule1.dll" defaultNamespace="ProAppModule1" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
+  <AddInInfo id="{f6c4dcd5-1853-4012-8165-7e3858f2f786}" version="1.0" desktopVersion="3.2.48173">
+    <Name>ProAppModule1</Name>
+    <Description>ProAppModule1 description</Description>
+    <Image>Images\AddinDesktop32.png</Image>
+    <Author>chao9441</Author>
+    <Company>Acme</Company>
+    <Date>2023-06-28 2:12:49 PM</Date>
+    <Subject>Framework</Subject>
+    <!-- Note subject can be one or more of these topics:
+                    Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
+  </AddInInfo>
+  <modules>
+    <insertModule id="ProAppModule1_Module" className="Module1" autoLoad="true" caption="Module1">
+      <groups>
+        <group id="ProAppModule1_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
+          <menu refID="ProAppModule1_SynchronizationMenu" size="middle" />
+          <button refID="ProAppModule1_ClearWorkspaceButton" size="middle" />
+          <button refID="ProAppModule1_SaveImageButton" size="middle" />
+          <button refID="ProAppModule1_HelpButton" size="middle" />          
+        </group>
+      </groups>
+      <menus>
+        <menu id="ProAppModule1_SynchronizationMenu" caption="Synchronization" smallImage="pack://application:,,,/ProAppModule1;component/Images/Synchronization16.png" largeImage="pack://application:,,,/ProAppModule1;component/Images/Synchronization32.png" keytip="SZ">
+          <tooltip>Synchronization operations between ArcGIS Pro and ArcGIS Earth.</tooltip>
+          <button refID="ProAppModule1_SetCameraSyncCheckBox" />
+          <button refID="ProAppModule1_AddLayerSyncCheckBox" />
+          <button refID="ProAppModule1_RemoveLayerSyncCheckBox" />
+        </menu>
+      </menus>
+      <controls>
+        <button id="ProAppModule1_SetCameraSyncCheckBox" caption="Camera view" className="SetCameraSyncCheckBox" loadOnClick="false" keytip="SC">
+          <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ProAppModule1_AddLayerSyncCheckBox" caption="Add layer" className="AddLayerSyncCheckBox" loadOnClick="false" keytip="AL">
+          <tooltip>Synchronize the operation when adding layer.</tooltip>
+        </button>
+        <button id="ProAppModule1_RemoveLayerSyncCheckBox" caption="Remove layer" className="RemoveLayerSyncCheckBox" loadOnClick="false" keytip="RL">
+          <tooltip>Synchronize the operation when removing layer.</tooltip>
+        </button>
+        <button id="ProAppModule1_ClearWorkspaceButton" caption="Clear workspace" className="ClearWorkspaceButton" loadOnClick="false" smallImage="pack://application:,,,/ProAppModule1;component/Images/ClearWorkspace16.png" largeImage="pack://application:,,,/ProAppModule1;component/Images/ClearWorkspace32.png" keytip="CW">
+          <tooltip>Clear workspace in ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ProAppModule1_SaveImageButton" caption="Save image" className="SaveImageButton" loadOnClick="false" smallImage="pack://application:,,,/ProAppModule1;component/Images/SaveImage16.png" largeImage="pack://application:,,,/ProAppModule1;component/Images/SaveImage32.png" keytip="SI">
+          <tooltip>Save current view as image in ArcGIS Earth.</tooltip>
+        </button>
+        <button id="ProAppModule1_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="pack://application:,,,/ProAppModule1;component/Images/Help16.png" largeImage="pack://application:,,,/ProAppModule1;component/Images/Help32.png" keytip="HE">
+          <tooltip>See ArcGIS Earth Automation API help document for more details.</tooltip>
+        </button>       
+      </controls>
+    </insertModule>
+  </modules>
+</ArcGIS>

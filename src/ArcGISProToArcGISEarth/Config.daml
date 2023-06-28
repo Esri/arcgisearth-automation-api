@@ -47,8 +47,7 @@
         <button id="ToArcGISEarth_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Help16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Help32.png" keytip="HE">
           <tooltip>See ArcGIS Earth Automation API help document for more details.</tooltip>
         </button>        
-      </controls>
-      <panes></panes>
+      </controls>     
     </insertModule>
   </modules>
 </ArcGIS>
