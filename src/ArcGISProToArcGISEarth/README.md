@@ -2,7 +2,7 @@
 Use ArcGIS Pro 3.0 or later versions to control and communicate with ArcGIS Earth.
 
 ### Build
-Build and compile the add-in using source codes provided. Modify codes where necessary in your own program.
+Build and compile the add-in using source codes provided. Modify codes where necessary in your own program. If your ArcGIS Pro installation directory is not `C:\Program Files\ArcGIS\Pro`, you need to modify the value of `ProInstallFolder` in the ArcGISProToArcGISEarth.csproj file to your custom installation directory.
 
 ### Use
 1. Double-click `ArcGISProToArcGISEarth.esriAddinX` to install.
