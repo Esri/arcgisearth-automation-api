@@ -1,14 +1,12 @@
 ﻿<ArcGIS defaultAssembly="ProAppModule1.dll" defaultNamespace="ProAppModule1" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
   <AddInInfo id="{f6c4dcd5-1853-4012-8165-7e3858f2f786}" version="1.0" desktopVersion="3.2.48173">
-    <Name>ProAppModule1</Name>
-    <Description>ProAppModule1 description</Description>
-    <Image>Images\AddinDesktop32.png</Image>
-    <Author>chao9441</Author>
-    <Company>Acme</Company>
-    <Date>2023-06-28 2:12:49 PM</Date>
+    <Name>ArcGISProToArcGISEarth</Name>
+    <Description>ArcGIS Pro to ArcGIS Earth</Description>
+    <Image>pack://application:,,,/ArcGISProToArcGISEarth;component/Images/ArcGISEarth32.png</Image>
+    <Author>ArcGIS Earth Tutorials</Author>
+    <Company>Esri, http://www.esri.com</Company>
+    <Date>06/26/2020 11:00:00 AM, 2023</Date>
     <Subject>Framework</Subject>
-    <!-- Note subject can be one or more of these topics:
-                    Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
   </AddInInfo>
   <modules>
     <insertModule id="ProAppModule1_Module" className="ArcGISEarthModule" autoLoad="true" caption="ArcGISEarthModule">
