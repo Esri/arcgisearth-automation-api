@@ -72,13 +72,11 @@ namespace ArcGISProToArcGISEarth
                         ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to save image.");
                         return;
                     }
-                    using (var outStream = new MemoryStream())
+                    var encoder = new JpegBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+                    using (FileStream fs = new FileStream(dialog.FileName, FileMode.Create))
                     {
-                        var encoder = new BmpBitmapEncoder();
-                        encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
-                        encoder.Save(outStream);
-                        var bitmap = new Bitmap(outStream);
-                        bitmap.Save(dialog.FileName);
+                        encoder.Save(fs);
                     }
                 }
             }
