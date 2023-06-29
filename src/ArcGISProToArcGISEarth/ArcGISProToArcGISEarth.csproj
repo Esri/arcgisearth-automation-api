@@ -9,8 +9,8 @@
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Resource Include="Images\ArcGISEarth16.png" />
-    <Resource Include="Images\ArcGISEarth32.png" />
+    <Content Include="Images\ArcGISEarth16.png" />
+    <Content Include="Images\ArcGISEarth32.png" />
     <Resource Include="Images\ClearWorkspace16.png" />
     <Resource Include="Images\ClearWorkspace32.png" />
     <Resource Include="Images\Help16.png" />
