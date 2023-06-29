@@ -1,5 +1,5 @@
 ﻿<ArcGIS defaultAssembly="ArcGISProToArcGISEarth.dll" defaultNamespace="ArcGISProToArcGISEarth" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{d754c583-5aa9-4b29-8b9e-c04afdb2d2c3}" version="1.0" desktopVersion="3.2.48173">
+  <AddInInfo id="{f6c4dcd5-1853-4012-8165-7e3858f2f786}" version="1.0" desktopVersion="3.2.48173">
     <Name>ArcGISProToArcGISEarth</Name>
     <Description>ArcGIS Pro to ArcGIS Earth</Description>
     <Image>pack://application:,,,/ArcGISProToArcGISEarth;component/Images/ArcGISEarth32.png</Image>
@@ -9,45 +9,43 @@
     <Subject>Framework</Subject>
   </AddInInfo>
   <modules>
-    <insertModule id="ArcGISProToArcGISEarth" className="ArcGISEarthModule" autoLoad="true" caption="ArcGISEarthModule">
+    <insertModule id="ArcGISProToArcGISEarth_Module" className="ArcGISEarthModule" autoLoad="true" caption="ArcGISEarthModule">
       <groups>
-        <group id="ToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
-          <menu refID="ToArcGISEarth_SynchronizationMenu" size="middle" />
-          <button refID="ToArcGISEarth_ClearWorkspaceButton" size="middle" />
-          <button refID="ToArcGISEarth_SaveImageButton" size="middle" />
-          <button refID="ToArcGISEarth_HelpButton" size="middle" />
-          <button refID="ArcGISProToArcGISEarth_Button1" size="large" />
-          <button refID="ArcGISProToArcGISEarth_Button1" size="large" />
+        <group id="ArcGISProToArcGISEarth_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
+          <menu refID="ArcGISProToArcGISEarth_SynchronizationMenu" size="middle" />
+          <button refID="ArcGISProToArcGISEarth_ClearWorkspaceButton" size="middle" />
+          <button refID="ArcGISProToArcGISEarth_SaveImageButton" size="middle" />
+          <button refID="ArcGISProToArcGISEarth_HelpButton" size="middle" />          
         </group>
       </groups>
       <menus>
-        <menu id="ToArcGISEarth_SynchronizationMenu" caption="Synchronization" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Synchronization16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Synchronization32.png" keytip="SZ">
+        <menu id="ArcGISProToArcGISEarth_SynchronizationMenu" caption="Synchronization" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Synchronization16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Synchronization32.png" keytip="SZ">
           <tooltip>Synchronization operations between ArcGIS Pro and ArcGIS Earth.</tooltip>
-          <button refID="ToArcGISEarth_SetCameraSyncCheckBox" />
-          <button refID="ToArcGISEarth_AddLayerSyncCheckBox" />
-          <button refID="ToArcGISEarth_RemoveLayerSyncCheckBox" />
+          <button refID="ArcGISProToArcGISEarth_SetCameraSyncCheckBox" />
+          <button refID="ArcGISProToArcGISEarth_AddLayerSyncCheckBox" />
+          <button refID="ArcGISProToArcGISEarth_RemoveLayerSyncCheckBox" />
         </menu>
       </menus>
       <controls>
-        <button id="ToArcGISEarth_SetCameraSyncCheckBox" caption="Camera view" className="SetCameraSyncCheckBox" loadOnClick="false" keytip="SC">
+        <button id="ArcGISProToArcGISEarth_SetCameraSyncCheckBox" caption="Camera view" className="SetCameraSyncCheckBox" loadOnClick="false" keytip="SC">
           <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
         </button>
-        <button id="ToArcGISEarth_AddLayerSyncCheckBox" caption="Add layer" className="AddLayerSyncCheckBox" loadOnClick="false" keytip="AL">
+        <button id="ArcGISProToArcGISEarth_AddLayerSyncCheckBox" caption="Add layer" className="AddLayerSyncCheckBox" loadOnClick="false" keytip="AL">
           <tooltip>Synchronize the operation when adding layer.</tooltip>
         </button>
-        <button id="ToArcGISEarth_RemoveLayerSyncCheckBox" caption="Remove layer" className="RemoveLayerSyncCheckBox" loadOnClick="false" keytip="RL">
+        <button id="ArcGISProToArcGISEarth_RemoveLayerSyncCheckBox" caption="Remove layer" className="RemoveLayerSyncCheckBox" loadOnClick="false" keytip="RL">
           <tooltip>Synchronize the operation when removing layer.</tooltip>
         </button>
-        <button id="ToArcGISEarth_ClearWorkspaceButton" caption="Clear workspace" className="ClearWorkspaceButton" loadOnClick="false" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/ClearWorkspace16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/ClearWorkspace32.png" keytip="CW">
+        <button id="ArcGISProToArcGISEarth_ClearWorkspaceButton" caption="Clear workspace" className="ClearWorkspaceButton" loadOnClick="false" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/ClearWorkspace16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/ClearWorkspace32.png" keytip="CW">
           <tooltip>Clear workspace in ArcGIS Earth.</tooltip>
         </button>
-        <button id="ToArcGISEarth_SaveImageButton" caption="Save image" className="SaveImageButton" loadOnClick="false" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/SaveImage16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/SaveImage32.png" keytip="SI">
+        <button id="ArcGISProToArcGISEarth_SaveImageButton" caption="Save image" className="SaveImageButton" loadOnClick="false" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/SaveImage16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/SaveImage32.png" keytip="SI">
           <tooltip>Save current view as image in ArcGIS Earth.</tooltip>
         </button>
-        <button id="ToArcGISEarth_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Help16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Help32.png" keytip="HE">
+        <button id="ArcGISProToArcGISEarth_HelpButton" caption="Help" className="HelpButton" loadOnClick="false" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Help16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/Help32.png" keytip="HE">
           <tooltip>See ArcGIS Earth Automation API help document for more details.</tooltip>
-        </button>        
-      </controls>     
+        </button>       
+      </controls>
     </insertModule>
   </modules>
 </ArcGIS>

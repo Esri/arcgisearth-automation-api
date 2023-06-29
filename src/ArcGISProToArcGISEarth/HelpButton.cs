@@ -13,7 +13,6 @@
 
 using ArcGIS.Desktop.Framework.Contracts;
 using System.Diagnostics;
-using System.Security.Policy;
 
 namespace ArcGISProToArcGISEarth
 {
@@ -26,7 +25,7 @@ namespace ArcGISProToArcGISEarth
             {
                 FileName = "http://doc.arcgis.com/en/arcgis-earth/automation-api/samples.htm",
                 UseShellExecute = true
-            });            
+            });
         }
     }
 }

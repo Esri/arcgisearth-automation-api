@@ -12,9 +12,7 @@
 // limitations under the License.
 
 using ArcGIS.Core.CIM;
-using ArcGIS.Desktop.Internal.Catalog;
 using ArcGIS.Desktop.Mapping;
-using ArcGISEarth.AutoAPI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

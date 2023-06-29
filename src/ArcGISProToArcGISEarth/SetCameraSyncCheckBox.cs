@@ -20,13 +20,8 @@ using System.Text.Json.Nodes;
 
 namespace ArcGISProToArcGISEarth
 {
-    public class SetCameraSyncCheckBox : Button
-    {
-        public SetCameraSyncCheckBox()
-        {
-            Enabled = false;
-        }
-
+    internal class SetCameraSyncCheckBox : Button
+    {       
         protected override void OnClick()
         {
             if (IsChecked)

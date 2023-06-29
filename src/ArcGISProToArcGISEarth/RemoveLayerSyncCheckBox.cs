@@ -82,7 +82,7 @@ namespace ArcGISProToArcGISEarth
                     // Remove elevation sources in ArcGIS Earth and removed id of these sources.
                     foreach (var id in idList)
                     {
-                        JsonObject idJson = JsonNode.Parse(id).AsObject();                        
+                        JsonObject idJson = JsonNode.Parse(id).AsObject();
                         string idString = idJson["id"].ToString();
                         await AutomationAPIHelper.RemoveLayer(idString);
                         ToolHelper.IdInfoDictionary.Remove(id);

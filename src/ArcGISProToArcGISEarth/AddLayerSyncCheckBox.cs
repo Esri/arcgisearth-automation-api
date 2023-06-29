@@ -18,6 +18,7 @@ using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
@@ -80,7 +81,7 @@ namespace ArcGISProToArcGISEarth
                             // Get layer url.
                             string url = ToolHelper.GetDataSource(dataConnection);
                             if (!string.IsNullOrWhiteSpace(url))
-                            {                                
+                            {
                                 JsonObject addLayerJson = new JsonObject
                                 {
                                     ["URI"] = url
@@ -89,7 +90,7 @@ namespace ArcGISProToArcGISEarth
                                 {
                                     // Specify layer type for wms service. API is limited to automatically recognized wms service.
                                     addLayerJson["type"] = "WMS";
-                                }                               
+                                }
                                 if (layer.MapLayerType == MapLayerType.Operational)
                                 {
                                     addLayerJson["target"] = "operationalLayers";

@@ -9,9 +9,6 @@
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Config.daml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Images\ArcGISEarth16.png" />
     <None Remove="Images\ArcGISEarth32.png" />
     <None Remove="Images\ClearWorkspace16.png" />
@@ -23,9 +20,11 @@
     <None Remove="Images\Synchronization16.png" />
     <None Remove="Images\Synchronization32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config.daml" />
+  </ItemGroup>
   <Import Project="..\ArcGISEarth.AutoAPI.Shared\ArcGISEarth.AutoAPI.Shared.projitems" Label="Shared" />
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="7.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
