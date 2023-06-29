@@ -11,7 +11,7 @@
                     Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
   </AddInInfo>
   <modules>
-    <insertModule id="ProAppModule1_Module" className="Module1" autoLoad="true" caption="Module1">
+    <insertModule id="ProAppModule1_Module" className="ArcGISEarthModule" autoLoad="true" caption="ArcGISEarthModule">
       <groups>
         <group id="ProAppModule1_Group1" caption="To ArcGIS Earth" appearsOnAddInTab="true" keytip="TE">
           <menu refID="ProAppModule1_SynchronizationMenu" size="middle" />
