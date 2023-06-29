@@ -12,20 +12,28 @@
 // limitations under the License.
 
 using ArcGIS.Desktop.Framework.Contracts;
+using System;
 using System.Diagnostics;
 
 namespace ArcGISProToArcGISEarth
 {
-    internal class HelpButton : Button
+    public class HelpButton : Button
     {
         protected override void OnClick()
         {
-            // Open the help page. 
-            Process.Start(new ProcessStartInfo
+            try
             {
-                FileName = "http://doc.arcgis.com/en/arcgis-earth/automation-api/samples.htm",
-                UseShellExecute = true
-            });
+                // Open the help page. 
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "http://doc.arcgis.com/en/arcgis-earth/automation-api/samples.htm",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(ex.Message);
+            }
         }
     }
 }

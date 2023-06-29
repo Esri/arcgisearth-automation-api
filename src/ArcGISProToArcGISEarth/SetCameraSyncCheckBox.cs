@@ -16,11 +16,12 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
+using System;
 using System.Text.Json.Nodes;
 
 namespace ArcGISProToArcGISEarth
 {
-    internal class SetCameraSyncCheckBox : Button
+    public class SetCameraSyncCheckBox : Button
     {       
         protected override void OnClick()
         {
@@ -83,8 +84,9 @@ namespace ArcGISProToArcGISEarth
                     await AutomationAPIHelper.SetCamera(cameraJObject.ToString());
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(ex.Message);
             }
         }
     }

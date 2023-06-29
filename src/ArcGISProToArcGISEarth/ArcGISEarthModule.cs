@@ -16,7 +16,7 @@ using ArcGIS.Desktop.Framework.Contracts;
 
 namespace ArcGISProToArcGISEarth
 {
-    internal class ArcGISEarthModule : Module
+    public class ArcGISEarthModule : Module
     {
         private static ArcGISEarthModule _this = null;
 

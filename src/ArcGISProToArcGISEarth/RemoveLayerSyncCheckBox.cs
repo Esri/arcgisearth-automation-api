@@ -15,6 +15,7 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
 
@@ -89,8 +90,9 @@ namespace ArcGISProToArcGISEarth
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(ex.Message);
             }
         }
     }
