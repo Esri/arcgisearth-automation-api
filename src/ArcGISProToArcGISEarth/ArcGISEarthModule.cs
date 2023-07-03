@@ -1,4 +1,4 @@
-﻿// Copyright 2020 Esri
+﻿// Copyright 2023 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -14,23 +14,30 @@
 using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
-    internal class ArcGISEarthModule : Module
+    public class ArcGISEarthModule : Module
     {
         private static ArcGISEarthModule _this = null;
 
-        public static ArcGISEarthModule Current
-        {
-            get
-            {
-                return _this ?? (_this = (ArcGISEarthModule)FrameworkApplication.FindModule("ArcGISProToArcGISEarth"));
-            }
-        }
+        /// <summary>
+        /// Retrieve the singleton instance to this module here
+        /// </summary>
+        public static ArcGISEarthModule Current => _this ??= (ArcGISEarthModule)FrameworkApplication.FindModule("ArcGISEarthModule");
 
+        #region Overrides
+        /// <summary>
+        /// Called by Framework when ArcGIS Pro is closing
+        /// </summary>
+        /// <returns>False to prevent Pro from closing, otherwise True</returns>
         protected override bool CanUnload()
         {
+            //TODO - add your business logic
+            //return false to ~cancel~ Application close
             return true;
         }
+
+        #endregion Overrides
+
     }
 }

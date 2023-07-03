@@ -1,4 +1,4 @@
-﻿// Copyright 2020 Esri
+﻿// Copyright 2023 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -15,10 +15,11 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
-using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Text.Json.Nodes;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
     public class RemoveLayerSyncCheckBox : Button
     {
@@ -82,15 +83,16 @@ namespace ToArcGISEarth
                     // Remove elevation sources in ArcGIS Earth and removed id of these sources.
                     foreach (var id in idList)
                     {
-                        JObject idJson = JObject.Parse(id);
+                        JsonObject idJson = JsonNode.Parse(id).AsObject();
                         string idString = idJson["id"].ToString();
                         await AutomationAPIHelper.RemoveLayer(idString);
                         ToolHelper.IdInfoDictionary.Remove(id);
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(ex.Message);
             }
         }
     }

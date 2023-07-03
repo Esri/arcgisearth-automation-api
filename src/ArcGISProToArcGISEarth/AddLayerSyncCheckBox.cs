@@ -1,4 +1,4 @@
-﻿// Copyright 2020 Esri
+﻿// Copyright 2023 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -18,11 +18,12 @@ using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
-using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
     public class AddLayerSyncCheckBox : Button
     {
@@ -81,7 +82,7 @@ namespace ToArcGISEarth
                             string url = ToolHelper.GetDataSource(dataConnection);
                             if (!string.IsNullOrWhiteSpace(url))
                             {
-                                JObject addLayerJson = new JObject
+                                JsonObject addLayerJson = new JsonObject
                                 {
                                     ["URI"] = url
                                 };
@@ -89,7 +90,7 @@ namespace ToArcGISEarth
                                 {
                                     // Specify layer type for wms service. API is limited to automatically recognized wms service.
                                     addLayerJson["type"] = "WMS";
-                                }                               
+                                }
                                 if (layer.MapLayerType == MapLayerType.Operational)
                                 {
                                     addLayerJson["target"] = "operationalLayers";

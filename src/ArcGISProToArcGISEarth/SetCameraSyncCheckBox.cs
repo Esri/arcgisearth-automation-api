@@ -1,4 +1,4 @@
-﻿// Copyright 2020 Esri
+﻿// Copyright 2023 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -16,17 +16,13 @@ using ArcGIS.Desktop.Framework.Contracts;
 using ArcGIS.Desktop.Mapping;
 using ArcGIS.Desktop.Mapping.Events;
 using ArcGISEarth.AutoAPI.Utils;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Text.Json.Nodes;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
     public class SetCameraSyncCheckBox : Button
-    {
-        public SetCameraSyncCheckBox()
-        {
-            Enabled = false;
-        }
-
+    {       
         protected override void OnClick()
         {
             if (IsChecked)
@@ -64,15 +60,15 @@ namespace ToArcGISEarth
                 MapView mapView = args.MapView;
                 if (null != mapView && null != mapView.Camera && mapView.ViewingMode == MapViewingMode.SceneGlobal)
                 {
-                    JObject cameraJObject = new JObject()
+                    JsonObject cameraJObject = new JsonObject
                     {
                         // Get position.
-                        ["position"] = new JObject
+                        ["position"] = new JsonObject
                         {
                             ["x"] = mapView.Camera.X,
                             ["y"] = mapView.Camera.Y,
                             ["z"] = mapView.Camera.Z,
-                            ["spatialReference"] = new JObject
+                            ["spatialReference"] = new JsonObject
                             {
                                 ["wkid"] = mapView.Camera.SpatialReference?.Wkid
                             }
@@ -88,8 +84,9 @@ namespace ToArcGISEarth
                     await AutomationAPIHelper.SetCamera(cameraJObject.ToString());
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(ex.Message);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿// Copyright 2020 Esri
+﻿// Copyright 2023 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -12,16 +12,28 @@
 // limitations under the License.
 
 using ArcGIS.Desktop.Framework.Contracts;
+using System;
 using System.Diagnostics;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
     public class HelpButton : Button
     {
         protected override void OnClick()
         {
-            // Open the help page. 
-            Process.Start("http://doc.arcgis.com/en/arcgis-earth/automation-api/samples.htm");
+            try
+            {
+                // Open the help page. 
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://doc.arcgis.com/en/arcgis-earth/automation-api/samples.htm",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show(ex.Message);
+            }
         }
     }
 }

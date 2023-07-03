@@ -1,4 +1,4 @@
-﻿// Copyright 2020 Esri
+﻿// Copyright 2023 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Newtonsoft.Json.Linq;
+using System.Text.Json.Nodes;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -620,7 +620,7 @@ namespace ArcGISEarth.AutoAPI.Utils
                 if (File.Exists(expectedSettingPath))
                 {
                     string json = File.ReadAllText(expectedSettingPath);
-                    JObject setting = JObject.Parse(json);
+                    JsonObject setting = JsonNode.Parse(json).AsObject();
                     if (setting != null)
                     {
                         baseUrl = setting["baseUrl"].ToString();

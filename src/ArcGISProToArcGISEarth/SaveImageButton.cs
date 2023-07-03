@@ -1,4 +1,4 @@
-﻿// Copyright 2020 Esri
+﻿// Copyright 2023 Esri
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -19,7 +19,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace ToArcGISEarth
+namespace ArcGISProToArcGISEarth
 {
     public class SaveImageButton : Button
     {
@@ -72,13 +72,11 @@ namespace ToArcGISEarth
                         ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Failed to save image.");
                         return;
                     }
-                    using (var outStream = new MemoryStream())
+                    var encoder = new JpegBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+                    using (FileStream fs = new FileStream(dialog.FileName, FileMode.Create))
                     {
-                        var encoder = new BmpBitmapEncoder();
-                        encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
-                        encoder.Save(outStream);
-                        var bitmap = new Bitmap(outStream);
-                        bitmap.Save(dialog.FileName);
+                        encoder.Save(fs);
                     }
                 }
             }
