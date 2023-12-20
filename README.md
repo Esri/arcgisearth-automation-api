@@ -37,7 +37,7 @@ ArcGIS Earth Automation API provides a standard interface for 3rd party applicat
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
 
 ## Contributing
-Anyone is welcome to contribute and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing) and [repository wiki](../../wiki).
+Anyone is welcome to contribute and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing) and [repository wiki](https://github.com/Esri/arcgisearth-automation-api/wiki).
 
 ## Licensing
 Copyright 2020 Esri
@@ -52,4 +52,4 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
-limitations under the [License](../../blob/master/LICENSE).
+limitations under the [License](https://github.com/Esri/arcgisearth-automation-api/blob/chao9441/update_readme/LICENSE).
