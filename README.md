@@ -22,24 +22,22 @@ ArcGIS Earth Automation API provides a standard interface for 3rd party applicat
 
 ## Samples
 
-1. [Automation API examples](../../wiki/Automation-API-examples)
-2. [ArcGIS Pro add-in: ToArcGISEarth](../../wiki/ToArcGISEarth)
+1. [Automation API examples](https://github.com/Esri/arcgisearth-automation-api/wiki/Automation-API-examples)
+2. [ArcGIS Pro add-in: ArcGISProToArcGISEarth](https://github.com/Esri/arcgisearth-automation-api/wiki/ArcGISProToArcGISEarth)
 
 ## Resources
 
 * [ArcGIS Earth Online Help](https://doc.arcgis.com/en/arcgis-earth/)
 * [ArcGIS Earth Automation API Reference](https://doc.arcgis.com/en/arcgis-earth/automation-api/get-started.htm)
 * [ArcGIS for Developers](https://developers.arcgis.com/documentation/#extend)
-* Share your ideas or post questions via [GeoNet](https://geonet.esri.com/groups/arcgis-earth)
-* [Twitter@ArcGISEarth](https://twitter.com/arcgisearth?lang=en)
+* Share your ideas or post questions via [GeoNet](https://community.esri.com/t5/arcgis-earth/ct-p/arcgis-earth)
 * For assistance, please refer to [Support](https://support.esri.com/en/)
-
 
 ## Issues
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
 
 ## Contributing
-Anyone is welcome to contribute and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing) and [repository wiki](../../wiki).
+Anyone is welcome to contribute and to extend and improve the examples by sending us pull requests. Please see [guidelines for contributing](https://github.com/esri/contributing) and [repository wiki](https://github.com/Esri/arcgisearth-automation-api/wiki).
 
 ## Licensing
 Copyright 2020 Esri
@@ -54,4 +52,4 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
-limitations under the [License](../../blob/master/LICENSE).
+limitations under the [License](https://github.com/Esri/arcgisearth-automation-api/blob/main/LICENSE).
