@@ -22,8 +22,8 @@ ArcGIS Earth Automation API provides a standard interface for 3rd party applicat
 
 ## Samples
 
-1. [Automation API examples](../../wiki/Automation-API-examples)
-2. [ArcGIS Pro add-in: ArcGISProToArcGISEarth](../../wiki/ArcGISProToArcGISEarth)
+1. [Automation API examples](https://github.com/Esri/arcgisearth-automation-api/wiki/Automation-API-examples)
+2. [ArcGIS Pro add-in: ArcGISProToArcGISEarth](https://github.com/Esri/arcgisearth-automation-api/wiki/ArcGISProToArcGISEarth)
 
 ## Resources
 
