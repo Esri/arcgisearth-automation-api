@@ -23,17 +23,15 @@ ArcGIS Earth Automation API provides a standard interface for 3rd party applicat
 ## Samples
 
 1. [Automation API examples](../../wiki/Automation-API-examples)
-2. [ArcGIS Pro add-in: ToArcGISEarth](../../wiki/ToArcGISEarth)
+2. [ArcGIS Pro add-in: ArcGISProToArcGISEarth](../../wiki/ArcGISProToArcGISEarth)
 
 ## Resources
 
 * [ArcGIS Earth Online Help](https://doc.arcgis.com/en/arcgis-earth/)
 * [ArcGIS Earth Automation API Reference](https://doc.arcgis.com/en/arcgis-earth/automation-api/get-started.htm)
 * [ArcGIS for Developers](https://developers.arcgis.com/documentation/#extend)
-* Share your ideas or post questions via [GeoNet](https://geonet.esri.com/groups/arcgis-earth)
-* [Twitter@ArcGISEarth](https://twitter.com/arcgisearth?lang=en)
+* Share your ideas or post questions via [GeoNet](https://community.esri.com/t5/arcgis-earth/ct-p/arcgis-earth)
 * For assistance, please refer to [Support](https://support.esri.com/en/)
-
 
 ## Issues
 Find a bug or want to request a new feature? Please let us know by submitting an issue.
