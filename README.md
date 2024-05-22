@@ -1,5 +1,5 @@
 # ArcGIS Earth Automation API
-ArcGIS Earth Automation API provides a standard interface for third-party applications that support REST to automate and communicate with ArcGIS Earth. The Automation API is based on [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1). It provides a fast and reliable way for communications with ArcGIS Earth.
+ArcGIS Earth Automation API provides a standard interface for third-party applications that support REST to automate and communicate with ArcGIS Earth. The Automation API is based on [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host). It provides a fast and reliable way for communications with ArcGIS Earth.
 
 <div align="center">
 
