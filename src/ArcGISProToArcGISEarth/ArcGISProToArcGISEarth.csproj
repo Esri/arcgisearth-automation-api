@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
@@ -10,8 +10,7 @@
     <ProInstallDir>C:\Program Files\ArcGIS\Pro</ProInstallDir>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Images\ArcGISEarth16.png" />
-    <Content Include="Images\ArcGISEarth32.png" />
+    <Content Include="Images\ArcGISEarth.png" />
     <Resource Include="Images\ClearWorkspace16.png" />
     <Resource Include="Images\ClearWorkspace32.png" />
     <Resource Include="Images\Help16.png" />
