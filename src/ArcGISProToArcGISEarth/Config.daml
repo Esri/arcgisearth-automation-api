@@ -1,11 +1,11 @@
 ﻿<ArcGIS defaultAssembly="ArcGISProToArcGISEarth.dll" defaultNamespace="ArcGISProToArcGISEarth" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
-  <AddInInfo id="{f6c4dcd5-1853-4012-8165-7e3858f2f786}" version="2.0" desktopVersion="3.0">
+  <AddInInfo id="{f6c4dcd5-1853-4012-8165-7e3858f2f786}" version="2.2" desktopVersion="3.0">
     <Name>ArcGISProToArcGISEarth</Name>
     <Description>ArcGIS Pro to ArcGIS Earth</Description>
-    <Image>Images\ArcGISEarth32.png</Image>
+    <Image>Images\ArcGISEarth.png</Image>
     <Author>ArcGIS Earth Tutorials</Author>
     <Company>Esri, http://www.esri.com</Company>
-    <Date>06/26/2020 11:00:00 AM, 2023</Date>
+    <Date>05/22/2024 9:43:39 AM</Date>
     <Subject>Framework</Subject>
   </AddInInfo>
   <modules>
@@ -15,7 +15,7 @@
           <menu refID="ArcGISProToArcGISEarth_SynchronizationMenu" size="middle" />
           <button refID="ArcGISProToArcGISEarth_ClearWorkspaceButton" size="middle" />
           <button refID="ArcGISProToArcGISEarth_SaveImageButton" size="middle" />
-          <button refID="ArcGISProToArcGISEarth_HelpButton" size="middle" />          
+          <button refID="ArcGISProToArcGISEarth_HelpButton" size="middle" />
         </group>
       </groups>
       <menus>
@@ -27,13 +27,13 @@
         </menu>
       </menus>
       <controls>
-        <button id="ArcGISProToArcGISEarth_SetCameraSyncCheckBox" caption="Camera view" className="SetCameraSyncCheckBox" loadOnClick="false" keytip="SC">
+        <button id="ArcGISProToArcGISEarth_SetCameraSyncCheckBox" caption="Camera view" className="SetCameraSyncCheckBox" loadOnClick="true" keytip="SC">
           <tooltip>Synchronize camera view with ArcGIS Earth.</tooltip>
         </button>
-        <button id="ArcGISProToArcGISEarth_AddLayerSyncCheckBox" caption="Add layer" className="AddLayerSyncCheckBox" loadOnClick="false" keytip="AL">
+        <button id="ArcGISProToArcGISEarth_AddLayerSyncCheckBox" caption="Add layer" className="AddLayerSyncCheckBox" loadOnClick="true" keytip="AL">
           <tooltip>Synchronize the operation when adding layer.</tooltip>
         </button>
-        <button id="ArcGISProToArcGISEarth_RemoveLayerSyncCheckBox" caption="Remove layer" className="RemoveLayerSyncCheckBox" loadOnClick="false" keytip="RL">
+        <button id="ArcGISProToArcGISEarth_RemoveLayerSyncCheckBox" caption="Remove layer" className="RemoveLayerSyncCheckBox" loadOnClick="true" keytip="RL">
           <tooltip>Synchronize the operation when removing layer.</tooltip>
         </button>
         <button id="ArcGISProToArcGISEarth_ClearWorkspaceButton" caption="Clear workspace" className="ClearWorkspaceButton" loadOnClick="false" smallImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/ClearWorkspace16.png" largeImage="pack://application:,,,/ArcGISProToArcGISEarth;component/Images/ClearWorkspace32.png" keytip="CW">
