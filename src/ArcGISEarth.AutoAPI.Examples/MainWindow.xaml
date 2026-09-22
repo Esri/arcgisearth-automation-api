@@ -4,7 +4,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:ArcGISEarth.AutoAPI.Examples"
         xmlns:converter="clr-namespace:ArcGISEarth.AutoAPI.Examples.Converter"
-        Title="ArcGIS Earth Automation API Sample" Height="1024" Width="1440"
+        Title="ArcGIS Earth 3.0 Automation API Sample" Height="1024" Width="1440"
         Icon="./Icons/logo.ico"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -252,7 +252,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Grid.ColumnSpan="12" Grid.Row="0" Orientation="Vertical" Background="#FF653499" >
-                <TextBlock Text="ArcGIS Earth Automation API Sample" Foreground="White" FontFamily="{StaticResource Bold}" FontSize="24" Padding="50, 35, 0, 0"/>
+                <TextBlock Text="ArcGIS Earth 3.0 Automation API Sample" Foreground="White" FontFamily="{StaticResource Bold}" FontSize="24" Padding="50, 35, 0, 0"/>
                 <!--<StackPanel Orientation="Horizontal">
                     <TextBlock Text="baseUrl: " Background="#FF653499" Foreground="White" FontFamily="{StaticResource Regular}" FontSize="14" Padding="50, 2, 0, 0"/>
                     <TextBox Text="{Binding APIUrl}" TextDecorations="Underline" Background="#FF653499" Foreground="White" BorderThickness="0" FontFamily="{StaticResource Regular}" FontSize="14" Padding="0, 2, 0, 0" />
@@ -367,24 +367,73 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListViewItem>
-                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Get Workspace" Margin="0, 10, 0, 0">
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="New Movie Project" Margin="0, 10, 0, 0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding GetWorkspaceCommand}"/>
+                                <i:InvokeCommandAction Command="{Binding NewMovieProjectCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListViewItem>
-                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Import Workspace" Margin="0, 10, 0, 0">
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="New Global Scene" Margin="0, 10, 0, 0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ImportWorkspaceCommand}"/>
+                                <i:InvokeCommandAction Command="{Binding NewGlobalSceneProjectCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListViewItem>
-                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Clear Workspace" Margin="0, 10, 0, 0">
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="New Local Scene" Margin="0, 10, 0, 0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClearWorkspaceCommand}"/>
+                                <i:InvokeCommandAction Command="{Binding NewLocalSceneProjectCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Open Project" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding OpenProjectCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Save Project" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding SaveProjectCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Save Project As" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding SaveProjectAsCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Recent Projects" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding GetRecentProjectsCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Watch Camera" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding WatchCameraCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Watch View Tap" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding WatchViewTapCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Stop Watch" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding StopWatchCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListViewItem>

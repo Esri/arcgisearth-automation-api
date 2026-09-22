@@ -13,8 +13,9 @@ ArcGIS Earth Automation API provides a standard interface for third-party applic
 
 ## Features
 * Control camera navigation and fly behaviors, including getting camera information and setting camera position.
-* Perform data operations, including adding data from online or local files, getting the loading status of layers, and deleting layers from the workspace.
-* Perform workspace operations, including importing, getting, and clearing workspace contents.
+* Perform data operations, including adding data from online or local files, getting the loading status of layers, and deleting layers from the scene.
+* Perform ArcGIS Earth 3.0 project operations, including creating, opening, saving, and listing recent projects.
+* Listen for Automation API notifications, including camera changes and Earth view taps.
 * Take snapshots of the current view.
 
 ## Samples

@@ -16,6 +16,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -31,7 +32,9 @@ namespace ArcGISEarth.AutoAPI.Utils
         private const string GRAPHIC_CONTROLLER_NAME = "graphics";
         private const string DRAWING_CONTROLLER_NAME = "drawings";
         private const string WORKSPACE_CONTROLLER_NAME = "workspace";
+        private const string PROJECT_CONTROLLER_NAME = "project";
         private const string SNAPSHOT_CONTROLLER_NAME = "snapshot";
+        private const string NOTIFICATIONS_CONTROLLER_NAME = "notifications";
         private const string DEFAULT_BASEURL = "http://localhost:8000";
         private const string END_POINT = "/arcgisearth";
 
@@ -550,6 +553,141 @@ namespace ArcGISEarth.AutoAPI.Utils
         }
 
         /// <summary>
+        /// Creates a new ArcGIS Earth 3.0 project, replacing the currently open project.
+        /// </summary>
+        /// <param name="projectType">Project type: movie, globalScene, or localScene.</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> NewProject(string projectType)
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}";
+                string inputJsonStr = $"{{\"type\":\"{projectType}\"}}";
+                HttpClient httpClient = new();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(projectRequestUrl, postContent).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Opens an existing ArcGIS Earth 3.0 project.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format. Example: { "path": "C:\\Projects\\Global Scene.aescx" }</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> OpenProject(string inputJsonStr)
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/open";
+                HttpClient httpClient = new();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(projectRequestUrl, postContent).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Saves the current ArcGIS Earth 3.0 project in place.
+        /// </summary>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> SaveProject()
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/save";
+                HttpClient httpClient = new();
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(projectRequestUrl, null).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Saves the current ArcGIS Earth 3.0 project to a new path.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format. Example: { "path": "C:\\Projects\\Global Scene.aescx" }</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> SaveAsProject(string inputJsonStr)
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/saveAs";
+                HttpClient httpClient = new();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(projectRequestUrl, postContent).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Lists recently opened ArcGIS Earth 3.0 projects, grouped by project type.
+        /// </summary>
+        /// <param name="limit">Optional maximum number of entries per group.</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> GetRecentProjects(int? limit = null)
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/recent";
+                if (limit.HasValue)
+                {
+                    projectRequestUrl += $"?limit={limit.Value}";
+                }
+
+                HttpClient httpClient = new();
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(projectRequestUrl).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Lists recently opened ArcGIS Earth 3.0 projects of a single type.
+        /// </summary>
+        /// <param name="projectType">Project type: movie, globalScene, or localScene.</param>
+        /// <param name="limit">Optional maximum number of entries.</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> GetRecentProjects(string projectType, int? limit = null)
+        {
+            try
+            {
+                string encodedType = Uri.EscapeDataString(projectType);
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/recent/{encodedType}";
+                if (limit.HasValue)
+                {
+                    projectRequestUrl += $"?limit={limit.Value}";
+                }
+
+                HttpClient httpClient = new();
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(projectRequestUrl).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
         /// Take a snapshot of the current view of ArcGIS Earth. The image bytes are directly streamed to the client.
         /// </summary>
         /// <returns>The image source.</returns>
@@ -573,6 +711,65 @@ namespace ArcGISEarth.AutoAPI.Utils
             catch
             {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Watches the ArcGIS Earth 3.0 Automation API notification stream.
+        /// </summary>
+        /// <param name="notificationReceived">Receives the event name and JSON data string.</param>
+        /// <param name="cancellationToken">Cancellation token used to close the stream.</param>
+        public static async Task WatchNotifications(Func<string, string, Task> notificationReceived, CancellationToken cancellationToken)
+        {
+            string notificationsRequestUrl = $"{APIBaseUrl}/{NOTIFICATIONS_CONTROLLER_NAME}";
+            HttpClient httpClient = new();
+            using HttpRequestMessage request = new(HttpMethod.Get, notificationsRequestUrl);
+            request.Headers.Accept.ParseAdd("text/event-stream");
+
+            using HttpResponseMessage responseMessage = await httpClient.SendAsync(
+                request,
+                HttpCompletionOption.ResponseHeadersRead,
+                cancellationToken).ConfigureAwait(false);
+            responseMessage.EnsureSuccessStatusCode();
+
+            using Stream stream = await responseMessage.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            using StreamReader reader = new(stream);
+            string eventName = null;
+            StringBuilder dataBuilder = new();
+
+            while (!reader.EndOfStream && !cancellationToken.IsCancellationRequested)
+            {
+                string line = await reader.ReadLineAsync(cancellationToken).ConfigureAwait(false);
+                if (line == null)
+                {
+                    break;
+                }
+
+                if (line.Length == 0)
+                {
+                    if (!string.IsNullOrWhiteSpace(eventName) && dataBuilder.Length > 0)
+                    {
+                        await notificationReceived(eventName, dataBuilder.ToString()).ConfigureAwait(false);
+                    }
+
+                    eventName = null;
+                    dataBuilder.Clear();
+                    continue;
+                }
+
+                if (line.StartsWith("event:", StringComparison.OrdinalIgnoreCase))
+                {
+                    eventName = line.Substring("event:".Length).Trim();
+                }
+                else if (line.StartsWith("data:", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (dataBuilder.Length > 0)
+                    {
+                        dataBuilder.AppendLine();
+                    }
+
+                    dataBuilder.Append(line.Substring("data:".Length).Trim());
+                }
             }
         }
         #endregion

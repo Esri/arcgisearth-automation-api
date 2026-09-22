@@ -15,7 +15,9 @@ using ArcGISEarth.AutoAPI.Utils;
 using System;
 using System.Text.Json;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -153,11 +155,25 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         public ICommand ClearDrawingsCommand { get; private set; }
 
-        public ICommand GetWorkspaceCommand { get; private set; }
+        public ICommand NewMovieProjectCommand { get; private set; }
 
-        public ICommand ImportWorkspaceCommand { get; private set; }
+        public ICommand NewGlobalSceneProjectCommand { get; private set; }
 
-        public ICommand ClearWorkspaceCommand { get; private set; }
+        public ICommand NewLocalSceneProjectCommand { get; private set; }
+
+        public ICommand OpenProjectCommand { get; private set; }
+
+        public ICommand SaveProjectCommand { get; private set; }
+
+        public ICommand SaveProjectAsCommand { get; private set; }
+
+        public ICommand GetRecentProjectsCommand { get; private set; }
+
+        public ICommand WatchCameraCommand { get; private set; }
+
+        public ICommand WatchViewTapCommand { get; private set; }
+
+        public ICommand StopWatchCommand { get; private set; }
 
         public ICommand TakeSnapshotCommand { get; private set; }
 
@@ -186,9 +202,16 @@ namespace ArcGISEarth.AutoAPI.Examples
             AddDrawingCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.AddDrawing));
             RemoveDrawingCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.RemoveDrawing));
             ClearDrawingsCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearDrawings));
-            GetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetWorkspace));
-            ImportWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ImportWorkspace));
-            ClearWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearWorkspace));
+            NewMovieProjectCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.NewMovieProject));
+            NewGlobalSceneProjectCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.NewGlobalSceneProject));
+            NewLocalSceneProjectCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.NewLocalSceneProject));
+            OpenProjectCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.OpenProject));
+            SaveProjectCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SaveProject));
+            SaveProjectAsCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SaveProjectAs));
+            GetRecentProjectsCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetRecentProjects));
+            WatchCameraCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.WatchCamera));
+            WatchViewTapCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.WatchViewTap));
+            StopWatchCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.StopWatch));
             TakeSnapshotCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.TakeSnapshot));
             ClearInputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearInputputBox));
             SendButtonCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Send));
@@ -213,7 +236,7 @@ namespace ArcGISEarth.AutoAPI.Examples
             try
             {
                 // Handle non-json format output.
-                if (jsonString.StartsWith("{"))
+                if (jsonString.StartsWith("{") || jsonString.StartsWith("["))
                 {
                     var obj = JsonSerializer.Deserialize(jsonString, typeof(object));
                     var options = new JsonSerializerOptions { WriteIndented = true };
@@ -242,8 +265,10 @@ namespace ArcGISEarth.AutoAPI.Examples
         private const string REMOVEGRAPHIC_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
         private const string ADDDRAWING_EXAMPLE = "{\"id\":\"8a1701c9-b8e1-1b0a-c1a7-ac6242c7645e\",\"visible\":true,\"title\":\"Point\",\"geometry\":{\"x\":-100,\"y\":40,\"spatialReference\":{\"wkid\":4326}},\"symbol\":{\"type\":\"picture-marker\",\"url\":\"https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png\",\"size\":\"32px\"},\"labelSymbol\":{\"type\":\"text\",\"color\":[100,100,100,255],\"font\":{\"size\":\"16px\"}}}";
         private const string REMOVEDRAWING_EXAMPLE = "8a1701c9-b8e1-1b0a-c1a7-ac6242c7645e";
-        private const string IMPORTWORKSPACE_EXAMPLE = @"{ ""url"": ""http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"", ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip""}";
+        private const string OPENPROJECT_EXAMPLE = @"{ ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\Projects\\Global Scene.aescx"" }";
+        private const string SAVEASPROJECT_EXAMPLE = @"{ ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\Projects\\Global Scene.aescx"" }";
         private const string TAKESNAPSHOT_EXAMPLE = @"D:\ArcGISEarth.png";
+        private CancellationTokenSource _notificationCancellationTokenSource;
 
         private async void ExecuteFuction(FunctionType functionType)
         {
@@ -367,25 +392,75 @@ namespace ArcGISEarth.AutoAPI.Examples
                         OutputString = "";
                         break;
                     }
-                case FunctionType.GetWorkspace:
+                case FunctionType.NewMovieProject:
                     {
                         InputString = "";
-                        SendButtontype = FunctionType.GetWorkspace;
+                        SendButtontype = FunctionType.NewMovieProject;
                         OutputString = "";
                         break;
                     }
-                case FunctionType.ImportWorkspace:
+                case FunctionType.NewGlobalSceneProject:
                     {
                         InputString = "";
-                        SendButtontype = FunctionType.ImportWorkspace;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(IMPORTWORKSPACE_EXAMPLE);
+                        SendButtontype = FunctionType.NewGlobalSceneProject;
                         OutputString = "";
                         break;
                     }
-                case FunctionType.ClearWorkspace:
+                case FunctionType.NewLocalSceneProject:
                     {
                         InputString = "";
-                        SendButtontype = FunctionType.ClearWorkspace;
+                        SendButtontype = FunctionType.NewLocalSceneProject;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.OpenProject:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.OpenProject;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(OPENPROJECT_EXAMPLE);
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.SaveProject:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.SaveProject;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.SaveProjectAs:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.SaveProjectAs;
+                        InputPlaceholderString = "Example:\n\n" + PrettyJson(SAVEASPROJECT_EXAMPLE);
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.GetRecentProjects:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.GetRecentProjects;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.WatchCamera:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.WatchCamera;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.WatchViewTap:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.WatchViewTap;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.StopWatch:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.StopWatch;
                         OutputString = "";
                         break;
                     }
@@ -473,18 +548,106 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.ClearDrawings:
                     outputStr = await AutomationAPIHelper.ClearDrawings();
                     break;
-                case FunctionType.GetWorkspace:
-                    outputStr = await AutomationAPIHelper.GetWorkspace();
+                case FunctionType.NewMovieProject:
+                    outputStr = await AutomationAPIHelper.NewProject("movie");
                     break;
-                case FunctionType.ImportWorkspace:
-                    outputStr = await AutomationAPIHelper.ImportWorkspace(inputStr);
+                case FunctionType.NewGlobalSceneProject:
+                    outputStr = await AutomationAPIHelper.NewProject("globalScene");
                     break;
-                case FunctionType.ClearWorkspace:
-                    outputStr = await AutomationAPIHelper.ClearWorkspace();
+                case FunctionType.NewLocalSceneProject:
+                    outputStr = await AutomationAPIHelper.NewProject("localScene");
+                    break;
+                case FunctionType.OpenProject:
+                    outputStr = await AutomationAPIHelper.OpenProject(inputStr);
+                    break;
+                case FunctionType.SaveProject:
+                    outputStr = await AutomationAPIHelper.SaveProject();
+                    break;
+                case FunctionType.SaveProjectAs:
+                    outputStr = await AutomationAPIHelper.SaveAsProject(inputStr);
+                    break;
+                case FunctionType.GetRecentProjects:
+                    outputStr = await AutomationAPIHelper.GetRecentProjects();
+                    break;
+                case FunctionType.WatchCamera:
+                    outputStr = StartWatchingNotifications("cameraChange", "camera changes");
+                    break;
+                case FunctionType.WatchViewTap:
+                    outputStr = StartWatchingNotifications("viewTap", "view taps");
+                    break;
+                case FunctionType.StopWatch:
+                    outputStr = StopWatchingNotifications();
                     break;
             }
 
             return outputStr;
+        }
+
+        private string StartWatchingNotifications(string eventName, string displayName)
+        {
+            CancelWatchingNotifications();
+            _notificationCancellationTokenSource = new CancellationTokenSource();
+            CancellationToken cancellationToken = _notificationCancellationTokenSource.Token;
+
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await AutomationAPIHelper.WatchNotifications(async (receivedEventName, data) =>
+                    {
+                        if (receivedEventName == eventName)
+                        {
+                            AppendOutput($"{DateTime.Now:HH:mm:ss} {displayName}\n{PrettyJson(data)}\n\n");
+                        }
+
+                        await Task.CompletedTask;
+                    }, cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    AppendOutput($"Notification listener error: {ex.Message}\n");
+                }
+            }, cancellationToken);
+
+            return $"Listening for {displayName} notifications...";
+        }
+
+        private string StopWatchingNotifications()
+        {
+            if (_notificationCancellationTokenSource == null)
+            {
+                return "No notification listener is running.";
+            }
+
+            CancelWatchingNotifications();
+            return "Stopped notification listener.";
+        }
+
+        private void CancelWatchingNotifications()
+        {
+            if (_notificationCancellationTokenSource == null)
+            {
+                return;
+            }
+
+            _notificationCancellationTokenSource.Cancel();
+            _notificationCancellationTokenSource.Dispose();
+            _notificationCancellationTokenSource = null;
+        }
+
+        private void AppendOutput(string message)
+        {
+            var dispatcher = Application.Current?.Dispatcher;
+            if (dispatcher != null && !dispatcher.CheckAccess())
+            {
+                dispatcher.Invoke(() => OutputString += message);
+                return;
+            }
+
+            OutputString += message;
         }
 
         private async Task<ImageSource> TakeSnapshotSend(FunctionType sendType)
