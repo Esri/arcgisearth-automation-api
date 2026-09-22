@@ -29,14 +29,8 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
                 case FunctionType.GetCamera:
                 case FunctionType.ClearGraphics:
                 case FunctionType.ClearDrawings:
-                case FunctionType.NewMovieProject:
-                case FunctionType.NewGlobalSceneProject:
-                case FunctionType.NewLocalSceneProject:
                 case FunctionType.SaveProject:
                 case FunctionType.GetRecentProjects:
-                case FunctionType.WatchCamera:
-                case FunctionType.WatchViewTap:
-                case FunctionType.StopWatch:
                 case FunctionType.TakeSnapshot:
                     visibility = Visibility.Visible;
                     break;
@@ -64,14 +58,8 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
                 case FunctionType.GetCamera:
                 case FunctionType.ClearGraphics:
                 case FunctionType.ClearDrawings:
-                case FunctionType.NewMovieProject:
-                case FunctionType.NewGlobalSceneProject:
-                case FunctionType.NewLocalSceneProject:
                 case FunctionType.SaveProject:
                 case FunctionType.GetRecentProjects:
-                case FunctionType.WatchCamera:
-                case FunctionType.WatchViewTap:
-                case FunctionType.StopWatch:
                 case FunctionType.TakeSnapshot:
                     visibility = Visibility.Collapsed;
                     break;
