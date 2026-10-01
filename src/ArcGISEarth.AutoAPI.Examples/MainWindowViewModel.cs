@@ -153,11 +153,15 @@ namespace ArcGISEarth.AutoAPI.Examples
 
         public ICommand ClearDrawingsCommand { get; private set; }
 
-        public ICommand GetWorkspaceCommand { get; private set; }
+        public ICommand NewProjectCommand { get; private set; }
 
-        public ICommand ImportWorkspaceCommand { get; private set; }
+        public ICommand OpenProjectCommand { get; private set; }
 
-        public ICommand ClearWorkspaceCommand { get; private set; }
+        public ICommand SaveProjectCommand { get; private set; }
+
+        public ICommand SaveProjectAsCommand { get; private set; }
+
+        public ICommand GetRecentProjectsCommand { get; private set; }
 
         public ICommand TakeSnapshotCommand { get; private set; }
 
@@ -186,9 +190,11 @@ namespace ArcGISEarth.AutoAPI.Examples
             AddDrawingCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.AddDrawing));
             RemoveDrawingCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.RemoveDrawing));
             ClearDrawingsCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearDrawings));
-            GetWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetWorkspace));
-            ImportWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ImportWorkspace));
-            ClearWorkspaceCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearWorkspace));
+            NewProjectCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.NewProject));
+            OpenProjectCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.OpenProject));
+            SaveProjectCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SaveProject));
+            SaveProjectAsCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.SaveProjectAs));
+            GetRecentProjectsCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.GetRecentProjects));
             TakeSnapshotCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.TakeSnapshot));
             ClearInputBoxCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.ClearInputputBox));
             SendButtonCommand = new FunctionTypeCommand(e => ExecuteFuction(FunctionType.Send));
@@ -213,7 +219,7 @@ namespace ArcGISEarth.AutoAPI.Examples
             try
             {
                 // Handle non-json format output.
-                if (jsonString.StartsWith("{"))
+                if (jsonString.StartsWith("{") || jsonString.StartsWith("["))
                 {
                     var obj = JsonSerializer.Deserialize(jsonString, typeof(object));
                     var options = new JsonSerializerOptions { WriteIndented = true };
@@ -230,19 +236,21 @@ namespace ArcGISEarth.AutoAPI.Examples
             }
         }
 
-        private const string CAMERA_EXAMPLE = "{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0}";
-        private const string FLIGHT_EXAMPLE = "{\"camera\":{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":2.3335941892764884e-17,\"tilt\":6.144145559063083e-15,\"roll\":0},\"duration\":2}";
+        private const string CAMERA_EXAMPLE = "{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":0,\"tilt\":0,\"roll\":0}";
+        private const string FLIGHT_EXAMPLE = "{\"camera\":{\"position\":{\"x\":-92,\"y\":41,\"z\":11000000,\"spatialReference\":{\"wkid\":4326}},\"heading\":0,\"tilt\":0,\"roll\":0},\"duration\":2.0}";
         private const string ADDLAYER_EXAMPLE = @"{ ""URI"": ""https://www.arcgis.com/home/item.html?id=19dcff93eeb64f208d09d328656dd492"", ""target"": ""operationalLayers"", ""type"": ""PortalItem"" }";
         private const string GETLAYER_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
         private const string REMOVELAYER_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
         private const string REMOVELAYERS_EXAMPLE = "operationalLayers";
         private const string ADDGRAPHIC_EXAMPLE = "{ \"geometry\": {\"type\": \"point\", \"x\": -100, \"y\": 40 }, \"symbol\": { \"type\": \"picture-marker\", \"url\": \"https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png\", \"width\": \"64px\", \"height\": \"64px\", \"xoffset\": \"10px\", \"yoffset\": \"10px\"}}";
         private const string GETGRAPHIC_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
-        private const string UPDATEGRAPHIC_EXAMPLE = "{\"id\": \"311b7317-94f8-4f80-89f2-0e3ca5e77d28\", \"geometry\": {\"type\": \"point\", \"x\": -100, \"y\": 40 }, \"symbol\": { \"type\": \"picture-marker\", \"url\": \"https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png\", \"width\": \"64px\", \"height\": \"64px\", \"xoffset\": \"10px\", \"yoffset\": \"10px\"}}";
+        private const string UPDATEGRAPHIC_EXAMPLE = "{\"id\": \"\", \"geometry\": {\"type\": \"point\", \"x\": -100, \"y\": 40 }, \"symbol\": { \"type\": \"picture-marker\", \"url\": \"https://static.arcgis.com/images/Symbols/Basic/RedSphere.png\", \"width\": \"64px\", \"height\": \"64px\", \"xoffset\": \"10px\", \"yoffset\": \"10px\"}}";
         private const string REMOVEGRAPHIC_EXAMPLE = "311b7317-94f8-4f80-89f2-0e3ca5e77d28";
         private const string ADDDRAWING_EXAMPLE = "{\"id\":\"8a1701c9-b8e1-1b0a-c1a7-ac6242c7645e\",\"visible\":true,\"title\":\"Point\",\"geometry\":{\"x\":-100,\"y\":40,\"spatialReference\":{\"wkid\":4326}},\"symbol\":{\"type\":\"picture-marker\",\"url\":\"https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png\",\"size\":\"32px\"},\"labelSymbol\":{\"type\":\"text\",\"color\":[100,100,100,255],\"font\":{\"size\":\"16px\"}}}";
         private const string REMOVEDRAWING_EXAMPLE = "8a1701c9-b8e1-1b0a-c1a7-ac6242c7645e";
-        private const string IMPORTWORKSPACE_EXAMPLE = @"{ ""url"": ""http://localhost:8000/workspaces/4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip"", ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\automation\\workspaces\\4855c0d4-9b11-4832-876b-ee3a3730dfdb.zip""}";
+        private const string NEWPROJECT_EXAMPLE = @"{ ""type"": ""GlobalScene"" }";
+        private const string OPENPROJECT_EXAMPLE = @"{ ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\Projects\\Global Scene.aescx"" }";
+        private const string SAVEASPROJECT_EXAMPLE = @"{ ""path"": ""C:\\Users\\Username\\Documents\\ArcGISEarth\\Projects\\Global Scene.aescx"" }";
         private const string TAKESNAPSHOT_EXAMPLE = @"D:\ArcGISEarth.png";
 
         private async void ExecuteFuction(FunctionType functionType)
@@ -259,25 +267,25 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.SetCamera:
                     {
-                        InputString = "";
+                        InputString = PrettyJson(CAMERA_EXAMPLE);
                         SendButtontype = FunctionType.SetCamera;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(CAMERA_EXAMPLE);
+                        InputPlaceholderString = "";
                         OutputString = "";
                         break;
                     }
                 case FunctionType.SetFlight:
                     {
-                        InputString = "";
+                        InputString = PrettyJson(FLIGHT_EXAMPLE);
                         SendButtontype = FunctionType.SetFlight;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(FLIGHT_EXAMPLE);
+                        InputPlaceholderString = "";
                         OutputString = "";
                         break;
                     }
                 case FunctionType.AddLayer:
                     {
-                        InputString = "";
+                        InputString = PrettyJson(ADDLAYER_EXAMPLE);
                         SendButtontype = FunctionType.AddLayer;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(ADDLAYER_EXAMPLE);
+                        InputPlaceholderString = "";
                         OutputString = "";
                         break;
                     }
@@ -307,9 +315,9 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.AddGraphic:
                     {
-                        InputString = "";
+                        InputString = PrettyJson(ADDGRAPHIC_EXAMPLE);
                         SendButtontype = FunctionType.AddGraphic;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(ADDGRAPHIC_EXAMPLE);
+                        InputPlaceholderString = "";
                         OutputString = "";
                         break;
                     }
@@ -323,9 +331,9 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.UpdateGraphic:
                     {
-                        InputString = "";
+                        InputString = PrettyJson(UPDATEGRAPHIC_EXAMPLE);
                         SendButtontype = FunctionType.UpdateGraphic;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(UPDATEGRAPHIC_EXAMPLE);
+                        InputPlaceholderString = "";
                         OutputString = "";
                         break;
                     }
@@ -346,9 +354,9 @@ namespace ArcGISEarth.AutoAPI.Examples
                     }
                 case FunctionType.AddDrawing:
                     {
-                        InputString = "";
+                        InputString = PrettyJson(ADDDRAWING_EXAMPLE);
                         SendButtontype = FunctionType.AddDrawing;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(ADDDRAWING_EXAMPLE);
+                        InputPlaceholderString = "";
                         OutputString = "";
                         break;
                     }
@@ -367,25 +375,41 @@ namespace ArcGISEarth.AutoAPI.Examples
                         OutputString = "";
                         break;
                     }
-                case FunctionType.GetWorkspace:
+                case FunctionType.NewProject:
                     {
-                        InputString = "";
-                        SendButtontype = FunctionType.GetWorkspace;
+                        InputString = PrettyJson(NEWPROJECT_EXAMPLE);
+                        SendButtontype = FunctionType.NewProject;
+                        InputPlaceholderString = "";
                         OutputString = "";
                         break;
                     }
-                case FunctionType.ImportWorkspace:
+                case FunctionType.OpenProject:
                     {
-                        InputString = "";
-                        SendButtontype = FunctionType.ImportWorkspace;
-                        InputPlaceholderString = "Example:\n\n" + PrettyJson(IMPORTWORKSPACE_EXAMPLE);
+                        InputString = PrettyJson(OPENPROJECT_EXAMPLE);
+                        SendButtontype = FunctionType.OpenProject;
+                        InputPlaceholderString = "";
                         OutputString = "";
                         break;
                     }
-                case FunctionType.ClearWorkspace:
+                case FunctionType.SaveProject:
                     {
                         InputString = "";
-                        SendButtontype = FunctionType.ClearWorkspace;
+                        SendButtontype = FunctionType.SaveProject;
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.SaveProjectAs:
+                    {
+                        InputString = PrettyJson(SAVEASPROJECT_EXAMPLE);
+                        SendButtontype = FunctionType.SaveProjectAs;
+                        InputPlaceholderString = "";
+                        OutputString = "";
+                        break;
+                    }
+                case FunctionType.GetRecentProjects:
+                    {
+                        InputString = "";
+                        SendButtontype = FunctionType.GetRecentProjects;
                         OutputString = "";
                         break;
                     }
@@ -473,14 +497,20 @@ namespace ArcGISEarth.AutoAPI.Examples
                 case FunctionType.ClearDrawings:
                     outputStr = await AutomationAPIHelper.ClearDrawings();
                     break;
-                case FunctionType.GetWorkspace:
-                    outputStr = await AutomationAPIHelper.GetWorkspace();
+                case FunctionType.NewProject:
+                    outputStr = await AutomationAPIHelper.NewProject(inputStr);
                     break;
-                case FunctionType.ImportWorkspace:
-                    outputStr = await AutomationAPIHelper.ImportWorkspace(inputStr);
+                case FunctionType.OpenProject:
+                    outputStr = await AutomationAPIHelper.OpenProject(inputStr);
                     break;
-                case FunctionType.ClearWorkspace:
-                    outputStr = await AutomationAPIHelper.ClearWorkspace();
+                case FunctionType.SaveProject:
+                    outputStr = await AutomationAPIHelper.SaveProject();
+                    break;
+                case FunctionType.SaveProjectAs:
+                    outputStr = await AutomationAPIHelper.SaveAsProject(inputStr);
+                    break;
+                case FunctionType.GetRecentProjects:
+                    outputStr = await AutomationAPIHelper.GetRecentProjects();
                     break;
             }
 

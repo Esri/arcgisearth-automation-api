@@ -367,24 +367,38 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListViewItem>
-                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Get Workspace" Margin="0, 10, 0, 0">
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="New Project" Margin="0, 10, 0, 0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding GetWorkspaceCommand}"/>
+                                <i:InvokeCommandAction Command="{Binding NewProjectCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListViewItem>
-                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Import Workspace" Margin="0, 10, 0, 0">
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Open Project" Margin="0, 10, 0, 0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ImportWorkspaceCommand}"/>
+                                <i:InvokeCommandAction Command="{Binding OpenProjectCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListViewItem>
-                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Clear Workspace" Margin="0, 10, 0, 0">
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Save Project" Margin="0, 10, 0, 0">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ClearWorkspaceCommand}"/>
+                                <i:InvokeCommandAction Command="{Binding SaveProjectCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Save Project As" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding SaveProjectAsCommand}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ListViewItem>
+                    <ListViewItem Style="{StaticResource SideListViewItem}" Content="Get Recent Projects" Margin="0, 10, 0, 0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding GetRecentProjectsCommand}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ListViewItem>

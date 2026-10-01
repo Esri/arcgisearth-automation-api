@@ -31,6 +31,7 @@ namespace ArcGISEarth.AutoAPI.Utils
         private const string GRAPHIC_CONTROLLER_NAME = "graphics";
         private const string DRAWING_CONTROLLER_NAME = "drawings";
         private const string WORKSPACE_CONTROLLER_NAME = "workspace";
+        private const string PROJECT_CONTROLLER_NAME = "project";
         private const string SNAPSHOT_CONTROLLER_NAME = "snapshot";
         private const string DEFAULT_BASEURL = "http://localhost:8000";
         private const string END_POINT = "/arcgisearth";
@@ -541,6 +542,140 @@ namespace ArcGISEarth.AutoAPI.Utils
                 string workspaceRequestUrl = $"{APIBaseUrl}/{WORKSPACE_CONTROLLER_NAME}";
                 HttpClient httpClient = new();
                 HttpResponseMessage responseMessage = await httpClient.DeleteAsync(workspaceRequestUrl).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new ArcGIS Earth 3.0 project, replacing the currently open project.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format. Example: { "type": "GlobalScene" }</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> NewProject(string inputJsonStr)
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}";
+                HttpClient httpClient = new();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(projectRequestUrl, postContent).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Opens an existing ArcGIS Earth 3.0 project.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format. Example: { "path": "C:\\Projects\\Global Scene.aescx" }</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> OpenProject(string inputJsonStr)
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/open";
+                HttpClient httpClient = new();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(projectRequestUrl, postContent).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Saves the current ArcGIS Earth 3.0 project in place.
+        /// </summary>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> SaveProject()
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/save";
+                HttpClient httpClient = new();
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(projectRequestUrl, null).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Saves the current ArcGIS Earth 3.0 project to a new path.
+        /// </summary>
+        /// <param name="inputJsonStr">The parameters in JSON format. Example: { "path": "C:\\Projects\\Global Scene.aescx" }</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> SaveAsProject(string inputJsonStr)
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/saveAs";
+                HttpClient httpClient = new();
+                HttpContent postContent = ConvertJsonToHttpContent(inputJsonStr);
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(projectRequestUrl, postContent).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Lists recently opened ArcGIS Earth 3.0 projects, grouped by project type.
+        /// </summary>
+        /// <param name="limit">Optional maximum number of entries per group.</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> GetRecentProjects(int? limit = null)
+        {
+            try
+            {
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/recent";
+                if (limit.HasValue)
+                {
+                    projectRequestUrl += $"?limit={limit.Value}";
+                }
+
+                HttpClient httpClient = new();
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(projectRequestUrl).ConfigureAwait(false);
+                return await GetResponseContent(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Lists recently opened ArcGIS Earth 3.0 projects of a single type.
+        /// </summary>
+        /// <param name="projectType">Project type: movie, globalScene, or localScene.</param>
+        /// <param name="limit">Optional maximum number of entries.</param>
+        /// <returns>Automation API response message.</returns>
+        public static async Task<string> GetRecentProjects(string projectType, int? limit = null)
+        {
+            try
+            {
+                string encodedType = Uri.EscapeDataString(projectType);
+                string projectRequestUrl = $"{APIBaseUrl}/{PROJECT_CONTROLLER_NAME}/recent/{encodedType}";
+                if (limit.HasValue)
+                {
+                    projectRequestUrl += $"?limit={limit.Value}";
+                }
+
+                HttpClient httpClient = new();
+                HttpResponseMessage responseMessage = await httpClient.GetAsync(projectRequestUrl).ConfigureAwait(false);
                 return await GetResponseContent(responseMessage);
             }
             catch (Exception ex)

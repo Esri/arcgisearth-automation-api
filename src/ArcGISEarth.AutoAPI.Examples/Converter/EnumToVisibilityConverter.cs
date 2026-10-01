@@ -29,8 +29,8 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
                 case FunctionType.GetCamera:
                 case FunctionType.ClearGraphics:
                 case FunctionType.ClearDrawings:
-                case FunctionType.GetWorkspace:
-                case FunctionType.ClearWorkspace:
+                case FunctionType.SaveProject:
+                case FunctionType.GetRecentProjects:
                 case FunctionType.TakeSnapshot:
                     visibility = Visibility.Visible;
                     break;
@@ -58,8 +58,8 @@ namespace ArcGISEarth.AutoAPI.Examples.Converter
                 case FunctionType.GetCamera:
                 case FunctionType.ClearGraphics:
                 case FunctionType.ClearDrawings:
-                case FunctionType.GetWorkspace:
-                case FunctionType.ClearWorkspace:
+                case FunctionType.SaveProject:
+                case FunctionType.GetRecentProjects:
                 case FunctionType.TakeSnapshot:
                     visibility = Visibility.Collapsed;
                     break;
